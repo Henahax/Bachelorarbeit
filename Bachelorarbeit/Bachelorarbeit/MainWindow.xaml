@@ -7,7 +7,15 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="207,268,0,0" VerticalAlignment="Top" Width="75"/>
-
+        <TabControl>
+            <TabItem Header="Kunden">
+            </TabItem>
+            <TabItem Header="Rechnungen">
+            </TabItem>
+            <TabItem Header="Angebote">
+            </TabItem>
+            <TabItem Header="Einstellungen">
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>
