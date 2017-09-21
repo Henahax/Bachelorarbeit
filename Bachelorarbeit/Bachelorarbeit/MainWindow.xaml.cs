@@ -27,7 +27,23 @@ namespace Bachelorarbeit
         public MainWindow()
         {
             InitializeComponent();
+            FillDataGrid();
         }
 
+        private void FillDataGrid()
+        {
+            string ConString = ConfigurationManager.ConnectionStrings["Bachelorarbeit.Properties.Settings.BachelorarbeitConnectionString"].ConnectionString;
+            string CmdString = string.Empty;
+            using (SqlConnection con = new SqlConnection(ConString))
+            {
+                CmdString = "SELECT Kundennummer, Vorname, Nachname, Firma, Ort FROM Kunden";
+                SqlCommand cmd = new SqlCommand(CmdString, con);
+                SqlDataAdapter sda = new SqlDataAdapter(cmd);
+                DataTable dt = new DataTable("Kunden");
+                sda.Fill(dt);
+                grdKunden.ItemsSource = dt.DefaultView;
+            }
+
+        }
     }
 }
