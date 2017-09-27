@@ -5,7 +5,40 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Bachelorarbeit"
         mc:Ignorable="d"
-        Title="Bachelorarbeit" Width="800" Height="600" MinHeight="360" MinWidth="720">
+        Title="Bachelorarbeit" Width="800" Height="656" MinHeight="360" MinWidth="720">
+
+    <Window.Resources>
+        <Style x:Key="GridSplitterVerticalGripStyle" TargetType="{x:Type GridSplitter}">
+            <Setter Property="VerticalAlignment" Value="Stretch" />
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="Cursor" Value="SizeWE" />
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="Background"
+                    Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type GridSplitter}">
+                        <Border BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Background="{TemplateBinding Background}"
+                                Width="{TemplateBinding Width}">
+                            <Border Height="50" Width="6" VerticalAlignment="Center"
+                                    HorizontalAlignment="Center" BorderThickness="1 0"
+                                    Background="White" BorderBrush="#A0A0A0">
+                            </Border>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="VerticalGridSplitter" TargetType="{x:Type GridSplitter}"
+                BasedOn="{StaticResource GridSplitterVerticalGripStyle}">
+            <Setter Property="VerticalAlignment" Value="Stretch" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+        </Style>
+    </Window.Resources>
+
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Datei"></MenuItem>
@@ -22,43 +55,44 @@
                         <ColumnDefinition Width="*" MinWidth="240"/>
                     </Grid.ColumnDefinitions>
                     <GroupBox Grid.Column="0" Header="Kunden" Margin="1">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="*"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <GroupBox Grid.Row="0" Header="🔍 Suche" Margin="1">
-                                    <TextBox Margin="1"></TextBox>
-                                </GroupBox>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <GroupBox Grid.Row="0" Header="🔍 Suche" Margin="1">
+                                <TextBox Margin="1"></TextBox>
+                            </GroupBox>
                             <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
                                 <GroupBox Margin="1" Header="Kundenliste">
-                                    <DataGrid Name="grdKunden" Margin="1" IsReadOnly="True"/>
+                                    <DataGrid Name="kundenListe" Margin="1" IsReadOnly="True"/>
                                 </GroupBox>
                             </ScrollViewer>
                             <GroupBox Grid.Row="2" Header="Aktionen">
-                                    <Grid Margin="1">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto"/>
-                                        </Grid.RowDefinitions>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Button Grid.Column="0" Content="Kunden&#xa;anlegen" Margin="1" MaxWidth="200"/>
-                                        <Button Grid.Column="1" Content="Kunden&#xa;bearbeiten" Margin="1" MaxWidth="200" IsEnabled="False"/>
-                                        <Button Grid.Column="2" Content="Kunden&#xa;löschen" Margin="1" MaxWidth="200" IsEnabled="False"/>
-                                    </Grid>
-                                </GroupBox>
-                            </Grid>
-                        </GroupBox>
+                                <Grid Margin="1">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Button Grid.Column="0" Content="Kunden&#xa;anlegen" Margin="1" MaxWidth="200"/>
+                                    <Button Grid.Column="1" Content="Kunden&#xa;bearbeiten" Margin="1" MaxWidth="200" IsEnabled="False"/>
+                                    <Button Grid.Column="2" Content="Kunden&#xa;löschen" Margin="1" MaxWidth="200" IsEnabled="False"/>
+                                </Grid>
+                            </GroupBox>
+                        </Grid>
+                    </GroupBox>
 
 
-                    <GridSplitter Grid.Column="1" Width="7" ResizeDirection="Columns" HorizontalAlignment="Stretch" Background="LightGray" BorderBrush="White" BorderThickness="3" Margin="1"/>
+                    <GridSplitter Grid.Column="1" Width="8" Margin="1" Style="{StaticResource VerticalGridSplitter}"/>
+                    <!--<GridSplitter Grid.Column="1" Width="7" ResizeDirection="Columns" HorizontalAlignment="Stretch" Background="LightGray" BorderBrush="White" BorderThickness="3" Margin="1" Style="{StaticResource VerticalGridSplitter}"/>-->
 
                     <Grid Grid.Column="2">
                         <Grid.RowDefinitions>
@@ -67,11 +101,15 @@
                         </Grid.RowDefinitions>
                         <Grid Grid.Row="0">
                             <Grid Grid.Column="2">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="384*"/>
+                                    <RowDefinition Height="161*"/>
+                                </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
-                                <GroupBox Grid.Column="0" Header="Kunde" Margin="1">
+                                <GroupBox Grid.Column="0" Header="Kunde" Margin="1" Grid.RowSpan="2">
                                     <Grid>
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="*"/>
@@ -96,7 +134,7 @@
                                                             <ColumnDefinition Width="*"/>
                                                         </Grid.ColumnDefinitions>
                                                         <Label Grid.Column="0" Margin="1">Kundennummer</Label>
-                                                        <TextBox Grid.Column="1" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" Margin="1"/>
+                                                        <TextBox x:Name="kundennummer" Grid.Column="1" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" Margin="1"/>
                                                     </Grid>
                                                 </GroupBox>
                                                 <GroupBox Grid.Row="1" Header="Adresse" Margin="1">
@@ -116,25 +154,25 @@
                                                             <ColumnDefinition Width="*"/>
                                                         </Grid.ColumnDefinitions>
                                                         <Label Grid.Row="0" Grid.Column="0" Margin="1">Anrede</Label>
-                                                        <ComboBox Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="1">
+                                                        <ComboBox x:Name="anrede" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="1">
                                                             <ComboBoxItem>Herr</ComboBoxItem>
                                                             <ComboBoxItem>Frau</ComboBoxItem>
                                                             <ComboBoxItem>Firma</ComboBoxItem>
                                                         </ComboBox>
                                                         <Label Grid.Row="1" Grid.Column="0" Margin="1">Vorname</Label>
-                                                        <TextBox Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" Margin="1"/>
+                                                        <TextBox x:Name="vorname" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" Margin="1"/>
                                                         <Label Grid.Row="2" Grid.Column="0" Margin="1">Nachname</Label>
-                                                        <TextBox Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" Margin="1"/>
+                                                        <TextBox x:Name="nachname" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" Margin="1"/>
                                                         <Label Grid.Row="3" Grid.Column="0" Margin="1">Firma</Label>
-                                                        <TextBox Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" Margin="1"/>
+                                                        <TextBox x:Name="firma" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" Margin="1"/>
                                                         <Label Grid.Row="4" Grid.Column="0" Margin="1">Straße</Label>
-                                                        <TextBox Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" Margin="1"/>
+                                                        <TextBox x:Name="straße" Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" Margin="1"/>
                                                         <Label Grid.Row="5" Grid.Column="0" Margin="1">Postleitzahl</Label>
-                                                        <TextBox Grid.Row="5" Grid.Column="1" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" Margin="1"/>
+                                                        <TextBox x:Name="postleitzahl" Grid.Row="5" Grid.Column="1" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" Margin="1"/>
                                                         <Label Grid.Row="6" Grid.Column="0" Margin="1">Ort</Label>
-                                                        <TextBox Grid.Row="6" Grid.Column="1" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" Margin="1"/>
+                                                        <TextBox x:Name="ort" Grid.Row="6" Grid.Column="1" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" Margin="1"/>
                                                         <Label Grid.Row="7" Grid.Column="0" Margin="1">Land</Label>
-                                                        <TextBox Grid.Row="7" Grid.Column="1" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" Margin="1"/>
+                                                        <TextBox x:Name="land" Grid.Row="7" Grid.Column="1" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" Margin="1"/>
                                                     </Grid>
                                                 </GroupBox>
                                                 <GroupBox Grid.Row="2" Header="Kontakt" Margin="1">
@@ -151,15 +189,15 @@
                                                             <ColumnDefinition Width="*"/>
                                                         </Grid.ColumnDefinitions>
                                                         <Label Grid.Row="0" Grid.Column="0" Margin="1">Telefon</Label>
-                                                        <TextBox Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" Margin="1"/>
+                                                        <TextBox x:Name="telefon" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" Margin="1"/>
                                                         <Label Grid.Row="1" Grid.Column="0" Margin="1">Telefax</Label>
-                                                        <TextBox Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" Margin="1"/>
+                                                        <TextBox x:Name="telefax" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" Margin="1"/>
                                                         <Label Grid.Row="2" Grid.Column="0" Margin="1">Mobiltelefon</Label>
-                                                        <TextBox Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" Margin="1"/>
+                                                        <TextBox x:Name="mobiltelefon" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" Margin="1"/>
                                                         <Label Grid.Row="3" Grid.Column="0" Margin="1">E-Mail</Label>
-                                                        <TextBox Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" Margin="1"/>
+                                                        <TextBox x:Name="e_mail" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" Margin="1"/>
                                                         <Label Grid.Row="4" Grid.Column="0" Margin="1">Webseite</Label>
-                                                        <TextBox Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" Margin="1"/>
+                                                        <TextBox x:Name="webseite" Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" Margin="1"/>
                                                     </Grid>
                                                 </GroupBox>
                                                 <GroupBox Grid.Row="3" Header="Sonstiges" Margin="1">
@@ -170,7 +208,7 @@
                                                             <ColumnDefinition Width="*"/>
                                                         </Grid.ColumnDefinitions>
                                                         <Label Grid.Column="0" Margin="1" Grid.ColumnSpan="2">Notizen</Label>
-                                                        <RichTextBox Grid.Column="2" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="1"/>
+                                                        <RichTextBox x:Name="notizen" Grid.Column="2" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="1"/>
                                                     </Grid>
                                                 </GroupBox>
 
@@ -185,7 +223,7 @@
                                                     <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="*"/>
                                                 </Grid.ColumnDefinitions>
-                                                <Button Grid.Column="0" Margin="1" MaxWidth="180" IsDefault="True" IsEnabled="False">Speichern</Button>
+                                                <Button Grid.Column="0" Margin="1" MaxWidth="180" IsDefault="True">Speichern</Button>
                                                 <Button Grid.Column="1" Margin="1" MaxWidth="180" IsCancel="True">Abbrechen</Button>
                                             </Grid>
                                         </GroupBox>
