@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Bachelorarbeit"
         mc:Ignorable="d"
-        Title="Bachelorarbeit" Width="800" Height="656" MinHeight="360" MinWidth="720">
+        Title="Bachelorarbeit" Width="800" Height="451" MinHeight="360" MinWidth="720">
 
     <Window.Resources>
         <Style x:Key="GridSplitterVerticalGripStyle" TargetType="{x:Type GridSplitter}">

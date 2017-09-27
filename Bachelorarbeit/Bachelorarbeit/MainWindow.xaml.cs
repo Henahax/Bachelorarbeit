@@ -13,10 +13,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-using System.Configuration;
-using System.Data;
-using System.Data.SqlClient;
-
 namespace Bachelorarbeit
 {
     /// <summary>
