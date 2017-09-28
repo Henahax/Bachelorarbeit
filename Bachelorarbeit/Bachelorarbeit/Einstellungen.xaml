@@ -1,0 +1,131 @@
+﻿<Window x:Class="Bachelorarbeit.Einstellungen"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Bachelorarbeit"
+        mc:Ignorable="d"
+        Title="Einstellungen" Height="485" Width="600">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <TabControl Grid.Row="0" TabStripPlacement="Left">
+            <TabItem Header="Firmendaten">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <GroupBox Header="Firmendaten Einstellungen" Margin="1">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Label Grid.Column="0" Grid.Row="0" Margin="1">Firmenname</Label>
+                            <TextBox Grid.Column="1" Grid.Row="0" Margin="1" VerticalAlignment="Center"></TextBox>
+                            <Label Grid.Column="0" Grid.Row="1" Margin="1">Inhaber</Label>
+                            <TextBox Grid.Column="1" Grid.Row="1" Margin="1" VerticalAlignment="Center"></TextBox>
+                            <Label Grid.Column="0" Grid.Row="2" Margin="1">Straße Nr.</Label>
+                            <TextBox Grid.Column="1" Grid.Row="2" Margin="1" VerticalAlignment="Center"></TextBox>
+                            <Label Grid.Column="0" Grid.Row="3" Margin="1">Postleitzahl</Label>
+                            <TextBox Grid.Column="1" Grid.Row="3" Margin="1" VerticalAlignment="Center"></TextBox>
+                            <Label Grid.Column="0" Grid.Row="4" Margin="1">Stadt</Label>
+                            <TextBox Grid.Column="1" Grid.Row="4" Margin="1" VerticalAlignment="Center"></TextBox>
+                            <Label Grid.Column="0" Grid.Row="5" Margin="1">Land</Label>
+                            <TextBox Grid.Column="1" Grid.Row="5" Margin="1" VerticalAlignment="Center"></TextBox>
+                            <Label Grid.Column="0" Grid.Row="6" Margin="1">Telefon</Label>
+                            <TextBox Grid.Column="1" Grid.Row="6" Margin="1" VerticalAlignment="Center"></TextBox>
+                            <Label Grid.Column="0" Grid.Row="7" Margin="1">Telefax</Label>
+                            <TextBox Grid.Column="1" Grid.Row="7" Margin="1" VerticalAlignment="Center"></TextBox>
+                            <Label Grid.Column="0" Grid.Row="8" Margin="1">E-Mail</Label>
+                            <TextBox Grid.Column="1" Grid.Row="8" Margin="1" VerticalAlignment="Center"></TextBox>
+                            <Label Grid.Column="0" Grid.Row="9" Margin="1">Webseite</Label>
+                            <TextBox Grid.Column="1" Grid.Row="9" Margin="1" VerticalAlignment="Center"></TextBox>
+                            <Label Grid.Column="0" Grid.Row="10" Margin="1">USt-IdNr.</Label>
+                            <TextBox Grid.Column="1" Grid.Row="10" Margin="1" VerticalAlignment="Center"></TextBox>
+                            <Label Grid.Column="0" Grid.Row="11" Margin="1">IBAN</Label>
+                            <TextBox Grid.Column="1" Grid.Row="11" Margin="1" VerticalAlignment="Center"></TextBox>
+                            <Label Grid.Column="0" Grid.Row="12" Margin="1">BIC</Label>
+                            <TextBox Grid.Column="1" Grid.Row="12" Margin="1" VerticalAlignment="Center"></TextBox>
+                        </Grid>
+                    </GroupBox>
+                </ScrollViewer>
+            </TabItem>
+            <TabItem Header="Steuer und Währung">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <GroupBox Header="Steuer und Währung Einstellungen" Margin="1">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto" MinWidth="40"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Label Grid.Column="0" Grid.Row="0" Margin="1">Wärungssymbol</Label>
+                            <TextBox Grid.Column="1" Grid.Row="0" Margin="1" VerticalAlignment="Center">€</TextBox>
+                            <Label Grid.Column="0" Grid.Row="1" Margin="1">Mehrwertsteuersatz</Label>
+                            <TextBox Grid.Column="1" Grid.Row="1" Margin="1" VerticalAlignment="Center">19</TextBox>
+                            <Label Grid.Column="2" Grid.Row="1" Margin="1">%</Label>
+                            <Label Grid.Column="0" Grid.Row="2" Margin="1">Standard Steuereinstellung für Dokumente</Label>
+                            <ComboBox Grid.Column="1" Grid.Row="2" Margin="1" VerticalAlignment="Center">
+                                <ComboBoxItem IsSelected="True">Brutto</ComboBoxItem>
+                                <ComboBoxItem>Netto</ComboBoxItem>
+                            </ComboBox>
+                        </Grid>
+                    </GroupBox>
+                </ScrollViewer>
+            </TabItem>
+            <TabItem Header="Dokumente">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <GroupBox Header="Dokumente Einstellungen" Margin="1">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Label Grid.Column="0" Grid.Row="0" Margin="1">Speicherort für Rechnungen</Label>
+                            <TextBox Grid.Column="1" Grid.Row="0" Margin="1" VerticalAlignment="Center"></TextBox>
+                            <Button Grid.Column="2" Grid.Row="0" Margin="1" VerticalAlignment="Center">Durchsuchen</Button>
+                            <Label Grid.Column="0" Grid.Row="1" Margin="1">Speicherort für Angebote</Label>
+                            <TextBox Grid.Column="1" Grid.Row="1" Margin="1" VerticalAlignment="Center"></TextBox>
+                            <Button Grid.Column="2" Grid.Row="1" Margin="1" VerticalAlignment="Center">Durchsuchen</Button>
+                        </Grid>
+                    </GroupBox>
+                </ScrollViewer>
+            </TabItem>
+        </TabControl>
+        <GroupBox Grid.Row="1" Header="Aktionen" Margin="1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" MaxWidth="160" Margin="1">Ok</Button>
+                <Button Grid.Column="1" MaxWidth="160" Margin="1">Abbrechen</Button>
+            </Grid>
+        </GroupBox>
+    </Grid>
+</Window>
