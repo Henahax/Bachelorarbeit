@@ -4,8 +4,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Bachelorarbeit"
+        
+        xmlns:wpfTool="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
+
         mc:Ignorable="d"
-        Title="Bachelorarbeit" Width="1232.5" Height="848.75" MinHeight="360" MinWidth="720">
+        Title="Bachelorarbeit" Width="1200" Height="800" MinHeight="360" MinWidth="720">
 
     <Window.Resources>
         <Style x:Key="GridSplitterVerticalGripStyle" TargetType="{x:Type GridSplitter}">
@@ -93,143 +96,146 @@
                     <GridSplitter Grid.Column="1" Width="8" Margin="1" Style="{StaticResource VerticalGridSplitter}"/>
                     <!--<GridSplitter Grid.Column="1" Width="7" ResizeDirection="Columns" HorizontalAlignment="Stretch" Background="LightGray" BorderBrush="White" BorderThickness="3" Margin="1" Style="{StaticResource VerticalGridSplitter}"/>-->
 
+
                     <Grid Grid.Column="2">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        <Grid Grid.Row="0">
-                            <Grid Grid.Column="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <GroupBox Grid.Column="0" Header="Kunde" Margin="1" Grid.RowSpan="2">
+                            <Grid>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="384*"/>
-                                    <RowDefinition Height="161*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <GroupBox Grid.Column="0" Header="Kunde" Margin="1" Grid.RowSpan="2">
+                                <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
                                     <Grid>
                                         <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
                                             <RowDefinition Height="*"/>
                                             <RowDefinition Height="Auto"/>
                                         </Grid.RowDefinitions>
-                                        <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <GroupBox Grid.Row="0" Header="Identifikation" Margin="1">
                                             <Grid>
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="Auto"/>
-                                                    <RowDefinition Height="Auto"/>
-                                                    <RowDefinition Height="Auto"/>
-                                                    <RowDefinition Height="*"/>
-                                                    <RowDefinition Height="Auto"/>
-                                                </Grid.RowDefinitions>
                                                 <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="100"/>
                                                     <ColumnDefinition Width="*"/>
                                                 </Grid.ColumnDefinitions>
-                                                <GroupBox Grid.Row="0" Header="Identifikation" Margin="1">
-                                                    <Grid>
-                                                        <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="100"/>
-                                                            <ColumnDefinition Width="*"/>
-                                                        </Grid.ColumnDefinitions>
-                                                        <Label Grid.Column="0" Margin="1">Kundennummer</Label>
-                                                        <TextBox x:Name="kundennummer" Grid.Column="1" Margin="1" VerticalAlignment="Center"/>
-                                                    </Grid>
-                                                </GroupBox>
-                                                <GroupBox Grid.Row="1" Header="Adresse" Margin="1">
-                                                    <Grid>
-                                                        <Grid.RowDefinitions>
-                                                            <RowDefinition Height="Auto"/>
-                                                            <RowDefinition Height="Auto"/>
-                                                            <RowDefinition Height="Auto"/>
-                                                            <RowDefinition Height="Auto"/>
-                                                            <RowDefinition Height="Auto"/>
-                                                            <RowDefinition Height="Auto"/>
-                                                            <RowDefinition Height="Auto"/>
-                                                            <RowDefinition Height="Auto"/>
-                                                        </Grid.RowDefinitions>
-                                                        <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="100"/>
-                                                            <ColumnDefinition Width="*"/>
-                                                        </Grid.ColumnDefinitions>
-                                                        <Label Grid.Row="0" Grid.Column="0" Margin="1">Anrede</Label>
-                                                        <ComboBox x:Name="anrede" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="1">
-                                                            <ComboBoxItem>Herr</ComboBoxItem>
-                                                            <ComboBoxItem>Frau</ComboBoxItem>
-                                                            <ComboBoxItem>Firma</ComboBoxItem>
-                                                        </ComboBox>
-                                                        <Label Grid.Row="1" Grid.Column="0" Margin="1">Vorname</Label>
-                                                        <TextBox x:Name="vorname" Grid.Row="1" Grid.Column="1" VerticalContentAlignment="Center" VerticalAlignment="Center"/>
-                                                        <Label Grid.Row="2" Grid.Column="0" Margin="1">Nachname</Label>
-                                                        <TextBox x:Name="nachname" Grid.Row="2" Grid.Column="1" VerticalContentAlignment="Center" VerticalAlignment="Center"/>
-                                                        <Label Grid.Row="3" Grid.Column="0" Margin="1">Firma</Label>
-                                                        <TextBox x:Name="firma" Grid.Row="3" Grid.Column="1" VerticalContentAlignment="Center" VerticalAlignment="Center"/>
-                                                        <Label Grid.Row="4" Grid.Column="0" Margin="1">Straße</Label>
-                                                        <TextBox x:Name="straße" Grid.Row="4" Grid.Column="1" VerticalContentAlignment="Center" VerticalAlignment="Center"/>
-                                                        <Label Grid.Row="5" Grid.Column="0" Margin="1">Postleitzahl</Label>
-                                                        <TextBox x:Name="postleitzahl" Grid.Row="5" Grid.Column="1" VerticalContentAlignment="Center" VerticalAlignment="Center"/>
-                                                        <Label Grid.Row="6" Grid.Column="0" Margin="1">Ort</Label>
-                                                        <TextBox x:Name="ort" Grid.Row="6" Grid.Column="1" VerticalContentAlignment="Center" VerticalAlignment="Center"/>
-                                                        <Label Grid.Row="7" Grid.Column="0" Margin="1">Land</Label>
-                                                        <TextBox x:Name="land" Grid.Row="7" Grid.Column="1" VerticalContentAlignment="Center" VerticalAlignment="Center"/>
-                                                    </Grid>
-                                                </GroupBox>
-                                                <GroupBox Grid.Row="2" Header="Kontakt" Margin="1">
-                                                    <Grid>
-                                                        <Grid.RowDefinitions>
-                                                            <RowDefinition Height="Auto"/>
-                                                            <RowDefinition Height="Auto"/>
-                                                            <RowDefinition Height="Auto"/>
-                                                            <RowDefinition Height="Auto"/>
-                                                            <RowDefinition Height="Auto"/>
-                                                        </Grid.RowDefinitions>
-                                                        <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="100"/>
-                                                            <ColumnDefinition Width="*"/>
-                                                        </Grid.ColumnDefinitions>
-                                                        <Label Grid.Row="0" Grid.Column="0" Margin="1">Telefon</Label>
-                                                        <TextBox x:Name="telefon" Grid.Row="0" Grid.Column="1" VerticalContentAlignment="Center" VerticalAlignment="Center"/>
-                                                        <Label Grid.Row="1" Grid.Column="0" Margin="1">Telefax</Label>
-                                                        <TextBox x:Name="telefax" Grid.Row="1" Grid.Column="1" VerticalContentAlignment="Center" VerticalAlignment="Center"/>
-                                                        <Label Grid.Row="2" Grid.Column="0" Margin="1">Mobiltelefon</Label>
-                                                        <TextBox x:Name="mobiltelefon" Grid.Row="2" Grid.Column="1" VerticalContentAlignment="Center" VerticalAlignment="Center"/>
-                                                        <Label Grid.Row="3" Grid.Column="0" Margin="1">E-Mail</Label>
-                                                        <TextBox x:Name="e_mail" Grid.Row="3" Grid.Column="1" VerticalContentAlignment="Center" VerticalAlignment="Center"/>
-                                                        <Label Grid.Row="4" Grid.Column="0" Margin="1">Webseite</Label>
-                                                        <TextBox x:Name="webseite" Grid.Row="4" Grid.Column="1" VerticalContentAlignment="Center" VerticalAlignment="Center"/>
-                                                    </Grid>
-                                                </GroupBox>
-                                                <GroupBox Grid.Row="3" Header="Sonstiges" Margin="1">
-                                                    <Grid>
-                                                        <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="22"/>
-                                                            <ColumnDefinition Width="78"/>
-                                                            <ColumnDefinition Width="*"/>
-                                                        </Grid.ColumnDefinitions>
-                                                        <Label Grid.Column="0" Margin="1" Grid.ColumnSpan="2">Notizen</Label>
-                                                        <RichTextBox x:Name="notizen" Grid.Column="2" VerticalContentAlignment="Center"/>
-                                                    </Grid>
-                                                </GroupBox>
-
-                                            </Grid>
-                                        </ScrollViewer>
-                                        <GroupBox Grid.Row="1" Margin="1" Header="Aktionen">
-                                            <Grid>
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="Auto"/>
-                                                </Grid.RowDefinitions>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Button Grid.Column="0" Margin="1" MaxWidth="180" IsDefault="True">Speichern</Button>
-                                                <Button Grid.Column="1" Margin="1" MaxWidth="180" IsCancel="True">Abbrechen</Button>
+                                                <Label Grid.Column="0" Margin="1">Kundennummer</Label>
+                                                <!--TextBox x:Name="kundennummer" Grid.Column="1" Margin="1" VerticalAlignment="Center"/-->
+                                                <wpfTool:WatermarkTextBox Grid.Column="1" Margin="1" VerticalAlignment="Center" Watermark="z.B. 1234"/>
                                             </Grid>
                                         </GroupBox>
+                                        <GroupBox Grid.Row="1" Header="Adresse" Margin="1">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="100"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Label Grid.Row="0" Grid.Column="0" Margin="1">Anrede</Label>
+                                                <ComboBox x:Name="anrede" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="1">
+                                                    <ComboBoxItem>Herr</ComboBoxItem>
+                                                    <ComboBoxItem>Frau</ComboBoxItem>
+                                                    <ComboBoxItem>Firma</ComboBoxItem>
+                                                </ComboBox>
+                                                
+                                                <Label Grid.Row="1" Grid.Column="0" Margin="1">Vorname</Label>
+                                                <TextBox x:Name="vorname" Grid.Row="1" Grid.Column="1" VerticalContentAlignment="Center" VerticalAlignment="Center"/>
+                                                <Label Grid.Row="2" Grid.Column="0" Margin="1">Nachname</Label>
+                                                <TextBox x:Name="nachname" Grid.Row="2" Grid.Column="1" VerticalContentAlignment="Center" VerticalAlignment="Center"/>
+                                                <Label Grid.Row="3" Grid.Column="0" Margin="1">Firma</Label>
+                                                <TextBox x:Name="firma" Grid.Row="3" Grid.Column="1" VerticalContentAlignment="Center" VerticalAlignment="Center"/>
+                                                <Label Grid.Row="4" Grid.Column="0" Margin="1">Straße</Label>
+                                                <TextBox x:Name="straße" Grid.Row="4" Grid.Column="1" VerticalContentAlignment="Center" VerticalAlignment="Center"/>
+                                                <Label Grid.Row="5" Grid.Column="0" Margin="1">Postleitzahl</Label>
+                                                <TextBox x:Name="postleitzahl" Grid.Row="5" Grid.Column="1" VerticalContentAlignment="Center" VerticalAlignment="Center"/>
+                                                <Label Grid.Row="6" Grid.Column="0" Margin="1">Ort</Label>
+                                                <TextBox x:Name="ort" Grid.Row="6" Grid.Column="1" VerticalContentAlignment="Center" VerticalAlignment="Center"/>
+                                                <Label Grid.Row="7" Grid.Column="0" Margin="1">Land</Label>
+                                                <TextBox x:Name="land" Grid.Row="7" Grid.Column="1" VerticalContentAlignment="Center" VerticalAlignment="Center"/>
+                                            </Grid>
+                                        </GroupBox>
+                                        <GroupBox Grid.Row="2" Header="Kontakt" Margin="1">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="100"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Label Grid.Row="0" Grid.Column="0" Margin="1">Telefon</Label>
+                                                <!--TextBox x:Name="telefon" Grid.Row="0" Grid.Column="1" VerticalContentAlignment="Center" VerticalAlignment="Center"/-->
+                                                <wpfTool:WatermarkTextBox Grid.Row="0" Grid.Column="1" VerticalContentAlignment="Center" VerticalAlignment="Center" Watermark="Test">
+                                                    <wpfTool:WatermarkTextBox.WatermarkTemplate>
+                                                        <DataTemplate>
+                                                            <ContentControl Foreground="Gainsboro">z.B. +49 1234 5678</ContentControl>
+                                                        </DataTemplate>
+                                                    </wpfTool:WatermarkTextBox.WatermarkTemplate>
+                                                </wpfTool:WatermarkTextBox>
+
+                                                <Label Grid.Row="1" Grid.Column="0" Margin="1">Telefax</Label>
+                                                <TextBox x:Name="telefax" Grid.Row="1" Grid.Column="1" VerticalContentAlignment="Center" VerticalAlignment="Center"/>
+                                                <Label Grid.Row="2" Grid.Column="0" Margin="1">Mobiltelefon</Label>
+                                                <TextBox x:Name="mobiltelefon" Grid.Row="2" Grid.Column="1" VerticalContentAlignment="Center" VerticalAlignment="Center"/>
+                                                <Label Grid.Row="3" Grid.Column="0" Margin="1">E-Mail</Label>
+                                                <TextBox x:Name="e_mail" Grid.Row="3" Grid.Column="1" VerticalContentAlignment="Center" VerticalAlignment="Center"/>
+                                                <Label Grid.Row="4" Grid.Column="0" Margin="1">Webseite</Label>
+                                                <TextBox x:Name="webseite" Grid.Row="4" Grid.Column="1" VerticalContentAlignment="Center" VerticalAlignment="Center"/>
+                                            </Grid>
+                                        </GroupBox>
+                                        <GroupBox Grid.Row="3" Header="Sonstiges" Margin="1">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="22"/>
+                                                    <ColumnDefinition Width="78"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Label Grid.Column="0" Margin="1" Grid.ColumnSpan="2">Notizen</Label>
+                                                <RichTextBox x:Name="notizen" Grid.Column="2" VerticalContentAlignment="Center"/>
+                                            </Grid>
+                                        </GroupBox>
+
+                                    </Grid>
+                                </ScrollViewer>
+                                <GroupBox Grid.Row="1" Margin="1" Header="Aktionen">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Button Grid.Column="0" Margin="1" MaxWidth="180" IsDefault="True">Speichern</Button>
+                                        <Button Grid.Column="1" Margin="1" MaxWidth="180" IsCancel="True">Abbrechen</Button>
                                     </Grid>
                                 </GroupBox>
                             </Grid>
-                        </Grid>
+                        </GroupBox>
                     </Grid>
                 </Grid>
             </TabItem>
@@ -276,200 +282,181 @@
                         </Grid>
                     </GroupBox>
 
-
                     <GridSplitter Grid.Column="1" Width="8" Margin="1" Style="{StaticResource VerticalGridSplitter}"/>
                     <!--<GridSplitter Grid.Column="1" Width="7" ResizeDirection="Columns" HorizontalAlignment="Stretch" Background="LightGray" BorderBrush="White" BorderThickness="3" Margin="1" Style="{StaticResource VerticalGridSplitter}"/>-->
 
                     <Grid Grid.Column="2">
+                        <GroupBox Grid.Column="0" Header="Rechnung" Margin="1" Grid.RowSpan="2">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        <GroupBox Grid.Row="0" Header="Referenz" Margin="1">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="120"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+                                                <Label Grid.Column="0" Grid.Row="0" Margin="1">Rechnungsnummer</Label>
+                                                <Label Grid.Column="1" Grid.Row="0" Margin="1">12345</Label>
+                                                <Label Grid.Column="0" Grid.Row="1" Margin="1">Datum</Label>
+                                                <DatePicker Grid.Column="1" Grid.Row="1" Margin="1" VerticalAlignment="Center"/>
+                                            </Grid>
+                                        </GroupBox>
+                                        <GroupBox Grid.Row="1" Header="Kunde" Margin="1">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="120"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+                                                <Label Grid.Column="0" Grid.Row="0" Margin="1">Kundennummer</Label>
+                                                <TextBox Grid.Column="1" Grid.Row="0" Margin="1" VerticalContentAlignment="Center" VerticalAlignment="Center"/>
+                                                <Button Grid.Column="2" Grid.Row="0" Margin="1" VerticalAlignment="Center">Durchsuchen</Button>
+                                                <Label Grid.Column="0" Grid.Row="1" Grid.RowSpan="4" Margin="1">Anschrift</Label>
+                                                <Label Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Margin="1">Herr Max Mustermann</Label>
+                                                <Label Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" Margin="1">Musterstraße 1</Label>
+                                                <Label Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" Margin="1">12345 Musterstadt</Label>
+                                                <Label Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="2" Margin="1">Musterland</Label>
+                                            </Grid>
+                                        </GroupBox>
+                                        <GroupBox Grid.Row="2" Header="Mehrwertsteuer" Margin="1">
+                                            <ComboBox Margin="1" VerticalAlignment="Center">
+                                                <ComboBoxItem IsSelected="True">19%</ComboBoxItem>
+                                                <ComboBoxItem>Steuerfrei</ComboBoxItem>
+                                            </ComboBox>
+                                        </GroupBox>
+                                        <GroupBox Grid.Row="3" Header="Positionen" Margin="1">
+                                            <DataGrid CanUserAddRows="True" CanUserDeleteRows="True" CanUserResizeColumns="True" Margin="1">
+                                                <DataGrid.Columns>
+                                                    <DataGridCheckBoxColumn Header="Überschrift"/>
+                                                    <DataGridTextColumn Header="Menge"/>
+                                                    <DataGridTextColumn Header="Einheit"/>
+                                                    <DataGridTextColumn Header="Name" Width="*"/>
+                                                    <DataGridTextColumn Header="Beschreibung" Width="*"/>
+                                                    <DataGridTextColumn Header="Einzelpreis (brutto)"/>
+                                                    <DataGridTextColumn Header="Preis (brutto)"/>
+                                                </DataGrid.Columns>
+                                            </DataGrid>
+                                        </GroupBox>
+                                        <GroupBox Grid.Row="4" Header="Summe" Margin="1">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="120"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+                                                <Label Grid.Column="0" Grid.Row="0">Summe netto</Label>
+                                                <Label Grid.Column="1" Grid.Row="0" HorizontalContentAlignment="Right">81,00 €</Label>
+                                                <Label Grid.Column="0" Grid.Row="1">Mehrwertsteuer</Label>
+                                                <Label Grid.Column="1" Grid.Row="1" HorizontalContentAlignment="Right">19,00 €</Label>
+                                                <Label Grid.Column="0" Grid.Row="2">Gesamtsumme</Label>
+                                                <Label Grid.Column="1" Grid.Row="2" HorizontalContentAlignment="Right">100,00 €</Label>
+                                            </Grid>
+                                        </GroupBox>
+                                        <GroupBox Grid.Row="5" Header="Zahlungsbedingungen" Margin="1">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="120"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+                                                <Label Grid.Column="0" Grid.Row="0">Zahlbar innerhalb</Label>
+                                                <TextBox Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" HorizontalContentAlignment="Right">30</TextBox>
+                                                <Label Grid.Column="2" Grid.Row="0">Tagen</Label>
+                                                <Label Grid.Column="0" Grid.Row="1">bis zum</Label>
+                                                <DatePicker Grid.Column="1" Grid.Row="1" Margin="1" VerticalAlignment="Center"/>
+                                                <Label Grid.Column="0" Grid.Row="2">Skonto</Label>
+                                                <TextBox Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" HorizontalContentAlignment="Right">0</TextBox>
+                                                <Label Grid.Column="2" Grid.Row="2">%</Label>
+                                                <Label Grid.Column="0" Grid.Row="3">Skonto innerhalb</Label>
+                                                <TextBox Grid.Column="1" Grid.Row="3" VerticalAlignment="Center" HorizontalContentAlignment="Right">7</TextBox>
+                                                <Label Grid.Column="2" Grid.Row="3">Tagen</Label>
+                                                <Label Grid.Column="0" Grid.Row="4">bis zum</Label>
+                                                <DatePicker Grid.Column="1" Grid.Row="4" Margin="1" VerticalAlignment="Center"/>
 
-                        <Grid Grid.Column="2">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <GroupBox Grid.Column="0" Header="Rechnung" Margin="1" Grid.RowSpan="2">
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="*"/>
-                                        <RowDefinition Height="Auto"/>
-                                    </Grid.RowDefinitions>
-                                    <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
-                                        <Grid>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto"/>
-                                                <RowDefinition Height="Auto"/>
-                                                <RowDefinition Height="Auto"/>
-                                                <RowDefinition Height="*"/>
-                                                <RowDefinition Height="Auto"/>
-                                                <RowDefinition Height="Auto"/>
-                                                <RowDefinition Height="Auto"/>
-                                                <RowDefinition Height="Auto"/>
-
-                                            </Grid.RowDefinitions>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                            </Grid.ColumnDefinitions>
-
-                                            <GroupBox Grid.Row="0" Header="Referenz" Margin="1">
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="120"/>
-                                                        <ColumnDefinition Width="Auto"/>
-                                                        <ColumnDefinition Width="*"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <Grid.RowDefinitions>
-                                                        <RowDefinition Height="Auto"/>
-                                                        <RowDefinition Height="Auto"/>
-                                                    </Grid.RowDefinitions>
-                                                    <Label Grid.Column="0" Grid.Row="0" Margin="1">Rechnungsnummer</Label>
-                                                    <Label Grid.Column="1" Grid.Row="0" Margin="1">12345</Label>
-                                                    <Label Grid.Column="0" Grid.Row="1" Margin="1">Datum</Label>
-                                                    <DatePicker Grid.Column="1" Grid.Row="1" Margin="1" VerticalAlignment="Center"/>
-                                                </Grid>
-                                            </GroupBox>
-
-                                            <GroupBox Grid.Row="1" Header="Kunde" Margin="1">
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="120"/>
-                                                        <ColumnDefinition Width="*"/>
-                                                        <ColumnDefinition Width="*"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <Grid.RowDefinitions>
-                                                        <RowDefinition Height="Auto"/>
-                                                        <RowDefinition Height="Auto"/>
-                                                        <RowDefinition Height="Auto"/>
-                                                        <RowDefinition Height="Auto"/>
-                                                        <RowDefinition Height="Auto"/>
-                                                    </Grid.RowDefinitions>
-                                                    <Label Grid.Column="0" Grid.Row="0" Margin="1">Kundennummer</Label>
-                                                    <TextBox Grid.Column="1" Grid.Row="0" Margin="1" VerticalContentAlignment="Center" VerticalAlignment="Center"/>
-                                                    <Button Grid.Column="2" Grid.Row="0" Margin="1" VerticalAlignment="Center">Durchsuchen</Button>
-                                                    <Label Grid.Column="0" Grid.Row="1" Grid.RowSpan="4" Margin="1">Anschrift</Label>
-                                                    <Label Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Margin="1">Herr Max Mustermann</Label>
-                                                    <Label Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" Margin="1">Musterstraße 1</Label>
-                                                    <Label Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" Margin="1">12345 Musterstadt</Label>
-                                                    <Label Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="2" Margin="1">Musterland</Label>
-                                                </Grid>
-                                            </GroupBox>
-                                            <GroupBox Grid.Row="2" Header="Mehrwertsteuer" Margin="1">
-                                                <ComboBox Margin="1" VerticalAlignment="Center">
-                                                    <ComboBoxItem IsSelected="True">19%</ComboBoxItem>
-                                                    <ComboBoxItem>Steuerfrei</ComboBoxItem>
-                                                </ComboBox>
-                                            </GroupBox>
-                                            <GroupBox Grid.Row="3" Header="Positionen" Margin="1">
-                                                <DataGrid CanUserAddRows="True" CanUserDeleteRows="True" CanUserResizeColumns="True" Margin="1">
-                                                    <DataGrid.Columns>
-                                                        <DataGridCheckBoxColumn Header="Überschrift"/>
-                                                        <DataGridTextColumn Header="Menge"/>
-                                                        <DataGridTextColumn Header="Einheit"/>
-                                                        <DataGridTextColumn Header="Name" Width="*"/>
-                                                        <DataGridTextColumn Header="Beschreibung" Width="*"/>
-                                                        <DataGridTextColumn Header="Einzelpreis (brutto)"/>
-                                                        <DataGridTextColumn Header="Preis (brutto)"/>
-                                                    </DataGrid.Columns>
-                                                </DataGrid>
-                                            </GroupBox>
-                                            <GroupBox Grid.Row="4" Header="Summe" Margin="1">
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="120"/>
-                                                        <ColumnDefinition Width="Auto"/>
-                                                        <ColumnDefinition Width="*"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <Grid.RowDefinitions>
-                                                        <RowDefinition Height="Auto"/>
-                                                        <RowDefinition Height="Auto"/>
-                                                        <RowDefinition Height="Auto"/>
-                                                    </Grid.RowDefinitions>
-                                                    <Label Grid.Column="0" Grid.Row="0">Summe netto</Label>
-                                                    <Label Grid.Column="1" Grid.Row="0" HorizontalContentAlignment="Right">81,00 €</Label>
-                                                    <Label Grid.Column="0" Grid.Row="1">Mehrwertsteuer</Label>
-                                                    <Label Grid.Column="1" Grid.Row="1" HorizontalContentAlignment="Right">19,00 €</Label>
-                                                    <Label Grid.Column="0" Grid.Row="2">Gesamtsumme</Label>
-                                                    <Label Grid.Column="1" Grid.Row="2" HorizontalContentAlignment="Right">100,00 €</Label>
-                                                </Grid>
-                                            </GroupBox>
-                                            <GroupBox Grid.Row="5" Header="Zahlungsbedingungen" Margin="1">
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="120"/>
-                                                        <ColumnDefinition Width="Auto"/>
-                                                        <ColumnDefinition Width="*"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <Grid.RowDefinitions>
-                                                        <RowDefinition Height="Auto"/>
-                                                        <RowDefinition Height="Auto"/>
-                                                        <RowDefinition Height="Auto"/>
-                                                        <RowDefinition Height="Auto"/>
-                                                        <RowDefinition Height="Auto"/>
-                                                    </Grid.RowDefinitions>
-                                                    <Label Grid.Column="0" Grid.Row="0">Zahlbar innerhalb</Label>
-                                                    <TextBox Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" HorizontalContentAlignment="Right">30</TextBox>
-                                                    <Label Grid.Column="2" Grid.Row="0">Tagen</Label>
-                                                    <Label Grid.Column="0" Grid.Row="1">bis zum</Label>
-                                                    <DatePicker Grid.Column="1" Grid.Row="1" Margin="1" VerticalAlignment="Center"/>
-                                                    <Label Grid.Column="0" Grid.Row="2">Skonto</Label>
-                                                    <TextBox Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" HorizontalContentAlignment="Right">0</TextBox>
-                                                    <Label Grid.Column="2" Grid.Row="2">%</Label>
-                                                    <Label Grid.Column="0" Grid.Row="3">Skonto innerhalb</Label>
-                                                    <TextBox Grid.Column="1" Grid.Row="3" VerticalAlignment="Center" HorizontalContentAlignment="Right">7</TextBox>
-                                                    <Label Grid.Column="2" Grid.Row="3">Tagen</Label>
-                                                    <Label Grid.Column="0" Grid.Row="4">bis zum</Label>
-                                                    <DatePicker Grid.Column="1" Grid.Row="4" Margin="1" VerticalAlignment="Center"/>
-
-                                                </Grid>
-                                            </GroupBox>
-                                            <GroupBox Grid.Row="6" Header="Sonstiges" Margin="1">
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="120"/>
-                                                        <ColumnDefinition Width="*"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <Label Grid.Column="0">Bemerkung</Label>
-                                                    <RichTextBox Grid.Column="1" MinHeight="42" Margin="1"/>
-                                                </Grid>
-                                            </GroupBox>
-                                            <GroupBox Grid.Row="7" Header="Status" Margin="1">
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="120"/>
-                                                        <ColumnDefinition Width="*"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <Label Grid.Column="0" Margin="1">Wurde bezahlt</Label>
-                                                    <CheckBox Grid.Column="1" Margin="1" HorizontalAlignment="Left" VerticalContentAlignment="Center"/>
-                                                </Grid>
-                                            </GroupBox>
-                                        </Grid>
-                                    </ScrollViewer>
-                                    <GroupBox Grid.Row="1" Margin="1" Header="Aktionen">
-                                        <Grid>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto"/>
-                                            </Grid.RowDefinitions>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="*"/>
-                                            </Grid.ColumnDefinitions>
-                                            <Button Grid.Column="0" Margin="1" MaxWidth="180" IsDefault="True">Speichern</Button>
-                                            <Button Grid.Column="1" Margin="1" MaxWidth="180">Als PDF Speichern</Button>
-                                            <Button Grid.Column="2" Margin="1" MaxWidth="180">Drucken</Button>
-                                            <Button Grid.Column="3" Margin="1" MaxWidth="180" IsCancel="True">Abbrechen</Button>
-                                        </Grid>
-                                    </GroupBox>
-                                </Grid>
-                            </GroupBox>
-                        </Grid>
+                                            </Grid>
+                                        </GroupBox>
+                                        <GroupBox Grid.Row="6" Header="Sonstiges" Margin="1">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="120"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Label Grid.Column="0">Bemerkung</Label>
+                                                <RichTextBox Grid.Column="1" MinHeight="42" Margin="1"/>
+                                            </Grid>
+                                        </GroupBox>
+                                        <GroupBox Grid.Row="7" Header="Status" Margin="1">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="120"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Label Grid.Column="0" Margin="1">Wurde bezahlt</Label>
+                                                <CheckBox Grid.Column="1" Margin="1" HorizontalAlignment="Left" VerticalContentAlignment="Center"/>
+                                            </Grid>
+                                        </GroupBox>
+                                    </Grid>
+                                </ScrollViewer>
+                                <GroupBox Grid.Row="1" Margin="1" Header="Aktionen">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Button Grid.Column="0" Margin="1" MaxWidth="180" IsDefault="True">Speichern</Button>
+                                        <Button Grid.Column="1" Margin="1" MaxWidth="180">Als PDF Speichern</Button>
+                                        <Button Grid.Column="2" Margin="1" MaxWidth="180">Drucken</Button>
+                                        <Button Grid.Column="3" Margin="1" MaxWidth="180" IsCancel="True">Abbrechen</Button>
+                                    </Grid>
+                                </GroupBox>
+                            </Grid>
+                        </GroupBox>
                     </Grid>
                 </Grid>
-
             </TabItem>
             <TabItem Header="Angebote" Height="80">
             </TabItem>

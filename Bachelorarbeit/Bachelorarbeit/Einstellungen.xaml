@@ -5,14 +5,56 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Bachelorarbeit"
         mc:Ignorable="d"
-        Title="Einstellungen" Height="485" Width="600">
+        Title="Einstellungen" Height="480" Width="640" MinWidth="640" MinHeight="480">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <TabControl Grid.Row="0" TabStripPlacement="Left">
-            <TabItem Header="Firmendaten">
+            <TabItem Header="Allgemeines" Height="40">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <GroupBox Header="Allgemeine Einstellungen" Margin="1">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto" MinWidth="40"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Label Grid.Column="0" Grid.Row="0" Margin="1">Wärungssymbol</Label>
+                            <TextBox Grid.Column="1" Grid.Row="0" Margin="1" VerticalAlignment="Center" HorizontalContentAlignment="Right">€</TextBox>
+                            <Label Grid.Column="0" Grid.Row="1" Margin="1">Mehrwertsteuersatz</Label>
+                            <TextBox Grid.Column="1" Grid.Row="1" Margin="1" VerticalAlignment="Center" HorizontalContentAlignment="Right">19</TextBox>
+                            <Label Grid.Column="2" Grid.Row="1" Margin="1">%</Label>
+                            <Label Grid.Column="0" Grid.Row="2" Margin="1">Standardsteuereinstellung für Dokumente</Label>
+                            <ComboBox Grid.Column="1" Grid.Row="2" Margin="1" VerticalAlignment="Center">
+                                <ComboBoxItem IsSelected="True">Brutto</ComboBoxItem>
+                                <ComboBoxItem>Netto</ComboBoxItem>
+                            </ComboBox>
+                            <Label Grid.Column="0" Grid.Row="3" Margin="1">Standardland für Kunden</Label>
+                            <TextBox Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="3" Margin="1" VerticalAlignment="Center">Deutschland</TextBox>
+
+                            <Label Grid.Column="0" Grid.Row="4" Margin="1">Speicherort für PDF Rechnungen</Label>
+                            <TextBox Grid.Column="1" Grid.Row="4" Margin="1" VerticalAlignment="Center" Grid.ColumnSpan="2"></TextBox>
+                            <Button Grid.Column="3" Grid.Row="4" Margin="1" VerticalAlignment="Center">Durchsuchen</Button>
+                            <Label Grid.Column="0" Grid.Row="5" Margin="1">Speicherort für PDF Angebote</Label>
+                            <TextBox Grid.Column="1" Grid.Row="5" Margin="1" VerticalAlignment="Center" Grid.ColumnSpan="2"></TextBox>
+                            <Button Grid.Column="3" Grid.Row="5" Margin="1" VerticalAlignment="Center">Durchsuchen</Button>
+
+                        </Grid>
+                    </GroupBox>
+                </ScrollViewer>
+            </TabItem>
+            <TabItem Header="Firmendaten" Height="40">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <GroupBox Header="Firmendaten Einstellungen" Margin="1">
                         <Grid>
@@ -61,57 +103,6 @@
                             <TextBox Grid.Column="1" Grid.Row="11" Margin="1" VerticalAlignment="Center"></TextBox>
                             <Label Grid.Column="0" Grid.Row="12" Margin="1">BIC</Label>
                             <TextBox Grid.Column="1" Grid.Row="12" Margin="1" VerticalAlignment="Center"></TextBox>
-                        </Grid>
-                    </GroupBox>
-                </ScrollViewer>
-            </TabItem>
-            <TabItem Header="Steuer und Währung">
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <GroupBox Header="Steuer und Währung Einstellungen" Margin="1">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto" MinWidth="40"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            <Label Grid.Column="0" Grid.Row="0" Margin="1">Wärungssymbol</Label>
-                            <TextBox Grid.Column="1" Grid.Row="0" Margin="1" VerticalAlignment="Center">€</TextBox>
-                            <Label Grid.Column="0" Grid.Row="1" Margin="1">Mehrwertsteuersatz</Label>
-                            <TextBox Grid.Column="1" Grid.Row="1" Margin="1" VerticalAlignment="Center">19</TextBox>
-                            <Label Grid.Column="2" Grid.Row="1" Margin="1">%</Label>
-                            <Label Grid.Column="0" Grid.Row="2" Margin="1">Standard Steuereinstellung für Dokumente</Label>
-                            <ComboBox Grid.Column="1" Grid.Row="2" Margin="1" VerticalAlignment="Center">
-                                <ComboBoxItem IsSelected="True">Brutto</ComboBoxItem>
-                                <ComboBoxItem>Netto</ComboBoxItem>
-                            </ComboBox>
-                        </Grid>
-                    </GroupBox>
-                </ScrollViewer>
-            </TabItem>
-            <TabItem Header="Dokumente">
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <GroupBox Header="Dokumente Einstellungen" Margin="1">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            <Label Grid.Column="0" Grid.Row="0" Margin="1">Speicherort für Rechnungen</Label>
-                            <TextBox Grid.Column="1" Grid.Row="0" Margin="1" VerticalAlignment="Center"></TextBox>
-                            <Button Grid.Column="2" Grid.Row="0" Margin="1" VerticalAlignment="Center">Durchsuchen</Button>
-                            <Label Grid.Column="0" Grid.Row="1" Margin="1">Speicherort für Angebote</Label>
-                            <TextBox Grid.Column="1" Grid.Row="1" Margin="1" VerticalAlignment="Center"></TextBox>
-                            <Button Grid.Column="2" Grid.Row="1" Margin="1" VerticalAlignment="Center">Durchsuchen</Button>
                         </Grid>
                     </GroupBox>
                 </ScrollViewer>
