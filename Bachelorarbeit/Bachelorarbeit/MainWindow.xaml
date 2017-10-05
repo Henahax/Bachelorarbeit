@@ -42,9 +42,12 @@
     </Window.Resources>
 
     <DockPanel>
-        <Menu DockPanel.Dock="Top">
+        <Menu IsMainMenu="True" DockPanel.Dock="Top">
             <MenuItem Header="Datei"></MenuItem>
-            <MenuItem Header="Bearbeiten"></MenuItem>
+            <MenuItem Header="Bearbeiten">
+                <MenuItem Header="Einstellungen" Click="einstellungenOeffnen">
+                </MenuItem>
+            </MenuItem>
             <MenuItem Header="Ansicht"></MenuItem>
             <MenuItem Header="Hilfe"></MenuItem>
         </Menu>
@@ -131,8 +134,7 @@
                                                     <ColumnDefinition Width="*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Label Grid.Column="0" Margin="1">Kundennummer</Label>
-                                                <!--TextBox x:Name="kundennummer" Grid.Column="1" Margin="1" VerticalAlignment="Center"/-->
-                                                <wpfTool:WatermarkTextBox Grid.Column="1" Margin="1" VerticalAlignment="Center" Watermark="z.B. 1234"/>
+                                                <TextBox x:Name="kundennummer" Grid.Column="1" Margin="1" VerticalAlignment="Center"/>
                                             </Grid>
                                         </GroupBox>
                                         <GroupBox Grid.Row="1" Header="Adresse" Margin="1">
@@ -188,15 +190,7 @@
                                                     <ColumnDefinition Width="*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Label Grid.Row="0" Grid.Column="0" Margin="1">Telefon</Label>
-                                                <!--TextBox x:Name="telefon" Grid.Row="0" Grid.Column="1" VerticalContentAlignment="Center" VerticalAlignment="Center"/-->
-                                                <wpfTool:WatermarkTextBox Grid.Row="0" Grid.Column="1" VerticalContentAlignment="Center" VerticalAlignment="Center" Watermark="Test">
-                                                    <wpfTool:WatermarkTextBox.WatermarkTemplate>
-                                                        <DataTemplate>
-                                                            <ContentControl Foreground="Gainsboro">z.B. +49 1234 5678</ContentControl>
-                                                        </DataTemplate>
-                                                    </wpfTool:WatermarkTextBox.WatermarkTemplate>
-                                                </wpfTool:WatermarkTextBox>
-
+                                                <TextBox x:Name="telefon" Grid.Row="0" Grid.Column="1" VerticalContentAlignment="Center" VerticalAlignment="Center"/>
                                                 <Label Grid.Row="1" Grid.Column="0" Margin="1">Telefax</Label>
                                                 <TextBox x:Name="telefax" Grid.Row="1" Grid.Column="1" VerticalContentAlignment="Center" VerticalAlignment="Center"/>
                                                 <Label Grid.Row="2" Grid.Column="0" Margin="1">Mobiltelefon</Label>

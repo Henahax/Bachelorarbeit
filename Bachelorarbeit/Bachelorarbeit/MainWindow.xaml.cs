@@ -24,5 +24,11 @@ namespace Bachelorarbeit
         {
             InitializeComponent();
         }
+
+        private void einstellungenOeffnen(object sender, RoutedEventArgs e)
+        {
+            Einstellungen einstellungen = new Einstellungen();
+            einstellungen.ShowDialog();
+        }
     }
 }
