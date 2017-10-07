@@ -45,7 +45,7 @@
         <Menu IsMainMenu="True" DockPanel.Dock="Top">
             <MenuItem Header="Datei"></MenuItem>
             <MenuItem Header="Bearbeiten">
-                <MenuItem Header="Einstellungen" Click="einstellungenOeffnen">
+                <MenuItem Header="Einstellungen" Click="EinstellungenOeffnen">
                 </MenuItem>
             </MenuItem>
             <MenuItem Header="Ansicht"></MenuItem>
@@ -70,7 +70,7 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <GroupBox Grid.Row="0" Header="🔍 Suche" Margin="1">
-                                <TextBox Margin="1"></TextBox>
+                                <TextBox x:Name="kundenSuche" Margin="1" TextChanged="SucheEingeben"></TextBox>
                             </GroupBox>
                             <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
                                 <GroupBox Margin="1" Header="Kundenliste">
