@@ -14,6 +14,11 @@ namespace Bachelorarbeit
             if (!File.Exists("./datenbank.sqlite3"))
             {
                 SQLiteConnection.CreateFile("datenbank.sqlite3");
+                string query = "CREATE TABLE [Kunden] (  [Id] INTEGER NOT NULL, [Kundennummer] bigint NOT NULL, [Anrede] text NOT NULL, [Vorname] text NULL, [Nachname] text NULL, [Firma] text NULL, [Straße] text NULL, [Postleitzahl] text NULL, [Ort] text NULL, [Land] text NULL, [Telefon] text NULL, [Telefax] text NULL, [Mobiltelefon] text NULL, [E-Mail] text NULL, [Webseite] text NULL, [Notizen] text NULL, CONSTRAINT [sqlite_master_PK_Kunden] PRIMARY KEY ([Id]));";
+                SQLiteCommand sqliteCommand = new SQLiteCommand(query, this.sqliteConnection);
+                this.VerbindungOeffnen();
+                sqliteCommand.ExecuteNonQuery();
+                this.VerbindungSchliessen();
             }
         }
 
