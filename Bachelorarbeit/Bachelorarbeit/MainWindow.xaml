@@ -8,7 +8,7 @@
         xmlns:wpfTool="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
 
         mc:Ignorable="d"
-        Title="Bachelorarbeit" Width="1200" Height="800" MinHeight="360" MinWidth="720">
+        Title="Bachelorarbeit" Width="960" Height="800" MinHeight="360" MinWidth="960">
 
     <Window.Resources>
         <Style x:Key="GridSplitterVerticalGripStyle" TargetType="{x:Type GridSplitter}">
@@ -51,13 +51,19 @@
             <MenuItem Header="Ansicht"></MenuItem>
             <MenuItem Header="Hilfe"></MenuItem>
         </Menu>
-        <TabControl DockPanel.Dock="Top" TabStripPlacement="Left" Background="WhiteSmoke">
-            <TabItem Header="Kunden" Height="80">
-                <Grid x:Name="kundenGrid1">
+        <Grid Name="masterSpalte" Grid.IsSharedSizeScope="True">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" MinWidth="240" Name="masterSpalteLinks"/>
+                <ColumnDefinition Width="Auto" Name="masterSpalteMitte"/>
+                <ColumnDefinition Width="*" MinWidth="420" Name="masterSpalteRechts"/>
+            </Grid.ColumnDefinitions>
+            <TabControl DockPanel.Dock="Top" TabStripPlacement="Left" Background="WhiteSmoke" Grid.ColumnSpan="3">
+                <TabItem Header="Kunden" Height="80">
+                <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" MinWidth="240"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*" MinWidth="480"/>
+                        <ColumnDefinition Width="{Binding Path=Width, Mode=TwoWay, ElementName=masterSpalteLinks}" MinWidth="240"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="masterSpalteMitte"/>
+                            <ColumnDefinition Width="{Binding Path=Width, Mode=TwoWay, ElementName=masterSpalteRechts}" MinWidth="420"/>
                     </Grid.ColumnDefinitions>
                     <GroupBox x:Name="groupBoxKunden" Grid.Column="0" Header="Kunden" Margin="1">
                         <Grid>
@@ -236,11 +242,11 @@
             <TabItem Header="Rechnungen" Height="80">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" MinWidth="240"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*" MinWidth="480"/>
-                    </Grid.ColumnDefinitions>
-                    <GroupBox Grid.Column="0" Header="Rechnungen" Margin="1">
+                            <ColumnDefinition Width="{Binding Path=Width, Mode=TwoWay, ElementName=masterSpalteLinks}" MinWidth="240"/>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="masterSpalteMitte"/>
+                            <ColumnDefinition Width="{Binding Path=Width, Mode=TwoWay, ElementName=masterSpalteRechts}" MinWidth="420"/>
+                        </Grid.ColumnDefinitions>
+                    <GroupBox x:Name="groupBoxRechnungen" Grid.Column="0" Header="Rechnungen" Margin="1">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
@@ -280,7 +286,7 @@
                     <!--<GridSplitter Grid.Column="1" Width="7" ResizeDirection="Columns" HorizontalAlignment="Stretch" Background="LightGray" BorderBrush="White" BorderThickness="3" Margin="1" Style="{StaticResource VerticalGridSplitter}"/>-->
 
                     <Grid Grid.Column="2">
-                        <GroupBox Grid.Column="0" Header="Rechnung" Margin="1" Grid.RowSpan="2" IsEnabled="False">
+                        <GroupBox x:Name="groupBoxRechnung" Grid.Column="0" Header="Rechnung" Margin="1" Grid.RowSpan="2" IsEnabled="False">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*"/>
@@ -334,7 +340,7 @@
                                                 <Button Grid.Column="2" Grid.Row="0" Margin="1" VerticalAlignment="Center" Content="Durchsuchen"/>
                                                 <TextBox Grid.Column="1" Grid.Row="0" Margin="1" VerticalAlignment="Center"/>
                                                 <Label Grid.Column="3" Grid.Row="0" Margin="1" VerticalAlignment="Center">oder</Label>
-                                                <Button Grid.Column="4" Grid.Row="0" Margin="1" VerticalAlignment="Center" Content="Neuen Kunden anlegen"/>
+                                                <Button Grid.Column="4" Grid.Row="0" Margin="1" VerticalAlignment="Center" Content="Neuer Kunde"/>
                                                 <Label Grid.Column="0" Grid.Row="1" Grid.RowSpan="4" Margin="1">Anschrift</Label>
                                                 <Label Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="4" Margin="1">Herr Max Mustermann</Label>
                                                 <Label Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="4" Margin="1">Musterstraße 1</Label>
@@ -448,5 +454,6 @@
             <TabItem Header="Angebote" Height="80">
             </TabItem>
         </TabControl>
+        </Grid>
     </DockPanel>
 </Window>

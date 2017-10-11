@@ -145,11 +145,11 @@ namespace Bachelorarbeit
         {
             int kundennummer = 0;
             Int32.TryParse(kundeKundennummer.Content.ToString(), out kundennummer);
-            //Exception behandeln falls false
+            //TODO: Exception behandeln falls false
 
             string anrede = kundeAnrede.Text;
             string vorname = kundeVorname.Text;
-            string nachname=  kundeNachname.Text;
+            string nachname =  kundeNachname.Text;
             string firma = kundeFirma.Text;
             string straße = kundeStraße.Text;
             string postleitzahl = kundePostleitzahl.Text;
@@ -161,6 +161,17 @@ namespace Bachelorarbeit
             string email = kundeEmail.Text;
             string webseite = kundeWebseite.Text;
             string notizen = new TextRange(kundeNotizen.Document.ContentStart, kundeNotizen.Document.ContentEnd).Text;
+
+            if (anrede == "")
+            {
+                MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Anrede muss ausgefüllt sein!");
+                return;
+            }
+            if (nachname == "" && firma == "")
+            {
+                MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Nachname oder Firma muss ausgefüllt sein!");
+                return;
+            }
 
             //Prüfen ob Kundennummer existiert
             Datenbank datenbank = new Datenbank();
@@ -182,14 +193,7 @@ namespace Bachelorarbeit
 
             datenbank.VerbindungSchliessen();
 
-            Console.WriteLine("123 : {0}", count);
-
             //TODO: Anrede und Notizen Testen
-
-
-            //TODO: Keinen leeren Kunden anlegen/ändern
-
-            //TODO: (Anrede zurückändern in DB und stattdessen) Überprüfungen und Hinweisdialoge
 
             if(count == 0)
             {
