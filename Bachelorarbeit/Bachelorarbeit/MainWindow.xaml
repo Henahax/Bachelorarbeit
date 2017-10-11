@@ -95,7 +95,7 @@
                                     </Grid.ColumnDefinitions>
                                     <Button Grid.Column="0" Content="Kunden&#xa;anlegen" Margin="1" Click="KundenlisteAnlegen"/>
                                     <Button x:Name="kundenlisteBearbeiten" Grid.Column="1" Content="Kunden&#xa;bearbeiten" Margin="1" IsEnabled="False" Click="KundenlisteBearbeiten"/>
-                                    <Button x:Name="kundenlisteLoeschen" Grid.Column="2" Content="Kunden&#xa;löschen" Margin="1" IsEnabled="False"/>
+                                    <Button x:Name="kundenlisteLoeschen" Grid.Column="2" Content="Kunden&#xa;löschen" Margin="1" IsEnabled="False" Click="KundenlisteLoeschen"/>
                                 </Grid>
                             </GroupBox>
                         </Grid>

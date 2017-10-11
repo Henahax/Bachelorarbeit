@@ -87,7 +87,7 @@ namespace Bachelorarbeit
 
         private void KundeAusgewaehlt(object sender, SelectedCellsChangedEventArgs e)
         {
-            if(kundenListe.SelectedCells != null)
+            if (kundenListe.SelectedCells != null)
             {
                 kundenlisteBearbeiten.IsEnabled = true;
                 kundenlisteLoeschen.IsEnabled = true;
@@ -139,6 +139,37 @@ namespace Bachelorarbeit
             kundeWebseite.Text = dataSet.Tables[0].Rows[0]["Webseite"].ToString();
 
             //TODO: Notizen
+        }
+
+        private void KundenlisteLoeschen(object sender, RoutedEventArgs e)
+        {
+            //TODO: Überprüfung ob Angebote/Rechnungen zu diesem Kunden existieren
+            MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Sind sie sicher, dass sie diesen Kunden löschen wollen?", "Kunden Löschen Bestätigung", System.Windows.MessageBoxButton.YesNo);
+            if (messageBoxResult == MessageBoxResult.Yes)
+            {
+                DataRowView row = (DataRowView)kundenListe.SelectedItems[0];
+
+                int id = 0;
+                if (Int32.TryParse(row["Id"].ToString(), out id) == false)
+                {
+                    return;
+                }
+
+                Datenbank datenbank = new Datenbank();
+                string query = "DELETE FROM Kunden WHERE Id = @id";
+                SQLiteCommand sqliteCommand = new SQLiteCommand(query, datenbank.sqliteConnection);
+                sqliteCommand.Parameters.AddWithValue("@id", id);
+                datenbank.VerbindungOeffnen();
+                sqliteCommand.ExecuteNonQuery();
+                datenbank.VerbindungSchliessen();
+                KundenlisteFuellen();
+
+                kundenListe.SelectedCells.Clear();
+                kundenListe.SelectedItem = null;
+
+                kundenlisteBearbeiten.IsEnabled = false;
+                kundenlisteLoeschen.IsEnabled = false;
+            }
         }
 
         private void KundeSpeichern(object sender, RoutedEventArgs e)
@@ -276,7 +307,7 @@ namespace Bachelorarbeit
 
         private void KundeAbbrechen(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Sind sie sicher, dass sie den Bearbeitungsvorgang abbrechen wollen?\nAlle Änderungen gehen verloren.", "Abbruch Bestätigung", System.Windows.MessageBoxButton.YesNo);
+            MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Sind sie sicher, dass sie den Bearbeitungsvorgang abbrechen wollen?\nAlle Änderungen gehen verloren.", "Abbrechen Bestätigung", System.Windows.MessageBoxButton.YesNo);
             if (messageBoxResult == MessageBoxResult.Yes)
             {
                 groupBoxKunde.IsEnabled = false;
@@ -298,7 +329,6 @@ namespace Bachelorarbeit
                 kundeWebseite.Text = null;
                 kundeNotizen.Document.Blocks.Clear();
             }
-            return;
         }
 
         private void KundenlisteAnlegen(object sender, RoutedEventArgs e)
