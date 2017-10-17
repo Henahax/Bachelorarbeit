@@ -23,40 +23,13 @@ namespace Bachelorarbeit
     /// </summary>
     public partial class MainWindow : Window
     {
+        List<Position> rechnungPositionenListe = new List<Position>();
         public MainWindow()
         {
             InitializeComponent();
             KundenlisteFuellen();
 
-            /*
-            //Datenbank Eintrag anlegen
-            Datenbank databaseObject = new Datenbank();
-            string query = "INSERT INTO Kunden (`Vorname`, `Nachname`) VALUES (@Vorname, @Nachname)";
-            SQLiteCommand myCommand = new SQLiteCommand(query, databaseObject.myConnection);
-            databaseObject.OpenConnection();
-            myCommand.Parameters.AddWithValue("@Vorname", "Gundula");
-            myCommand.Parameters.AddWithValue("@Nachname", "Gause");
-            var result = myCommand.ExecuteNonQuery();
-            databaseObject.CloseConnection();
-            Console.WriteLine("Zeilen hinzugefügt : {0}", result);
-            */
-
-            /*
-            //Datenbank Einträge anzeigen
-            Datenbank databaseObject = new Datenbank();
-            string query = "SELECT * FROM Kunden";
-            SQLiteCommand myCommand = new SQLiteCommand(query, databaseObject.myConnection);
-            databaseObject.OpenConnection();
-            SQLiteDataReader result = myCommand.ExecuteReader();
-            if (result.HasRows)
-            {
-                while (result.Read())
-                {
-                    Console.WriteLine("Vorname : {0} - Nachname : {1}", result["Vorname"], result["Nachname"]);
-                }
-            }
-            databaseObject.CloseConnection();
-            */
+            rechnungPositionen.ItemsSource = rechnungPositionenListe;
         }
 
         private void EinstellungenOeffnen(object sender, RoutedEventArgs e)
@@ -79,6 +52,8 @@ namespace Bachelorarbeit
             sqliteDataAdapter.Fill(dataTable);
             kundenListe.ItemsSource = dataTable.DefaultView;
         }
+
+
 
         private void SucheEingeben(object sender, TextChangedEventArgs e)
         {
@@ -358,6 +333,21 @@ namespace Bachelorarbeit
             }
             kundennummer++;
             kundeKundennummer.Content = kundennummer;
+        }
+
+        private void NeueZeile(object sender, RoutedEventArgs e)
+        {
+            rechnungPositionenListe.Add(new Position());
+            rechnungPositionen.ItemsSource = null;
+            rechnungPositionen.ItemsSource = rechnungPositionenListe;
+        }
+
+        private void RechnungAbbrechen(object sender, RoutedEventArgs e)
+        {
+            //TODO: Rechnung deaktivieren
+            rechnungPositionenListe.Clear();
+            rechnungPositionen.ItemsSource = null;
+            rechnungPositionen.ItemsSource = rechnungPositionenListe;
         }
     }
 }

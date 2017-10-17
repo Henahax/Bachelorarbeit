@@ -8,7 +8,7 @@
         xmlns:wpfTool="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
 
         mc:Ignorable="d"
-        Title="Bachelorarbeit" Width="960" Height="800" MinHeight="360" MinWidth="960">
+        Title="Bachelorarbeit" Width="960" Height="960" MinHeight="360" MinWidth="960">
 
     <Window.Resources>
         <Style x:Key="GridSplitterVerticalGripStyle" TargetType="{x:Type GridSplitter}">
@@ -286,7 +286,7 @@
                     <!--<GridSplitter Grid.Column="1" Width="7" ResizeDirection="Columns" HorizontalAlignment="Stretch" Background="LightGray" BorderBrush="White" BorderThickness="3" Margin="1" Style="{StaticResource VerticalGridSplitter}"/>-->
 
                     <Grid Grid.Column="2">
-                        <GroupBox x:Name="groupBoxRechnung" Grid.Column="0" Header="Rechnung" Margin="1" Grid.RowSpan="2" IsEnabled="False">
+                        <GroupBox x:Name="groupBoxRechnung" Grid.Column="0" Header="Rechnung" Margin="1" Grid.RowSpan="2" IsEnabled="True">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*"/>
@@ -355,18 +355,38 @@
                                             </ComboBox>
                                         </GroupBox>
                                         <GroupBox Grid.Row="3" Header="Positionen" Margin="1">
-                                            <DataGrid CanUserAddRows="True" CanUserDeleteRows="True" CanUserResizeColumns="True" Margin="1">
-                                                <DataGrid.Columns>
-                                                    <DataGridCheckBoxColumn Header="Überschrift"/>
-                                                    <DataGridTextColumn Header="Menge"/>
-                                                    <DataGridTextColumn Header="Einheit"/>
-                                                    <DataGridTextColumn Header="Name" Width="*"/>
-                                                    <DataGridTextColumn Header="Beschreibung" Width="*"/>
-                                                    <DataGridTextColumn Header="Einzelpreis (brutto)"/>
-                                                    <DataGridTextColumn Header="Preis (brutto)"/>
-                                                </DataGrid.Columns>
-                                            </DataGrid>
-                                        </GroupBox>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="*"/>
+                                                        <RowDefinition Height="Auto"/>
+                                                    </Grid.RowDefinitions>
+                                                    <Button x:Name="neueZeile" Grid.Column="0" Grid.Row="1" Margin="1" Click="NeueZeile">Neue Zeile</Button>
+                                                    <Button Grid.Column="1" Grid.Row="1" Margin="1" IsEnabled="False">Zeile löschen</Button>
+                                                    <DataGrid Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" x:Name="rechnungPositionen" CanUserResizeColumns="True" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" MinHeight="40" Margin="1">
+                                                        <DataGrid.Columns>
+                                                            <!--
+                                                        <DataGridCheckBoxColumn Header="Überschrift"/>
+                                                        <DataGridTextColumn Header="Menge"/>
+                                                        <DataGridTextColumn Header="Einheit"/>
+                                                        <DataGridTextColumn Header="Name" Width="*"/>
+                                                        <DataGridTextColumn Header="Beschreibung" Width="*"/>
+                                                        <DataGridTextColumn Header="Einzelpreis (brutto)"/>
+                                                        <DataGridTextColumn Header="Preis (brutto)"/>
+                                                        -->
+                                                            <DataGridCheckBoxColumn Header="Überschrift" Width="Auto" Binding="{Binding istÜberschrift}"/>
+                                                            <DataGridTextColumn Header="Menge" Width="Auto" Binding="{Binding menge}"/>
+                                                            <DataGridTextColumn Header="Einheit" Width="Auto" Binding="{Binding einheit}"/>
+                                                            <DataGridTextColumn Header="Name" Width="*" Binding="{Binding name}"/>
+                                                            <DataGridTextColumn Header="Beschreibung" Width="*" Binding="{Binding beschreibung}"/>
+                                                            <DataGridTextColumn Header="Einzelpreis" Width="Auto" Binding="{Binding einzelpreis}"/>
+                                                        </DataGrid.Columns>
+                                                    </DataGrid>
+                                                </Grid>
+                                            </GroupBox>
                                         <GroupBox Grid.Row="4" Header="Summe" Margin="1">
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
@@ -443,7 +463,7 @@
                                         <Button Grid.Column="0" Margin="1" IsDefault="True">Speichern</Button>
                                         <Button Grid.Column="1" Margin="1" Content="Als PDF&#xa;speichern"/>
                                         <Button Grid.Column="2" Margin="1">Drucken</Button>
-                                        <Button Grid.Column="3" Margin="1" IsCancel="True">Abbrechen</Button>
+                                        <Button Grid.Column="3" Margin="1" IsCancel="True" Click="RechnungAbbrechen">Abbrechen</Button>
                                     </Grid>
                                 </GroupBox>
                             </Grid>
