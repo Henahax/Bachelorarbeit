@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="08793073c6c74ad6b769ffe08d1b85cc" Name="Diagram">
+        <EntityTypeShape EntityType="mainModel.angebot_positionen" Width="1.5" PointX="5.25" PointY="1.25" />
+        <EntityTypeShape EntityType="mainModel.angebote" Width="1.5" PointX="3" PointY="1.125" />
+        <EntityTypeShape EntityType="mainModel.einstellungen" Width="1.5" PointX="0.75" PointY="6.75" />
+        <EntityTypeShape EntityType="mainModel.kunden" Width="1.5" PointX="0.75" PointY="1" />
+        <EntityTypeShape EntityType="mainModel.rechnung_positionen" Width="1.5" PointX="5.25" PointY="3.75" />
+        <EntityTypeShape EntityType="mainModel.rechnungen" Width="1.5" PointX="3" PointY="3.625" />
+        <AssociationConnector Association="mainModel.FK_angebot_positionen_0_0" />
+        <AssociationConnector Association="mainModel.FK_angebote_0_0" />
+        <AssociationConnector Association="mainModel.FK_rechnungen_0_0" />
+        <AssociationConnector Association="mainModel.FK_rechnung_positionen_0_0" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

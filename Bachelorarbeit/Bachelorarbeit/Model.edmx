@@ -1,0 +1,364 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="mainModel.Store" Provider="System.Data.SQLite.EF6" ProviderManifestToken="Data Source=C:\Users\Henahax\source\repos\Bachelorarbeit\Bachelorarbeit\Bachelorarbeit\bin\Debug\datenbank.sqlite3" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="angebot_positionen">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="integer" Nullable="false" />
+          <Property Name="angebot_id" Type="integer" Nullable="false" />
+        </EntityType>
+        <EntityType Name="angebote">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="integer" Nullable="false" />
+          <Property Name="kunde_id" Type="integer" Nullable="false" />
+        </EntityType>
+        <EntityType Name="einstellungen">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="integer" Nullable="false" />
+        </EntityType>
+        <EntityType Name="kunden">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="integer" Nullable="false" />
+          <Property Name="kundennummer" Type="integer" />
+          <Property Name="anrede" Type="nvarchar" MaxLength="2147483647" />
+          <Property Name="vorname" Type="nvarchar" MaxLength="2147483647" />
+          <Property Name="nachname" Type="nvarchar" MaxLength="2147483647" />
+          <Property Name="firma" Type="nvarchar" MaxLength="2147483647" />
+          <Property Name="strasse" Type="nvarchar" MaxLength="2147483647" />
+          <Property Name="postleitzahl" Type="nvarchar" MaxLength="2147483647" />
+          <Property Name="ort" Type="nvarchar" MaxLength="2147483647" />
+          <Property Name="land" Type="nvarchar" MaxLength="2147483647" />
+          <Property Name="telefon" Type="nvarchar" MaxLength="2147483647" />
+          <Property Name="telefax" Type="nvarchar" MaxLength="2147483647" />
+          <Property Name="mobiltelefon" Type="nvarchar" MaxLength="2147483647" />
+          <Property Name="email" Type="nvarchar" MaxLength="2147483647" />
+          <Property Name="webseite" Type="nvarchar" MaxLength="2147483647" />
+          <Property Name="notizen" Type="nvarchar" MaxLength="2147483647" />
+        </EntityType>
+        <EntityType Name="rechnung_positionen">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="integer" Nullable="false" />
+          <Property Name="rechnung_id" Type="integer" Nullable="false" />
+        </EntityType>
+        <EntityType Name="rechnungen">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="integer" Nullable="false" />
+          <Property Name="kunde_id" Type="integer" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_angebot_positionen_0_0">
+          <End Role="angebote" Type="Self.angebote" Multiplicity="1" />
+          <End Role="angebot_positionen" Type="Self.angebot_positionen" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="angebote">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="angebot_positionen">
+              <PropertyRef Name="angebot_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_angebote_0_0">
+          <End Role="kunden" Type="Self.kunden" Multiplicity="1" />
+          <End Role="angebote" Type="Self.angebote" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="kunden">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="angebote">
+              <PropertyRef Name="kunde_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_rechnung_positionen_0_0">
+          <End Role="rechnungen" Type="Self.rechnungen" Multiplicity="1" />
+          <End Role="rechnung_positionen" Type="Self.rechnung_positionen" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="rechnungen">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="rechnung_positionen">
+              <PropertyRef Name="rechnung_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_rechnungen_0_0">
+          <End Role="kunden" Type="Self.kunden" Multiplicity="1" />
+          <End Role="rechnungen" Type="Self.rechnungen" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="kunden">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="rechnungen">
+              <PropertyRef Name="kunde_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="mainModelStoreContainer">
+          <EntitySet Name="angebot_positionen" EntityType="Self.angebot_positionen" store:Type="Tables" />
+          <EntitySet Name="angebote" EntityType="Self.angebote" store:Type="Tables" />
+          <EntitySet Name="einstellungen" EntityType="Self.einstellungen" store:Type="Tables" />
+          <EntitySet Name="kunden" EntityType="Self.kunden" store:Type="Tables" />
+          <EntitySet Name="rechnung_positionen" EntityType="Self.rechnung_positionen" store:Type="Tables" />
+          <EntitySet Name="rechnungen" EntityType="Self.rechnungen" store:Type="Tables" />
+          <AssociationSet Name="FK_angebot_positionen_0_0" Association="Self.FK_angebot_positionen_0_0">
+            <End Role="angebote" EntitySet="angebote" />
+            <End Role="angebot_positionen" EntitySet="angebot_positionen" />
+          </AssociationSet>
+          <AssociationSet Name="FK_angebote_0_0" Association="Self.FK_angebote_0_0">
+            <End Role="kunden" EntitySet="kunden" />
+            <End Role="angebote" EntitySet="angebote" />
+          </AssociationSet>
+          <AssociationSet Name="FK_rechnung_positionen_0_0" Association="Self.FK_rechnung_positionen_0_0">
+            <End Role="rechnungen" EntitySet="rechnungen" />
+            <End Role="rechnung_positionen" EntitySet="rechnung_positionen" />
+          </AssociationSet>
+          <AssociationSet Name="FK_rechnungen_0_0" Association="Self.FK_rechnungen_0_0">
+            <End Role="kunden" EntitySet="kunden" />
+            <End Role="rechnungen" EntitySet="rechnungen" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="mainModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="mainEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="angebot_positionen" EntityType="mainModel.angebot_positionen" />
+          <EntitySet Name="angebote" EntityType="mainModel.angebote" />
+          <EntitySet Name="einstellungen" EntityType="mainModel.einstellungen" />
+          <EntitySet Name="kunden" EntityType="mainModel.kunden" />
+          <EntitySet Name="rechnung_positionen" EntityType="mainModel.rechnung_positionen" />
+          <EntitySet Name="rechnungen" EntityType="mainModel.rechnungen" />
+          <AssociationSet Name="FK_angebot_positionen_0_0" Association="mainModel.FK_angebot_positionen_0_0">
+            <End Role="angebote" EntitySet="angebote" />
+            <End Role="angebot_positionen" EntitySet="angebot_positionen" />
+          </AssociationSet>
+          <AssociationSet Name="FK_angebote_0_0" Association="mainModel.FK_angebote_0_0">
+            <End Role="kunden" EntitySet="kunden" />
+            <End Role="angebote" EntitySet="angebote" />
+          </AssociationSet>
+          <AssociationSet Name="FK_rechnungen_0_0" Association="mainModel.FK_rechnungen_0_0">
+            <End Role="kunden" EntitySet="kunden" />
+            <End Role="rechnungen" EntitySet="rechnungen" />
+          </AssociationSet>
+          <AssociationSet Name="FK_rechnung_positionen_0_0" Association="mainModel.FK_rechnung_positionen_0_0">
+            <End Role="rechnungen" EntitySet="rechnungen" />
+            <End Role="rechnung_positionen" EntitySet="rechnung_positionen" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="angebot_positionen">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" />
+          <Property Name="angebot_id" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="angebote" Relationship="mainModel.FK_angebot_positionen_0_0" FromRole="angebot_positionen" ToRole="angebote" />
+        </EntityType>
+        <EntityType Name="angebote">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" />
+          <Property Name="kunde_id" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="angebot_positionen" Relationship="mainModel.FK_angebot_positionen_0_0" FromRole="angebote" ToRole="angebot_positionen" />
+          <NavigationProperty Name="kunden" Relationship="mainModel.FK_angebote_0_0" FromRole="angebote" ToRole="kunden" />
+        </EntityType>
+        <EntityType Name="einstellungen">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="kunden">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" />
+          <Property Name="kundennummer" Type="Int64" />
+          <Property Name="anrede" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" />
+          <Property Name="vorname" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" />
+          <Property Name="nachname" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" />
+          <Property Name="firma" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" />
+          <Property Name="strasse" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" />
+          <Property Name="postleitzahl" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" />
+          <Property Name="ort" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" />
+          <Property Name="land" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" />
+          <Property Name="telefon" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" />
+          <Property Name="telefax" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" />
+          <Property Name="mobiltelefon" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" />
+          <Property Name="email" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" />
+          <Property Name="webseite" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" />
+          <Property Name="notizen" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="angebote" Relationship="mainModel.FK_angebote_0_0" FromRole="kunden" ToRole="angebote" />
+          <NavigationProperty Name="rechnungen" Relationship="mainModel.FK_rechnungen_0_0" FromRole="kunden" ToRole="rechnungen" />
+        </EntityType>
+        <EntityType Name="rechnung_positionen">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" />
+          <Property Name="rechnung_id" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="rechnungen" Relationship="mainModel.FK_rechnung_positionen_0_0" FromRole="rechnung_positionen" ToRole="rechnungen" />
+        </EntityType>
+        <EntityType Name="rechnungen">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" />
+          <Property Name="kunde_id" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="kunden" Relationship="mainModel.FK_rechnungen_0_0" FromRole="rechnungen" ToRole="kunden" />
+          <NavigationProperty Name="rechnung_positionen" Relationship="mainModel.FK_rechnung_positionen_0_0" FromRole="rechnungen" ToRole="rechnung_positionen" />
+        </EntityType>
+        <Association Name="FK_angebot_positionen_0_0">
+          <End Type="mainModel.angebote" Role="angebote" Multiplicity="1" />
+          <End Type="mainModel.angebot_positionen" Role="angebot_positionen" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="angebote">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="angebot_positionen">
+              <PropertyRef Name="angebot_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_angebote_0_0">
+          <End Type="mainModel.kunden" Role="kunden" Multiplicity="1" />
+          <End Type="mainModel.angebote" Role="angebote" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="kunden">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="angebote">
+              <PropertyRef Name="kunde_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_rechnungen_0_0">
+          <End Type="mainModel.kunden" Role="kunden" Multiplicity="1" />
+          <End Type="mainModel.rechnungen" Role="rechnungen" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="kunden">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="rechnungen">
+              <PropertyRef Name="kunde_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_rechnung_positionen_0_0">
+          <End Type="mainModel.rechnungen" Role="rechnungen" Multiplicity="1" />
+          <End Type="mainModel.rechnung_positionen" Role="rechnung_positionen" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="rechnungen">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="rechnung_positionen">
+              <PropertyRef Name="rechnung_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="mainModelStoreContainer" CdmEntityContainer="mainEntities">
+          <EntitySetMapping Name="angebot_positionen">
+            <EntityTypeMapping TypeName="mainModel.angebot_positionen">
+              <MappingFragment StoreEntitySet="angebot_positionen">
+                <ScalarProperty Name="angebot_id" ColumnName="angebot_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="angebote">
+            <EntityTypeMapping TypeName="mainModel.angebote">
+              <MappingFragment StoreEntitySet="angebote">
+                <ScalarProperty Name="kunde_id" ColumnName="kunde_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="einstellungen">
+            <EntityTypeMapping TypeName="mainModel.einstellungen">
+              <MappingFragment StoreEntitySet="einstellungen">
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="kunden">
+            <EntityTypeMapping TypeName="mainModel.kunden">
+              <MappingFragment StoreEntitySet="kunden">
+                <ScalarProperty Name="notizen" ColumnName="notizen" />
+                <ScalarProperty Name="webseite" ColumnName="webseite" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="mobiltelefon" ColumnName="mobiltelefon" />
+                <ScalarProperty Name="telefax" ColumnName="telefax" />
+                <ScalarProperty Name="telefon" ColumnName="telefon" />
+                <ScalarProperty Name="land" ColumnName="land" />
+                <ScalarProperty Name="ort" ColumnName="ort" />
+                <ScalarProperty Name="postleitzahl" ColumnName="postleitzahl" />
+                <ScalarProperty Name="strasse" ColumnName="strasse" />
+                <ScalarProperty Name="firma" ColumnName="firma" />
+                <ScalarProperty Name="nachname" ColumnName="nachname" />
+                <ScalarProperty Name="vorname" ColumnName="vorname" />
+                <ScalarProperty Name="anrede" ColumnName="anrede" />
+                <ScalarProperty Name="kundennummer" ColumnName="kundennummer" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="rechnung_positionen">
+            <EntityTypeMapping TypeName="mainModel.rechnung_positionen">
+              <MappingFragment StoreEntitySet="rechnung_positionen">
+                <ScalarProperty Name="rechnung_id" ColumnName="rechnung_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="rechnungen">
+            <EntityTypeMapping TypeName="mainModel.rechnungen">
+              <MappingFragment StoreEntitySet="rechnungen">
+                <ScalarProperty Name="kunde_id" ColumnName="kunde_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Kein" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

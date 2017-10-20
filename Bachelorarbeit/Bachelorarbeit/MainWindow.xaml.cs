@@ -23,13 +23,20 @@ namespace Bachelorarbeit
     /// </summary>
     public partial class MainWindow : Window
     {
-        List<Position> rechnungPositionenListe = new List<Position>();
+        /*
+        List<Kunde> alleKunden = new List<Kunde>();
+        List<RechnungPosition> rechnungPositionenListe = new List<RechnungPosition>();
+        */
+
+
         public MainWindow()
         {
             InitializeComponent();
             KundenlisteFuellen();
 
+            /*
             rechnungPositionen.ItemsSource = rechnungPositionenListe;
+            */
         }
 
         private void EinstellungenOeffnen(object sender, RoutedEventArgs e)
@@ -40,6 +47,8 @@ namespace Bachelorarbeit
 
         private void KundenlisteFuellen()
         {
+
+            /*
             Datenbank datenbank = new Datenbank();
             string suche = "%" + kundenSuche.Text + "%";
             string query = "SELECT Id, Kundennummer, Vorname, Nachname, Straße, Ort FROM Kunden WHERE Id LIKE @suche OR Kundennummer LIKE @suche OR Vorname LIKE @suche OR Nachname LIKE @suche OR Straße LIKE @suche OR Ort LIKE @suche";
@@ -51,9 +60,12 @@ namespace Bachelorarbeit
             DataTable dataTable = new DataTable("Kunden");
             sqliteDataAdapter.Fill(dataTable);
             kundenListe.ItemsSource = dataTable.DefaultView;
+            */
+
+            /*
+            kundenListe.ItemsSource = alleKunden;
+            */
         }
-
-
 
         private void SucheEingeben(object sender, TextChangedEventArgs e)
         {
@@ -337,17 +349,25 @@ namespace Bachelorarbeit
 
         private void NeueZeile(object sender, RoutedEventArgs e)
         {
-            rechnungPositionenListe.Add(new Position());
+            /*
+            rechnungPositionenListe.Add(new RechnungPosition());
             rechnungPositionen.ItemsSource = null;
             rechnungPositionen.ItemsSource = rechnungPositionenListe;
+            */
         }
 
         private void RechnungAbbrechen(object sender, RoutedEventArgs e)
         {
-            //TODO: Rechnung deaktivieren
-            rechnungPositionenListe.Clear();
-            rechnungPositionen.ItemsSource = null;
-            rechnungPositionen.ItemsSource = rechnungPositionenListe;
+            MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Sind sie sicher, dass sie den Bearbeitungsvorgang abbrechen wollen?\nAlle Änderungen gehen verloren.", "Abbrechen Bestätigung", System.Windows.MessageBoxButton.YesNo);
+            if (messageBoxResult == MessageBoxResult.Yes)
+            {
+                /*
+                //TODO: Rechnung deaktivieren
+                rechnungPositionenListe.Clear();
+                rechnungPositionen.ItemsSource = null;
+                rechnungPositionen.ItemsSource = rechnungPositionenListe;
+                */
+            }
         }
     }
 }
