@@ -13,7 +13,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-using System.Data.SQLite;
 using System.Data;
 
 namespace Bachelorarbeit
@@ -32,11 +31,6 @@ namespace Bachelorarbeit
         public MainWindow()
         {
             InitializeComponent();
-            KundenlisteFuellen();
-
-            /*
-            rechnungPositionen.ItemsSource = rechnungPositionenListe;
-            */
         }
 
         private void EinstellungenOeffnen(object sender, RoutedEventArgs e)
@@ -88,6 +82,7 @@ namespace Bachelorarbeit
 
         private void KundenlisteBearbeiten(object sender, RoutedEventArgs e)
         {
+            /*
             DataRowView row = (DataRowView)kundenListe.SelectedItems[0];
 
             int id = 0;
@@ -126,10 +121,12 @@ namespace Bachelorarbeit
             kundeWebseite.Text = dataSet.Tables[0].Rows[0]["Webseite"].ToString();
 
             //TODO: Notizen
+            */
         }
 
         private void KundenlisteLoeschen(object sender, RoutedEventArgs e)
         {
+            /*
             //TODO: Überprüfung ob Angebote/Rechnungen zu diesem Kunden existieren
             MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Sind sie sicher, dass sie diesen Kunden löschen wollen?", "Kunden Löschen Bestätigung", System.Windows.MessageBoxButton.YesNo);
             if (messageBoxResult == MessageBoxResult.Yes)
@@ -156,7 +153,7 @@ namespace Bachelorarbeit
 
                 kundenlisteBearbeiten.IsEnabled = false;
                 kundenlisteLoeschen.IsEnabled = false;
-            }
+            }*/
         }
 
         private void KundeSpeichern(object sender, RoutedEventArgs e)
@@ -190,6 +187,7 @@ namespace Bachelorarbeit
                 MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Nachname oder Firma muss ausgefüllt sein!");
                 return;
             }
+            /*
 
             //Prüfen ob Kundennummer existiert
             Datenbank datenbank = new Datenbank();
@@ -290,6 +288,8 @@ namespace Bachelorarbeit
             kundeWebseite.Text = null;
             kundeNotizen.Document.Blocks.Clear();
             KundenlisteFuellen();
+
+            */
         }
 
         private void KundeAbbrechen(object sender, RoutedEventArgs e)
@@ -320,6 +320,7 @@ namespace Bachelorarbeit
 
         private void KundenlisteAnlegen(object sender, RoutedEventArgs e)
         {
+            /*
             groupBoxKunde.IsEnabled = true;
             groupBoxKunden.IsEnabled = false;
 
@@ -345,6 +346,7 @@ namespace Bachelorarbeit
             }
             kundennummer++;
             kundeKundennummer.Content = kundennummer;
+            */
         }
 
         private void NeueZeile(object sender, RoutedEventArgs e)
