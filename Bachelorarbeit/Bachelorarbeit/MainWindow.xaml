@@ -4,10 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Bachelorarbeit"
-        
-
         mc:Ignorable="d"
-        Title="Bachelorarbeit" Width="960" Height="960" MinHeight="360" MinWidth="960" Language="de-DE" Loaded="Window_Loaded">
+        Title="Bachelorarbeit" Width="960" Height="800" MinHeight="360" MinWidth="960" Language="de-DE" Loaded="Window_Loaded">
 
     <Window.Resources>
         <Style x:Key="GridSplitterVerticalGripStyle" TargetType="{x:Type GridSplitter}">
@@ -38,7 +36,7 @@
             <Setter Property="VerticalAlignment" Value="Stretch" />
             <Setter Property="HorizontalAlignment" Value="Center" />
         </Style>
-        <CollectionViewSource x:Key="kundenViewSource" d:DesignSource="{d:DesignInstance {x:Type local:kunden}, CreateList=True}"/>
+        <CollectionViewSource x:Key="kundenViewSource" d:DesignSource="{d:DesignInstance {x:Type local:kunden}, CreateList=True}" Filter="Filter"/>
     </Window.Resources>
 
     <DockPanel Background="WhiteSmoke">
@@ -80,7 +78,16 @@
                                 </GroupBox>
                                 <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
                                     <GroupBox Margin="1" Header="Kundenliste">
-                                        <DataGrid Name="kundenListe" Margin="1" IsReadOnly="True" SelectionMode="Single" ItemsSource="{Binding}" SelectedCellsChanged="KundeAusgewaehlt"/>
+                                        <DataGrid Name="kundenListe" Margin="1" IsReadOnly="True" SelectionMode="Single" ItemsSource="{Binding}" SelectedCellsChanged="KundeAusgewaehlt" HeadersVisibility="Column" AutoGenerateColumns="False">
+                                            <DataGrid.Columns>
+                                                <DataGridTextColumn Header="KNr." Binding="{Binding kundennummer}"/>
+                                                <DataGridTextColumn Header="Nachname" Binding="{Binding nachname}"/>
+                                                <DataGridTextColumn Header="Vorname" Binding="{Binding vorname}"/>
+                                                <DataGridTextColumn Header="Firma" Binding="{Binding firma}"/>
+                                                <DataGridTextColumn Header="Ort" Binding="{Binding ort}"/>
+                                                <DataGridTextColumn Header="Straße" Binding="{Binding strasse}"/>
+                                            </DataGrid.Columns>
+                                        </DataGrid>
                                     </GroupBox>
                                 </ScrollViewer>
                                 <GroupBox Grid.Row="2" Header="Aktionen">

@@ -16,11 +16,14 @@ namespace Bachelorarbeit
     {
         mainEntities _entities;
         CollectionViewSource _kundenViewSource;
+        String kundenFilter = "";
         bool neuerKundeWirdAngelegt = false;
-
 
         public MainWindow()
         {
+            //TODO: Titel für Kunden
+            //TODO: Datenbank relativer Pfad
+
             //TODO: Bei Datenbankänderungen, Identify Spalte neu konfigurieren im Model
             InitializeComponent();
             _kundenViewSource = ((CollectionViewSource)(this.FindResource("kundenViewSource")));
@@ -34,9 +37,11 @@ namespace Bachelorarbeit
                 _entities.Dispose();
             }
             _entities = new mainEntities();
+
             _entities.kunden.Load();
             _kundenViewSource.Source = _entities.kunden.Local;
         }
+        
 
         private void EinstellungenOeffnen(object sender, RoutedEventArgs e)
         {
@@ -46,7 +51,8 @@ namespace Bachelorarbeit
 
         private void SucheEingeben(object sender, TextChangedEventArgs e)
         {
-            //KundenlisteFuellen();
+            kundenFilter = kundenSuche.Text;
+            Refresh();
         }
 
 
@@ -90,6 +96,22 @@ namespace Bachelorarbeit
                 _entities.SaveChanges();
                 Refresh();
 
+                kundeKundennummer.Content = null;
+                kundeAnrede.Text = null;
+                kundeVorname.Text = null;
+                kundeNachname.Text = null;
+                kundeFirma.Text = null;
+                kundeStraße.Text = null;
+                kundePostleitzahl.Text = null;
+                kundeOrt.Text = null;
+                kundeLand.Text = null;
+                kundeTelefon.Text = null;
+                kundeTelefax.Text = null;
+                kundeMobiltelefon.Text = null;
+                kundeEmail.Text = null;
+                kundeWebseite.Text = null;
+                kundeNotizen.Text = null;
+
                 kundenListe.SelectedItem = null;
                 kundenlisteBearbeiten.IsEnabled = false;
                 kundenlisteLoeschen.IsEnabled = false;
@@ -126,9 +148,17 @@ namespace Bachelorarbeit
                     MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Anrede muss ausgefüllt sein!");
                     return;
                 }
-                if (kundeNachname.Text == "" && kundeFirma.Text == "")
+                if (kundeAnrede.Text == "Herr" || kundeAnrede.Text == "Frau")
                 {
-                    MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Nachname oder Firma muss ausgefüllt sein!");
+                    if(kundeNachname.Text == "")
+                    {
+                        MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Nachname ausgefüllt sein!");
+                        return;
+                    }
+                }
+                if (kundeAnrede.Text == "Firma" && kundeFirma.Text == "")
+                {
+                    MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Firma muss ausgefüllt sein!");
                     return;
                 }
 
@@ -278,7 +308,8 @@ namespace Bachelorarbeit
             if (_entities.kunden.Any() == false)
             {
                 kundennummer = 1;
-            }else
+            }
+            else
             {
                 long hoechsteKundennummer = _entities.kunden.Max(k => k.kundennummer);
                 kundennummer = ++hoechsteKundennummer;
@@ -328,34 +359,47 @@ namespace Bachelorarbeit
         {
             if (kundenListe.SelectedCells != null)
             {
-                try { 
-                kundenlisteBearbeiten.IsEnabled = true;
-                kundenlisteLoeschen.IsEnabled = true;
+                try
+                {
+                    kundenlisteBearbeiten.IsEnabled = true;
+                    kundenlisteLoeschen.IsEnabled = true;
 
-                kunden kunde = (kunden)kundenListe.SelectedItem;
+                    kunden kunde = (kunden)kundenListe.SelectedItem;
 
-                kundeKundennummer.Content = kunde.kundennummer;
-                kundeAnrede.Text = kunde.anrede;
-                kundeVorname.Text = kunde.vorname;
-                kundeNachname.Text = kunde.nachname;
-                kundeFirma.Text = kunde.firma;
-                kundeStraße.Text = kunde.strasse;
-                kundePostleitzahl.Text = kunde.postleitzahl;
-                kundeOrt.Text = kunde.ort;
-                kundeLand.Text = kunde.land;
-                kundeTelefon.Text = kunde.telefon;
-                kundeTelefax.Text = kunde.telefax;
-                kundeMobiltelefon.Text = kunde.mobiltelefon;
-                kundeEmail.Text = kunde.email;
-                kundeWebseite.Text = kunde.webseite;
-                kundeNotizen.Text = kunde.notizen;
+                    kundeKundennummer.Content = kunde.kundennummer;
+                    kundeAnrede.Text = kunde.anrede;
+                    kundeVorname.Text = kunde.vorname;
+                    kundeNachname.Text = kunde.nachname;
+                    kundeFirma.Text = kunde.firma;
+                    kundeStraße.Text = kunde.strasse;
+                    kundePostleitzahl.Text = kunde.postleitzahl;
+                    kundeOrt.Text = kunde.ort;
+                    kundeLand.Text = kunde.land;
+                    kundeTelefon.Text = kunde.telefon;
+                    kundeTelefax.Text = kunde.telefax;
+                    kundeMobiltelefon.Text = kunde.mobiltelefon;
+                    kundeEmail.Text = kunde.email;
+                    kundeWebseite.Text = kunde.webseite;
+                    kundeNotizen.Text = kunde.notizen;
                 }
-                catch (Exception){}
+                catch (Exception) { }
             }
             else
             {
                 kundenlisteBearbeiten.IsEnabled = false;
                 kundenlisteLoeschen.IsEnabled = false;
+            }
+        }
+
+        private void Filter(object sender, FilterEventArgs e)
+        {
+            kunden kunde = e.Item as kunden;
+            if (kunde.vorname.Contains(kundenFilter) || kunde.nachname.Contains(kundenFilter) || kunde.firma.Contains(kundenFilter) || kunde.strasse.Contains(kundenFilter) || kunde.postleitzahl.Contains(kundenFilter) || kunde.ort.Contains(kundenFilter) || kunde.land.Contains(kundenFilter) || kunde.telefon.Contains(kundenFilter) || kunde.telefax.Contains(kundenFilter) || kunde.mobiltelefon.Contains(kundenFilter) || kunde.email.Contains(kundenFilter) || kunde.webseite.Contains(kundenFilter) || kunde.notizen.Contains(kundenFilter))
+            {
+                e.Accepted = true;
+            }else
+            {
+                e.Accepted = false;
             }
         }
     }
