@@ -65,6 +65,7 @@ namespace Bachelorarbeit
 
             kundeKundennummer.Content = kunde.kundennummer;
             kundeAnrede.Text = kunde.anrede;
+            kundeTitel.Text = kunde.titel;
             kundeVorname.Text = kunde.vorname;
             kundeNachname.Text = kunde.nachname;
             kundeFirma.Text = kunde.firma;
@@ -98,6 +99,7 @@ namespace Bachelorarbeit
 
                 kundeKundennummer.Content = null;
                 kundeAnrede.Text = null;
+                kundeTitel.Text = null;
                 kundeVorname.Text = null;
                 kundeNachname.Text = null;
                 kundeFirma.Text = null;
@@ -129,6 +131,7 @@ namespace Bachelorarbeit
                 Int64.TryParse(kundeKundennummer.Content.ToString(), out kundennummer);
                 kunde.kundennummer = kundennummer;
                 kunde.anrede = kundeAnrede.Text;
+                kunde.titel = kundeTitel.Text;
                 kunde.vorname = kundeVorname.Text;
                 kunde.nachname = kundeNachname.Text;
                 kunde.firma = kundeFirma.Text;
@@ -171,6 +174,7 @@ namespace Bachelorarbeit
 
                 kundeKundennummer.Content = null;
                 kundeAnrede.Text = null;
+                kundeTitel.Text = null;
                 kundeVorname.Text = null;
                 kundeNachname.Text = null;
                 kundeFirma.Text = null;
@@ -195,6 +199,7 @@ namespace Bachelorarbeit
                 kunden kunde = (kunden)kundenListe.SelectedItem;
 
                 kunde.anrede = kundeAnrede.Text;
+                kunde.titel = kundeTitel.Text;
                 kunde.vorname = kundeVorname.Text;
                 kunde.nachname = kundeNachname.Text;
                 kunde.firma = kundeFirma.Text;
@@ -230,6 +235,7 @@ namespace Bachelorarbeit
 
                 kundeKundennummer.Content = null;
                 kundeAnrede.Text = null;
+                kundeTitel.Text = null;
                 kundeVorname.Text = null;
                 kundeNachname.Text = null;
                 kundeFirma.Text = null;
@@ -261,6 +267,7 @@ namespace Bachelorarbeit
 
                 kundeKundennummer.Content = null;
                 kundeAnrede.Text = null;
+                kundeTitel.Text = null;
                 kundeVorname.Text = null;
                 kundeNachname.Text = null;
                 kundeFirma.Text = null;
@@ -289,6 +296,7 @@ namespace Bachelorarbeit
 
             kundeKundennummer.Content = null;
             kundeAnrede.Text = null;
+            kundeTitel.Text = null;
             kundeVorname.Text = null;
             kundeNachname.Text = null;
             kundeFirma.Text = null;
@@ -368,6 +376,7 @@ namespace Bachelorarbeit
 
                     kundeKundennummer.Content = kunde.kundennummer;
                     kundeAnrede.Text = kunde.anrede;
+                    kundeTitel.Text = kunde.titel;
                     kundeVorname.Text = kunde.vorname;
                     kundeNachname.Text = kunde.nachname;
                     kundeFirma.Text = kunde.firma;
@@ -394,7 +403,7 @@ namespace Bachelorarbeit
         private void Filter(object sender, FilterEventArgs e)
         {
             kunden kunde = e.Item as kunden;
-            if (kunde.vorname.Contains(kundenFilter) || kunde.nachname.Contains(kundenFilter) || kunde.firma.Contains(kundenFilter) || kunde.strasse.Contains(kundenFilter) || kunde.postleitzahl.Contains(kundenFilter) || kunde.ort.Contains(kundenFilter) || kunde.land.Contains(kundenFilter) || kunde.telefon.Contains(kundenFilter) || kunde.telefax.Contains(kundenFilter) || kunde.mobiltelefon.Contains(kundenFilter) || kunde.email.Contains(kundenFilter) || kunde.webseite.Contains(kundenFilter) || kunde.notizen.Contains(kundenFilter))
+            if (kunde.titel.ToLower().Contains(kundenFilter.ToLower()) || kunde.vorname.ToLower().Contains(kundenFilter.ToLower()) || kunde.nachname.ToLower().Contains(kundenFilter.ToLower()) || kunde.firma.ToLower().Contains(kundenFilter.ToLower()) || kunde.strasse.ToLower().Contains(kundenFilter.ToLower()) || kunde.postleitzahl.ToLower().Contains(kundenFilter.ToLower()) || kunde.ort.ToLower().Contains(kundenFilter.ToLower()) || kunde.land.ToLower().Contains(kundenFilter.ToLower()) || kunde.telefon.ToLower().Contains(kundenFilter.ToLower()) || kunde.telefax.ToLower().Contains(kundenFilter.ToLower()) || kunde.mobiltelefon.ToLower().Contains(kundenFilter.ToLower()) || kunde.email.ToLower().Contains(kundenFilter.ToLower()) || kunde.webseite.ToLower().Contains(kundenFilter.ToLower()) || kunde.notizen.ToLower().Contains(kundenFilter.ToLower()))
             {
                 e.Accepted = true;
             }else

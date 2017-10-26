@@ -25,9 +25,9 @@ namespace Bachelorarbeit
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<einstellungen> einstellungen { get; set; }
         public virtual DbSet<angebot_positionen> angebot_positionen { get; set; }
         public virtual DbSet<angebote> angebote { get; set; }
+        public virtual DbSet<einstellungen> einstellungen { get; set; }
         public virtual DbSet<kunden> kunden { get; set; }
         public virtual DbSet<rechnung_positionen> rechnung_positionen { get; set; }
         public virtual DbSet<rechnungen> rechnungen { get; set; }

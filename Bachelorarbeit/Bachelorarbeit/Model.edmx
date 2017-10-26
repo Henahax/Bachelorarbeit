@@ -9,14 +9,14 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="integer" Nullable="false" />
+          <Property Name="id" Type="integer" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="angebot_id" Type="integer" Nullable="false" />
         </EntityType>
         <EntityType Name="angebote">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="integer" Nullable="false" />
+          <Property Name="id" Type="integer" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="kunde_id" Type="integer" Nullable="false" />
         </EntityType>
         <EntityType Name="einstellungen">
@@ -32,6 +32,7 @@
           <Property Name="id" Type="integer" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="kundennummer" Type="integer" Nullable="false" />
           <Property Name="anrede" Type="nvarchar" MaxLength="2147483647" />
+          <Property Name="titel" Type="nvarchar" MaxLength="2147483647" />
           <Property Name="vorname" Type="nvarchar" MaxLength="2147483647" />
           <Property Name="nachname" Type="nvarchar" MaxLength="2147483647" />
           <Property Name="firma" Type="nvarchar" MaxLength="2147483647" />
@@ -50,14 +51,14 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="integer" Nullable="false" />
+          <Property Name="id" Type="integer" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="rechnung_id" Type="integer" Nullable="false" />
         </EntityType>
         <EntityType Name="rechnungen">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="integer" Nullable="false" />
+          <Property Name="id" Type="integer" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="kunde_id" Type="integer" Nullable="false" />
         </EntityType>
         <Association Name="FK_angebot_positionen_0_0">
@@ -136,16 +137,10 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="mainModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="einstellungen">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int64" Nullable="false" />
-        </EntityType>
         <EntityContainer Name="mainEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="einstellungen" EntityType="Self.einstellungen" />
           <EntitySet Name="angebot_positionen" EntityType="mainModel.angebot_positionen" />
           <EntitySet Name="angebote" EntityType="mainModel.angebote" />
+          <EntitySet Name="einstellungen" EntityType="mainModel.einstellungen" />
           <EntitySet Name="kunden" EntityType="mainModel.kunden" />
           <EntitySet Name="rechnung_positionen" EntityType="mainModel.rechnung_positionen" />
           <EntitySet Name="rechnungen" EntityType="mainModel.rechnungen" />
@@ -165,12 +160,12 @@
             <End Role="rechnungen" EntitySet="rechnungen" />
             <End Role="rechnung_positionen" EntitySet="rechnung_positionen" />
           </AssociationSet>
-          </EntityContainer>
+        </EntityContainer>
         <EntityType Name="angebot_positionen">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int64" Nullable="false" />
+          <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="angebot_id" Type="Int64" Nullable="false" />
           <NavigationProperty Name="angebote" Relationship="mainModel.FK_angebot_positionen_0_0" FromRole="angebot_positionen" ToRole="angebote" />
         </EntityType>
@@ -178,10 +173,16 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int64" Nullable="false" />
+          <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="kunde_id" Type="Int64" Nullable="false" />
           <NavigationProperty Name="angebot_positionen" Relationship="mainModel.FK_angebot_positionen_0_0" FromRole="angebote" ToRole="angebot_positionen" />
           <NavigationProperty Name="kunden" Relationship="mainModel.FK_angebote_0_0" FromRole="angebote" ToRole="kunden" />
+        </EntityType>
+        <EntityType Name="einstellungen">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" />
         </EntityType>
         <EntityType Name="kunden">
           <Key>
@@ -190,6 +191,7 @@
           <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="kundennummer" Type="Int64" Nullable="false" />
           <Property Name="anrede" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" />
+          <Property Name="titel" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" />
           <Property Name="vorname" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" />
           <Property Name="nachname" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" />
           <Property Name="firma" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" />
@@ -210,7 +212,7 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int64" Nullable="false" />
+          <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="rechnung_id" Type="Int64" Nullable="false" />
           <NavigationProperty Name="rechnungen" Relationship="mainModel.FK_rechnung_positionen_0_0" FromRole="rechnung_positionen" ToRole="rechnungen" />
         </EntityType>
@@ -218,7 +220,7 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int64" Nullable="false" />
+          <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="kunde_id" Type="Int64" Nullable="false" />
           <NavigationProperty Name="kunden" Relationship="mainModel.FK_rechnungen_0_0" FromRole="rechnungen" ToRole="kunden" />
           <NavigationProperty Name="rechnung_positionen" Relationship="mainModel.FK_rechnung_positionen_0_0" FromRole="rechnungen" ToRole="rechnung_positionen" />
@@ -271,19 +273,12 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="mainModelStoreContainer" CdmEntityContainer="mainEntities">
-          <EntitySetMapping Name="einstellungen">
-            <EntityTypeMapping TypeName="mainModel.einstellungen">
-              <MappingFragment StoreEntitySet="einstellungen">
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="angebot_positionen">
             <EntityTypeMapping TypeName="mainModel.angebot_positionen">
               <MappingFragment StoreEntitySet="angebot_positionen">
@@ -296,6 +291,13 @@
             <EntityTypeMapping TypeName="mainModel.angebote">
               <MappingFragment StoreEntitySet="angebote">
                 <ScalarProperty Name="kunde_id" ColumnName="kunde_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="einstellungen">
+            <EntityTypeMapping TypeName="mainModel.einstellungen">
+              <MappingFragment StoreEntitySet="einstellungen">
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -316,6 +318,7 @@
                 <ScalarProperty Name="firma" ColumnName="firma" />
                 <ScalarProperty Name="nachname" ColumnName="nachname" />
                 <ScalarProperty Name="vorname" ColumnName="vorname" />
+                <ScalarProperty Name="titel" ColumnName="titel" />
                 <ScalarProperty Name="anrede" ColumnName="anrede" />
                 <ScalarProperty Name="kundennummer" ColumnName="kundennummer" />
                 <ScalarProperty Name="id" ColumnName="id" />
@@ -338,7 +341,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          </EntityContainerMapping>
+        </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

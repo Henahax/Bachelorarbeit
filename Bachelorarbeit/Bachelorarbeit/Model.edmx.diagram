@@ -5,17 +5,17 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="f9387aab3f7348f8adeb6bb457c69783" Name="Diagram1">
-        <EntityTypeShape EntityType="mainModel.einstellungen" Width="1.5" PointX="0.75" PointY="6.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="mainModel.angebot_positionen" Width="1.5" PointX="5.25" PointY="1.25" />
-        <EntityTypeShape EntityType="mainModel.angebote" Width="1.5" PointX="3" PointY="1.125" />
+        <EntityTypeShape EntityType="mainModel.angebot_positionen" Width="1.5" PointX="5.25" PointY="3.875" />
+        <EntityTypeShape EntityType="mainModel.angebote" Width="1.5" PointX="3" PointY="3.75" />
+        <EntityTypeShape EntityType="mainModel.einstellungen" Width="1.5" PointX="0.75" PointY="6.75" />
         <EntityTypeShape EntityType="mainModel.kunden" Width="1.5" PointX="0.75" PointY="1" />
-        <EntityTypeShape EntityType="mainModel.rechnung_positionen" Width="1.5" PointX="5.25" PointY="3.75" />
-        <EntityTypeShape EntityType="mainModel.rechnungen" Width="1.5" PointX="3" PointY="3.625" />
+        <EntityTypeShape EntityType="mainModel.rechnung_positionen" Width="1.5" PointX="5.25" PointY="1.375" />
+        <EntityTypeShape EntityType="mainModel.rechnungen" Width="1.5" PointX="3" PointY="1.25" />
         <AssociationConnector Association="mainModel.FK_angebot_positionen_0_0" />
         <AssociationConnector Association="mainModel.FK_angebote_0_0" />
         <AssociationConnector Association="mainModel.FK_rechnungen_0_0" />
         <AssociationConnector Association="mainModel.FK_rechnung_positionen_0_0" />
-        </Diagram>
+      </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

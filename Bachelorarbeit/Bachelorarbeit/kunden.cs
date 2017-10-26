@@ -24,6 +24,7 @@ namespace Bachelorarbeit
         public long id { get; set; }
         public long kundennummer { get; set; }
         public string anrede { get; set; }
+        public string titel { get; set; }
         public string vorname { get; set; }
         public string nachname { get; set; }
         public string firma { get; set; }
