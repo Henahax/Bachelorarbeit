@@ -23,7 +23,7 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="integer" Nullable="false" />
+          <Property Name="id" Type="integer" Nullable="false" StoreGeneratedPattern="Identity" />
         </EntityType>
         <EntityType Name="kunden">
           <Key>
@@ -60,6 +60,13 @@
           </Key>
           <Property Name="id" Type="integer" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="kunde_id" Type="integer" Nullable="false" />
+          <Property Name="rechnungsnummer" Type="integer" Nullable="false" />
+          <Property Name="datum" Type="nvarchar" MaxLength="2147483647" />
+          <Property Name="mehrwertsteueranzeige" Type="nvarchar" MaxLength="2147483647" />
+          <Property Name="zahlbartage" Type="integer" />
+          <Property Name="skontoprozent" Type="decimal" Precision="53" Scale="0" />
+          <Property Name="skontotage" Type="integer" />
+          <Property Name="bemerkung" Type="nvarchar" MaxLength="2147483647" />
         </EntityType>
         <Association Name="FK_angebot_positionen_0_0">
           <End Role="angebote" Type="Self.angebote" Multiplicity="1" />
@@ -182,7 +189,7 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int64" Nullable="false" />
+          <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
         </EntityType>
         <EntityType Name="kunden">
           <Key>
@@ -222,6 +229,13 @@
           </Key>
           <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="kunde_id" Type="Int64" Nullable="false" />
+          <Property Name="rechnungsnummer" Type="Int64" Nullable="false" />
+          <Property Name="datum" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" />
+          <Property Name="mehrwertsteueranzeige" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" />
+          <Property Name="zahlbartage" Type="Int64" />
+          <Property Name="skontoprozent" Type="Decimal" Precision="53" Scale="0" />
+          <Property Name="skontotage" Type="Int64" />
+          <Property Name="bemerkung" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="kunden" Relationship="mainModel.FK_rechnungen_0_0" FromRole="rechnungen" ToRole="kunden" />
           <NavigationProperty Name="rechnung_positionen" Relationship="mainModel.FK_rechnung_positionen_0_0" FromRole="rechnungen" ToRole="rechnung_positionen" />
         </EntityType>
@@ -336,6 +350,13 @@
           <EntitySetMapping Name="rechnungen">
             <EntityTypeMapping TypeName="mainModel.rechnungen">
               <MappingFragment StoreEntitySet="rechnungen">
+                <ScalarProperty Name="bemerkung" ColumnName="bemerkung" />
+                <ScalarProperty Name="skontotage" ColumnName="skontotage" />
+                <ScalarProperty Name="skontoprozent" ColumnName="skontoprozent" />
+                <ScalarProperty Name="zahlbartage" ColumnName="zahlbartage" />
+                <ScalarProperty Name="mehrwertsteueranzeige" ColumnName="mehrwertsteueranzeige" />
+                <ScalarProperty Name="datum" ColumnName="datum" />
+                <ScalarProperty Name="rechnungsnummer" ColumnName="rechnungsnummer" />
                 <ScalarProperty Name="kunde_id" ColumnName="kunde_id" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
