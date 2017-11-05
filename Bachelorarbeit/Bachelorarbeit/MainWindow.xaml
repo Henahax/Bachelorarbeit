@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Bachelorarbeit"
         mc:Ignorable="d"
-        Title="Bachelorarbeit" Width="960" Height="800" MinHeight="360" MinWidth="960" Language="de-DE" Loaded="Window_Loaded">
+        Title="Bachelorarbeit" Width="1080" Height="800" MinHeight="360" MinWidth="960" Language="de-DE" Loaded="Window_Loaded">
 
     <Window.Resources>
         <Style x:Key="GridSplitterVerticalGripStyle" TargetType="{x:Type GridSplitter}">
@@ -40,7 +40,7 @@
         <CollectionViewSource x:Key="rechnungenViewSource" d:DesignSource="{d:DesignInstance {x:Type local:rechnungen}, CreateList=True}"/>
     </Window.Resources>
 
-    <DockPanel Background="WhiteSmoke">
+    <DockPanel>
         <Menu IsMainMenu="True" DockPanel.Dock="Top">
             <MenuItem Header="Datei"></MenuItem>
             <MenuItem Header="Bearbeiten">
@@ -56,7 +56,7 @@
                 <ColumnDefinition Width="Auto" Name="masterSpalteMitte"/>
                 <ColumnDefinition Width="*" MinWidth="420" Name="masterSpalteRechts"/>
             </Grid.ColumnDefinitions>
-            <TabControl DockPanel.Dock="Top" TabStripPlacement="Left" Background="WhiteSmoke" Grid.ColumnSpan="3">
+            <TabControl DockPanel.Dock="Top" TabStripPlacement="Left" Grid.ColumnSpan="3">
                 <TabItem x:Name="tabKunden" Header="Kunden" Height="80">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -580,7 +580,7 @@
                                                     <DatePicker x:Name="rechnungDatum" Grid.Column="1" Grid.Row="1" Margin="1" VerticalAlignment="Center"/>
                                                 </Grid>
                                             </GroupBox>
-                                            <GroupBox Grid.Row="1" Header="Kunde" Margin="1">
+                                            <GroupBox x:Name="groupBoxRechnungKunde" Grid.Row="1" Header="Kunde" Margin="1">
                                                 <Grid>
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition Width="120"/>
@@ -596,12 +596,12 @@
                                                     </Grid.RowDefinitions>
                                                     <Label Grid.Column="0" Grid.Row="0" Margin="1">Kundennummer</Label>
                                                     <Label x:Name="rechnungKundennummer" Grid.Column="2" Grid.Row="0" Margin="1" VerticalAlignment="Center" Content="1"/>
-                                                    <Button Grid.Column="1" Grid.Row="0" Margin="1" VerticalAlignment="Center" Content="Durchsuchen"/>
-                                                    <Label Grid.Column="0" Grid.Row="1" Grid.RowSpan="4" Margin="1">Anschrift</Label>
-                                                    <Label x:Name="rechnungKundenname" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Margin="1">Herr Max Mustermann</Label>
-                                                    <Label x:Name="rechnungKundenstraße" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" Margin="1">Musterstraße 1</Label>
-                                                    <Label x:Name="rechnungKundenort" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" Margin="1">12345 Musterstadt</Label>
-                                                    <Label x:Name="rechnungKundenland" Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="2" Margin="1">Musterland</Label>
+                                                    <Button x:Name="rechnungKundenDurchsuchen" Grid.Column="1" Grid.Row="0" Margin="1" VerticalAlignment="Center" Content="Durchsuchen" Click="RechnungKundenDurchsuchen"/>
+                                                    <Label Grid.Column="0" Grid.Row="1" Grid.RowSpan="4" Margin="1"/>
+                                                    <Label x:Name="rechnungKundenname" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Margin="1"/>
+                                                    <Label x:Name="rechnungKundenstraße" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" Margin="1"/>
+                                                    <Label x:Name="rechnungKundenort" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" Margin="1"/>
+                                                    <Label x:Name="rechnungKundenland" Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="2" Margin="1"/>
                                                 </Grid>
                                             </GroupBox>
                                             <GroupBox Grid.Row="2" Header="Mehrwertsteuer" Margin="1">
@@ -620,16 +620,17 @@
                                                         <RowDefinition Height="*"/>
                                                         <RowDefinition Height="Auto"/>
                                                     </Grid.RowDefinitions>
-                                                    <Button x:Name="neueZeile" Grid.Column="0" Grid.Row="1" Margin="1" Click="NeueZeile">Neue Zeile</Button>
-                                                    <Button Grid.Column="1" Grid.Row="1" Margin="1" IsEnabled="False">Zeile löschen</Button>
+                                                    <Button x:Name="rechnungZeileHinzufuegen" Grid.Column="0" Grid.Row="1" Margin="1" Click="RechnungZeileHinzufuegen" Content="Zeile hinzufügen"/>
+                                                    <Button x:Name="rechnungZeileLoeschen" Grid.Column="1" Grid.Row="1" Margin="1" IsEnabled="False" Click="RechnungZeileLoeschen" Content="Zeile löschen"/>
                                                     <DataGrid Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" x:Name="rechnungPositionen" CanUserResizeColumns="True" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" MinHeight="40" Margin="1">
                                                         <DataGrid.Columns>
-                                                            <DataGridCheckBoxColumn Header="Überschrift" Width="Auto" Binding="{Binding istÜberschrift}"/>
+                                                            <DataGridCheckBoxColumn Header="Überschrift" Width="Auto" Binding="{Binding ueberschrift}"/>
                                                             <DataGridTextColumn Header="Menge" Width="Auto" Binding="{Binding menge}"/>
                                                             <DataGridTextColumn Header="Einheit" Width="Auto" Binding="{Binding einheit}"/>
                                                             <DataGridTextColumn Header="Name" Width="*" Binding="{Binding name}"/>
                                                             <DataGridTextColumn Header="Beschreibung" Width="*" Binding="{Binding beschreibung}"/>
                                                             <DataGridTextColumn Header="Einzelpreis" Width="Auto" Binding="{Binding einzelpreis, StringFormat=c}"/>
+                                                            <DataGridTextColumn Header="Gesamtpreis" Width="Auto" Binding="{Binding gesamtpreis, StringFormat=c}" IsReadOnly="True"/>
                                                         </DataGrid.Columns>
                                                     </DataGrid>
                                                 </Grid>

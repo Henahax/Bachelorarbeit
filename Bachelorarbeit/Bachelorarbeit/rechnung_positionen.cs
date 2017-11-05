@@ -16,6 +16,13 @@ namespace Bachelorarbeit
     {
         public long id { get; set; }
         public long rechnung_id { get; set; }
+        public long ueberschrift { get; set; }
+        public Nullable<decimal> menge { get; set; }
+        public string einheit { get; set; }
+        public string name { get; set; }
+        public string beschreibung { get; set; }
+        public Nullable<decimal> einzelpreis { get; set; }
+        public Nullable<decimal> gesamtpreis { get; set; }
     
         public virtual rechnungen rechnungen { get; set; }
     }

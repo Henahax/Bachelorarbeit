@@ -53,6 +53,13 @@
           </Key>
           <Property Name="id" Type="integer" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="rechnung_id" Type="integer" Nullable="false" />
+          <Property Name="ueberschrift" Type="integer" Nullable="false" />
+          <Property Name="menge" Type="decimal" Precision="53" Scale="0" />
+          <Property Name="einheit" Type="nvarchar" MaxLength="2147483647" />
+          <Property Name="name" Type="nvarchar" MaxLength="2147483647" />
+          <Property Name="beschreibung" Type="nvarchar" MaxLength="2147483647" />
+          <Property Name="einzelpreis" Type="decimal" Precision="53" Scale="0" />
+          <Property Name="gesamtpreis" Type="decimal" Precision="53" Scale="0" />
         </EntityType>
         <EntityType Name="rechnungen">
           <Key>
@@ -62,7 +69,7 @@
           <Property Name="kunde_id" Type="integer" Nullable="false" />
           <Property Name="rechnungsnummer" Type="integer" Nullable="false" />
           <Property Name="datum" Type="nvarchar" MaxLength="2147483647" />
-          <Property Name="mehrwertsteueranzeige" Type="nvarchar" MaxLength="2147483647" />
+          <Property Name="netto" Type="integer" Nullable="false" />
           <Property Name="zahlbartage" Type="integer" />
           <Property Name="skontoprozent" Type="decimal" Precision="53" Scale="0" />
           <Property Name="skontotage" Type="integer" />
@@ -221,6 +228,13 @@
           </Key>
           <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="rechnung_id" Type="Int64" Nullable="false" />
+          <Property Name="ueberschrift" Type="Int64" Nullable="false" />
+          <Property Name="menge" Type="Decimal" Precision="53" Scale="0" />
+          <Property Name="einheit" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" />
+          <Property Name="name" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" />
+          <Property Name="beschreibung" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" />
+          <Property Name="einzelpreis" Type="Decimal" Precision="53" Scale="0" />
+          <Property Name="gesamtpreis" Type="Decimal" Precision="53" Scale="0" />
           <NavigationProperty Name="rechnungen" Relationship="mainModel.FK_rechnung_positionen_0_0" FromRole="rechnung_positionen" ToRole="rechnungen" />
         </EntityType>
         <EntityType Name="rechnungen">
@@ -231,7 +245,7 @@
           <Property Name="kunde_id" Type="Int64" Nullable="false" />
           <Property Name="rechnungsnummer" Type="Int64" Nullable="false" />
           <Property Name="datum" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" />
-          <Property Name="mehrwertsteueranzeige" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" />
+          <Property Name="netto" Type="Int64" Nullable="false" />
           <Property Name="zahlbartage" Type="Int64" />
           <Property Name="skontoprozent" Type="Decimal" Precision="53" Scale="0" />
           <Property Name="skontotage" Type="Int64" />
@@ -342,6 +356,13 @@
           <EntitySetMapping Name="rechnung_positionen">
             <EntityTypeMapping TypeName="mainModel.rechnung_positionen">
               <MappingFragment StoreEntitySet="rechnung_positionen">
+                <ScalarProperty Name="gesamtpreis" ColumnName="gesamtpreis" />
+                <ScalarProperty Name="einzelpreis" ColumnName="einzelpreis" />
+                <ScalarProperty Name="beschreibung" ColumnName="beschreibung" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="einheit" ColumnName="einheit" />
+                <ScalarProperty Name="menge" ColumnName="menge" />
+                <ScalarProperty Name="ueberschrift" ColumnName="ueberschrift" />
                 <ScalarProperty Name="rechnung_id" ColumnName="rechnung_id" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
@@ -354,7 +375,7 @@
                 <ScalarProperty Name="skontotage" ColumnName="skontotage" />
                 <ScalarProperty Name="skontoprozent" ColumnName="skontoprozent" />
                 <ScalarProperty Name="zahlbartage" ColumnName="zahlbartage" />
-                <ScalarProperty Name="mehrwertsteueranzeige" ColumnName="mehrwertsteueranzeige" />
+                <ScalarProperty Name="netto" ColumnName="netto" />
                 <ScalarProperty Name="datum" ColumnName="datum" />
                 <ScalarProperty Name="rechnungsnummer" ColumnName="rechnungsnummer" />
                 <ScalarProperty Name="kunde_id" ColumnName="kunde_id" />

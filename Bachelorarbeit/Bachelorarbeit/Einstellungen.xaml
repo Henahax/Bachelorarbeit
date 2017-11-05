@@ -82,7 +82,7 @@
                             <TextBox Grid.Column="1" Grid.Row="0" Margin="1" VerticalAlignment="Center"></TextBox>
                             <Label Grid.Column="0" Grid.Row="1" Margin="1">Inhaber</Label>
                             <TextBox Grid.Column="1" Grid.Row="1" Margin="1" VerticalAlignment="Center"></TextBox>
-                            <Label Grid.Column="0" Grid.Row="2" Margin="1">Straße Nr.</Label>
+                            <Label Grid.Column="0" Grid.Row="2" Margin="1">Straße</Label>
                             <TextBox Grid.Column="1" Grid.Row="2" Margin="1" VerticalAlignment="Center"></TextBox>
                             <Label Grid.Column="0" Grid.Row="3" Margin="1">Postleitzahl</Label>
                             <TextBox Grid.Column="1" Grid.Row="3" Margin="1" VerticalAlignment="Center"></TextBox>

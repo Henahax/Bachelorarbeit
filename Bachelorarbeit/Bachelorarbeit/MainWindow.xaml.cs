@@ -7,6 +7,11 @@ using System.Data.Entity;
 using System.Data;
 using System.Linq;
 
+using System.Collections.Generic;
+using PdfSharp.Pdf;
+using PdfSharp.Drawing;
+using System.Diagnostics;
+
 namespace Bachelorarbeit
 {
     /// <summary>
@@ -20,6 +25,7 @@ namespace Bachelorarbeit
         String kundenFilter = "";
         bool neuerKundeWirdAngelegt = false;
         bool neueRechnungWirdAngelegt = false;
+        List<rechnung_positionen> rechnungPositionenListe = new List<rechnung_positionen>();
 
         public MainWindow()
         {
@@ -46,7 +52,65 @@ namespace Bachelorarbeit
             _entities.rechnungen.Load();
             _rechnungenViewSource.Source = _entities.rechnungen.Local;
         }
-        
+
+        private void KundeAuswaehlen(kunden kunde)
+        {
+            kundeKundennummer.Content = kunde.kundennummer;
+            kundeAnrede.Text = kunde.anrede;
+            kundeTitel.Text = kunde.titel;
+            kundeVorname.Text = kunde.vorname;
+            kundeNachname.Text = kunde.nachname;
+            kundeFirma.Text = kunde.firma;
+            kundeStraße.Text = kunde.strasse;
+            kundePostleitzahl.Text = kunde.postleitzahl;
+            kundeOrt.Text = kunde.ort;
+            kundeLand.Text = kunde.land;
+            kundeTelefon.Text = kunde.telefon;
+            kundeTelefax.Text = kunde.telefax;
+            kundeMobiltelefon.Text = kunde.mobiltelefon;
+            kundeEmail.Text = kunde.email;
+            kundeWebseite.Text = kunde.webseite;
+            kundeNotizen.Text = kunde.notizen;
+        }
+
+        private void KundeAbwaehlen()
+        {
+            kundeKundennummer.Content = null;
+            kundeAnrede.Text = null;
+            kundeTitel.Text = null;
+            kundeVorname.Text = null;
+            kundeNachname.Text = null;
+            kundeFirma.Text = null;
+            kundeStraße.Text = null;
+            kundePostleitzahl.Text = null;
+            kundeOrt.Text = null;
+            kundeLand.Text = null;
+            kundeTelefon.Text = null;
+            kundeTelefax.Text = null;
+            kundeMobiltelefon.Text = null;
+            kundeEmail.Text = null;
+            kundeWebseite.Text = null;
+            kundeNotizen.Text = null;
+
+            kundenListe.SelectedItem = null;
+            kundenlisteBearbeiten.IsEnabled = false;
+            kundenlisteLoeschen.IsEnabled = false;
+        }
+
+        private void RechnungAbwaehlen()
+        {
+            rechnungRechnungsnummer.Content = null;
+
+            rechnungKundenname.Content = null;
+            rechnungKundenstraße.Content = null;
+            rechnungKundenort.Content = null;
+            rechnungKundenland.Content = null;
+
+            //TODO:
+            rechnungPositionenListe.Clear();
+            rechnungPositionen.ItemsSource = null;
+            //TODO:
+        }
 
         private void EinstellungenOeffnen(object sender, RoutedEventArgs e)
         {
@@ -72,22 +136,7 @@ namespace Bachelorarbeit
             tabRechnungen.IsEnabled = false;
             tabAngebote.IsEnabled = false;
 
-            kundeKundennummer.Content = kunde.kundennummer;
-            kundeAnrede.Text = kunde.anrede;
-            kundeTitel.Text = kunde.titel;
-            kundeVorname.Text = kunde.vorname;
-            kundeNachname.Text = kunde.nachname;
-            kundeFirma.Text = kunde.firma;
-            kundeStraße.Text = kunde.strasse;
-            kundePostleitzahl.Text = kunde.postleitzahl;
-            kundeOrt.Text = kunde.ort;
-            kundeLand.Text = kunde.land;
-            kundeTelefon.Text = kunde.telefon;
-            kundeTelefax.Text = kunde.telefax;
-            kundeMobiltelefon.Text = kunde.mobiltelefon;
-            kundeEmail.Text = kunde.email;
-            kundeWebseite.Text = kunde.webseite;
-            kundeNotizen.Text = kunde.notizen;
+            KundeAuswaehlen(kunde);
         }
 
         private void KundenlisteLoeschen(object sender, RoutedEventArgs e)
@@ -105,52 +154,33 @@ namespace Bachelorarbeit
                 _entities.SaveChanges();
                 Refresh();
 
-                kundeKundennummer.Content = null;
-                kundeAnrede.Text = null;
-                kundeTitel.Text = null;
-                kundeVorname.Text = null;
-                kundeNachname.Text = null;
-                kundeFirma.Text = null;
-                kundeStraße.Text = null;
-                kundePostleitzahl.Text = null;
-                kundeOrt.Text = null;
-                kundeLand.Text = null;
-                kundeTelefon.Text = null;
-                kundeTelefax.Text = null;
-                kundeMobiltelefon.Text = null;
-                kundeEmail.Text = null;
-                kundeWebseite.Text = null;
-                kundeNotizen.Text = null;
-
-                kundenListe.SelectedItem = null;
-                kundenlisteBearbeiten.IsEnabled = false;
-                kundenlisteLoeschen.IsEnabled = false;
+                KundeAbwaehlen();
             }
         }
 
         private void KundeSpeichern(object sender, RoutedEventArgs e)
         {
+            if (kundeAnrede.SelectedItem == null)
+            {
+                MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Anrede muss ausgefüllt sein!");
+                return;
+            }
+            if (kundeAnrede.Text == "Herr" || kundeAnrede.Text == "Frau")
+            {
+                if (kundeNachname.Text == "")
+                {
+                    MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Nachname ausgefüllt sein!");
+                    return;
+                }
+            }
+            if (kundeAnrede.Text == "Firma" && kundeFirma.Text == "")
+            {
+                MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Firma muss ausgefüllt sein!");
+                return;
+            }
+
             if (neuerKundeWirdAngelegt == true)
             {
-                if (kundeAnrede.SelectedItem == null)
-                {
-                    MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Anrede muss ausgefüllt sein!");
-                    return;
-                }
-                if (kundeAnrede.Text == "Herr" || kundeAnrede.Text == "Frau")
-                {
-                    if (kundeNachname.Text == "")
-                    {
-                        MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Nachname ausgefüllt sein!");
-                        return;
-                    }
-                }
-                if (kundeAnrede.Text == "Firma" && kundeFirma.Text == "")
-                {
-                    MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Firma muss ausgefüllt sein!");
-                    return;
-                }
-
                 kunden kunde = new kunden();
 
                 long kundennummer;
@@ -174,50 +204,9 @@ namespace Bachelorarbeit
                 kunde.notizen = kundeNotizen.Text;
 
                 _entities.kunden.Add(kunde);
-                _entities.SaveChanges();
-                Refresh();
-
-                groupBoxKunde.IsEnabled = false;
-                groupBoxKunden.IsEnabled = true;
-
-                tabRechnungen.IsEnabled = true;
-                tabAngebote.IsEnabled = true;
-
-                kundeKundennummer.Content = null;
-                kundeAnrede.Text = null;
-                kundeTitel.Text = null;
-                kundeVorname.Text = null;
-                kundeNachname.Text = null;
-                kundeFirma.Text = null;
-                kundeStraße.Text = null;
-                kundePostleitzahl.Text = null;
-                kundeOrt.Text = null;
-                kundeLand.Text = null;
-                kundeTelefon.Text = null;
-                kundeTelefax.Text = null;
-                kundeMobiltelefon.Text = null;
-                kundeEmail.Text = null;
-                kundeWebseite.Text = null;
-                kundeNotizen.Text = null;
-
-                kundenListe.SelectedItem = null;
-                kundenlisteBearbeiten.IsEnabled = false;
-                kundenlisteLoeschen.IsEnabled = false;
-                neuerKundeWirdAngelegt = false;
             }
             else
             {
-                if (kundeAnrede.SelectedItem == null)
-                {
-                    MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Anrede muss ausgefüllt sein!");
-                    return;
-                }
-                if (kundeNachname.Text == "" && kundeFirma.Text == "")
-                {
-                    MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Nachname oder Firma muss ausgefüllt sein!");
-                    return;
-                }
-
                 kunden kunde = (kunden)kundenListe.SelectedItem;
 
                 kunde.anrede = kundeAnrede.Text;
@@ -238,37 +227,19 @@ namespace Bachelorarbeit
 
                 _entities.kunden.Attach(kunde);
                 _entities.Entry(kunde).State = EntityState.Modified;
-                _entities.SaveChanges();
-                Refresh();
-
-                groupBoxKunde.IsEnabled = false;
-                groupBoxKunden.IsEnabled = true;
-
-                tabRechnungen.IsEnabled = true;
-                tabAngebote.IsEnabled = true;
-
-                kundeKundennummer.Content = null;
-                kundeAnrede.Text = null;
-                kundeTitel.Text = null;
-                kundeVorname.Text = null;
-                kundeNachname.Text = null;
-                kundeFirma.Text = null;
-                kundeStraße.Text = null;
-                kundePostleitzahl.Text = null;
-                kundeOrt.Text = null;
-                kundeLand.Text = null;
-                kundeTelefon.Text = null;
-                kundeTelefax.Text = null;
-                kundeMobiltelefon.Text = null;
-                kundeEmail.Text = null;
-                kundeWebseite.Text = null;
-                kundeNotizen.Text = null;
-
-                kundenListe.SelectedItem = null;
-                kundenlisteBearbeiten.IsEnabled = false;
-                kundenlisteLoeschen.IsEnabled = false;
-                neuerKundeWirdAngelegt = false;
             }
+            _entities.SaveChanges();
+            Refresh();
+
+            groupBoxKunde.IsEnabled = false;
+            groupBoxKunden.IsEnabled = true;
+
+            tabRechnungen.IsEnabled = true;
+            tabAngebote.IsEnabled = true;
+
+            KundeAbwaehlen();
+
+            neuerKundeWirdAngelegt = false;
         }
 
         private void KundeAbbrechen(object sender, RoutedEventArgs e)
@@ -282,26 +253,8 @@ namespace Bachelorarbeit
                 tabRechnungen.IsEnabled = true;
                 tabAngebote.IsEnabled = true;
 
-                kundeKundennummer.Content = null;
-                kundeAnrede.Text = null;
-                kundeTitel.Text = null;
-                kundeVorname.Text = null;
-                kundeNachname.Text = null;
-                kundeFirma.Text = null;
-                kundeStraße.Text = null;
-                kundePostleitzahl.Text = null;
-                kundeOrt.Text = null;
-                kundeLand.Text = null;
-                kundeTelefon.Text = null;
-                kundeTelefax.Text = null;
-                kundeMobiltelefon.Text = null;
-                kundeEmail.Text = null;
-                kundeWebseite.Text = null;
-                kundeNotizen.Text = null;
+                KundeAbwaehlen();
 
-                kundenListe.SelectedItem = null;
-                kundenlisteBearbeiten.IsEnabled = false;
-                kundenlisteLoeschen.IsEnabled = false;
                 neuerKundeWirdAngelegt = false;
             }
         }
@@ -314,22 +267,7 @@ namespace Bachelorarbeit
             tabRechnungen.IsEnabled = false;
             tabAngebote.IsEnabled = false;
 
-            kundeKundennummer.Content = null;
-            kundeAnrede.Text = null;
-            kundeTitel.Text = null;
-            kundeVorname.Text = null;
-            kundeNachname.Text = null;
-            kundeFirma.Text = null;
-            kundeStraße.Text = null;
-            kundePostleitzahl.Text = null;
-            kundeOrt.Text = null;
-            kundeLand.Text = null;
-            kundeTelefon.Text = null;
-            kundeTelefax.Text = null;
-            kundeMobiltelefon.Text = null;
-            kundeEmail.Text = null;
-            kundeWebseite.Text = null;
-            kundeNotizen.Text = null;
+            KundeAbwaehlen();
 
             long kundennummer;
 
@@ -345,19 +283,19 @@ namespace Bachelorarbeit
 
             kundeKundennummer.Content = kundennummer;
 
-            kundenListe.SelectedItem = null;
-            kundenlisteBearbeiten.IsEnabled = false;
-            kundenlisteLoeschen.IsEnabled = false;
             neuerKundeWirdAngelegt = true;
         }
 
-        private void NeueZeile(object sender, RoutedEventArgs e)
+        private void RechnungZeileHinzufuegen(object sender, RoutedEventArgs e)
         {
-            /*
-            rechnungPositionenListe.Add(new RechnungPosition());
+            rechnungPositionenListe.Add(new rechnung_positionen());
             rechnungPositionen.ItemsSource = null;
             rechnungPositionen.ItemsSource = rechnungPositionenListe;
-            */
+        }
+
+        private void RechnungZeileLoeschen(object sender, RoutedEventArgs e)
+        {
+
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -382,29 +320,77 @@ namespace Bachelorarbeit
 
                     kunden kunde = (kunden)kundenListe.SelectedItem;
 
-                    kundeKundennummer.Content = kunde.kundennummer;
-                    kundeAnrede.Text = kunde.anrede;
-                    kundeTitel.Text = kunde.titel;
-                    kundeVorname.Text = kunde.vorname;
-                    kundeNachname.Text = kunde.nachname;
-                    kundeFirma.Text = kunde.firma;
-                    kundeStraße.Text = kunde.strasse;
-                    kundePostleitzahl.Text = kunde.postleitzahl;
-                    kundeOrt.Text = kunde.ort;
-                    kundeLand.Text = kunde.land;
-                    kundeTelefon.Text = kunde.telefon;
-                    kundeTelefax.Text = kunde.telefax;
-                    kundeMobiltelefon.Text = kunde.mobiltelefon;
-                    kundeEmail.Text = kunde.email;
-                    kundeWebseite.Text = kunde.webseite;
-                    kundeNotizen.Text = kunde.notizen;
+                    KundeAuswaehlen(kunde);
                 }
-                catch (Exception) { }
+                catch (Exception)
+                {
+                    //Passiert bei leeren Datensätzen
+                }
             }
             else
             {
                 kundenlisteBearbeiten.IsEnabled = false;
                 kundenlisteLoeschen.IsEnabled = false;
+            }
+        }
+
+        private void RechnungAusgewaehlt(object sender, SelectedCellsChangedEventArgs e)
+        {
+            if (rechnungsListe.SelectedCells != null)
+            {
+                try
+                {
+                    rechnungslisteBearbeiten.IsEnabled = true;
+                    rechnungslisteLoeschen.IsEnabled = true;
+
+                    rechnungen rechnung = (rechnungen)rechnungsListe.SelectedItem;
+
+                    RechnungAbwaehlen();
+
+                    rechnungRechnungsnummer.Content = rechnung.rechnungsnummer;
+
+                    rechnungDatum.SelectedDate = null;
+                    String stringDatum = rechnung.datum;
+                    DateTime datum = DateTime.Parse(stringDatum);
+                    rechnungDatum.SelectedDate = datum;
+
+                    if (rechnung.kunden.anrede == "Firma")
+                    {
+                        rechnungKundenname.Content = rechnung.kunden.firma;
+                    }
+                    else if(rechnung.kunden.anrede == "Herr")
+                    {
+                        rechnungKundenname.Content = rechnung.kunden.anrede + "n " + rechnung.kunden.vorname + " " + rechnung.kunden.nachname;
+                    }
+                    else if(rechnung.kunden.anrede == "Frau")
+                    {
+                        rechnungKundenname.Content = rechnung.kunden.anrede + " " + rechnung.kunden.vorname + " " + rechnung.kunden.nachname;
+                    }
+
+                    rechnungKundenstraße.Content = rechnung.kunden.strasse;
+
+                    rechnungKundenort.Content = rechnung.kunden.postleitzahl + " " + rechnung.kunden.ort;
+
+                    rechnungKundenland.Content = rechnung.kunden.land;
+
+                    //TODO
+
+                    rechnungPositionenListe.Clear();
+                    foreach (rechnung_positionen element in rechnung.rechnung_positionen)
+                    {
+                        rechnungPositionenListe.Add(element);
+                    }
+                    rechnungPositionen.ItemsSource = null;
+                    rechnungPositionen.ItemsSource = rechnungPositionenListe;
+
+                    //TODO
+                }
+                catch (Exception) { }
+            }
+            else
+            {
+                rechnungslisteBearbeiten.IsEnabled = false;
+                rechnungslisteLoeschen.IsEnabled = false;
             }
         }
 
@@ -414,7 +400,8 @@ namespace Bachelorarbeit
             if (kunde.titel.ToLower().Contains(kundenFilter.ToLower()) || kunde.vorname.ToLower().Contains(kundenFilter.ToLower()) || kunde.nachname.ToLower().Contains(kundenFilter.ToLower()) || kunde.firma.ToLower().Contains(kundenFilter.ToLower()) || kunde.strasse.ToLower().Contains(kundenFilter.ToLower()) || kunde.postleitzahl.ToLower().Contains(kundenFilter.ToLower()) || kunde.ort.ToLower().Contains(kundenFilter.ToLower()) || kunde.land.ToLower().Contains(kundenFilter.ToLower()) || kunde.telefon.ToLower().Contains(kundenFilter.ToLower()) || kunde.telefax.ToLower().Contains(kundenFilter.ToLower()) || kunde.mobiltelefon.ToLower().Contains(kundenFilter.ToLower()) || kunde.email.ToLower().Contains(kundenFilter.ToLower()) || kunde.webseite.ToLower().Contains(kundenFilter.ToLower()) || kunde.notizen.ToLower().Contains(kundenFilter.ToLower()))
             {
                 e.Accepted = true;
-            }else
+            }
+            else
             {
                 e.Accepted = false;
             }
@@ -422,14 +409,17 @@ namespace Bachelorarbeit
 
         private void RechnungslisteAnlegen(object sender, RoutedEventArgs e)
         {
+            //TODO: Direkt Kundenauswahl Popup
+
             groupBoxRechnung.IsEnabled = true;
             groupBoxRechnungen.IsEnabled = false;
 
             tabKunden.IsEnabled = false;
             tabAngebote.IsEnabled = false;
 
-            rechnungRechnungsnummer.Content = null;
-            //TODO:
+            groupBoxRechnungKunde.IsEnabled = true;
+
+            RechnungAbwaehlen();
 
             long rechnungsnummer;
 
@@ -444,6 +434,12 @@ namespace Bachelorarbeit
             }
 
             rechnungRechnungsnummer.Content = rechnungsnummer;
+
+            String stringDatum = System.DateTime.Now.ToShortDateString();
+            DateTime datum = DateTime.Parse(stringDatum);
+            rechnungDatum.SelectedDate = datum;
+
+            rechnungPositionen.ItemsSource = rechnungPositionenListe;
 
             rechnungsListe.SelectedItem = null;
             rechnungslisteBearbeiten.IsEnabled = false;
@@ -461,9 +457,26 @@ namespace Bachelorarbeit
             tabKunden.IsEnabled = false;
             tabAngebote.IsEnabled = false;
 
+            groupBoxRechnungKunde.IsEnabled = false;
 
             rechnungRechnungsnummer.Content = rechnung.rechnungsnummer;
-            //TODO:
+
+            rechnungPositionenListe.Clear();
+            foreach (rechnung_positionen element in rechnung.rechnung_positionen)
+            {
+                rechnungPositionenListe.Add(element);
+            }
+            rechnungPositionen.ItemsSource = null;
+            rechnungPositionen.ItemsSource = rechnungPositionenListe;
+            
+            //TODO: Ändern und testen
+            /*
+            String stringDatum = rechnung.datum;
+            DateTime datum = DateTime.Parse(stringDatum);
+            rechnungDatum.SelectedDate = datum;
+            */
+
+            //TODO
         }
 
         private void RechnungslisteLoeschen(object sender, RoutedEventArgs e)
@@ -475,12 +488,10 @@ namespace Bachelorarbeit
             {
 
                 _entities.rechnungen.Remove(rechnung);
-                //TODO: Prüfen ob Positionen gelöscht werden
                 _entities.SaveChanges();
                 Refresh();
 
-                rechnungRechnungsnummer.Content = null;
-                //TODO:
+                RechnungAbwaehlen();
 
                 rechnungsListe.SelectedItem = null;
                 rechnungslisteBearbeiten.IsEnabled = false;
@@ -490,96 +501,102 @@ namespace Bachelorarbeit
 
         private void RechnungSpeichern(object sender, RoutedEventArgs e)
         {
+            //TODO: Pflichfelder prüfen
+
+            long kundennummer;
+            Int64.TryParse(rechnungKundennummer.Content.ToString(), out kundennummer);
+
+            //TODO: evtl unsauber (Evtl Objektauswahl)
+            var query = from kunden in _entities.kunden where kunden.kundennummer == kundennummer select kunden;
+            long kundenId = 0;
+            foreach (var result in query)
+            {
+                kundenId = result.id;
+            }
+
             if (neueRechnungWirdAngelegt == true)
             {
-                //TODO: Pflichfelder prüfen
-
                 long rechnungsnummer;
                 Int64.TryParse(kundeKundennummer.Content.ToString(), out rechnungsnummer);
-                
-                long kundennummer;
-                Int64.TryParse(rechnungKundennummer.Content.ToString(), out kundennummer);
-
-                var query = from kunden in _entities.kunden where kunden.kundennummer == kundennummer select kunden;
-                
-                //TODO: evtl unsauber
-                long kundenId = 0;
-                foreach (var result in query)
-                {
-                    kundenId = result.id;
-                }
 
                 rechnungen rechnung = new rechnungen();
 
                 rechnung.rechnungsnummer = rechnungsnummer;
+
+                DateTime datum = (DateTime)rechnungDatum.SelectedDate;
+                string stringDatum = datum.ToString("yyyy-MM-dd");
+                rechnung.datum = stringDatum;
+
                 rechnung.kunde_id = kundenId;
-                //TODO
+                foreach (rechnung_positionen element in rechnungPositionenListe)
+                {
+                    rechnung.rechnung_positionen.Add(element);
+                }
+                //TODO:
 
                 _entities.rechnungen.Add(rechnung);
-                _entities.SaveChanges();
-                Refresh();
-
-                groupBoxRechnung.IsEnabled = false;
-                groupBoxRechnungen.IsEnabled = true;
-
-                tabKunden.IsEnabled = true;
-                tabAngebote.IsEnabled = true;
-
-                rechnungRechnungsnummer.Content = null;
-                rechnungKundennummer.Content = null;
-                //TODO
-
-                rechnungsListe.SelectedItem = null;
-                rechnungslisteBearbeiten.IsEnabled = false;
-                rechnungslisteLoeschen.IsEnabled = false;
-                neueRechnungWirdAngelegt = false;
             }
             else
             {
-                //TODO: Pflichfelder prüfen
-
-                long kundennummer;
-                Int64.TryParse(rechnungKundennummer.Content.ToString(), out kundennummer);
-
-                var query = from kunden in _entities.kunden where kunden.kundennummer == kundennummer select kunden;
-
-                //TODO: evtl unsauber
-                long kundenId = 0;
-                foreach (var result in query)
-                {
-                    kundenId = result.id;
-                }
-
                 rechnungen rechnung = (rechnungen)rechnungsListe.SelectedItem;
 
                 rechnung.kunde_id = kundenId;
+
+                rechnung.rechnung_positionen.Clear();
+                foreach (rechnung_positionen element in rechnungPositionenListe)
+                {
+                    rechnung.rechnung_positionen.Add(element);
+                }
                 //TODO
+
 
                 _entities.rechnungen.Attach(rechnung);
                 _entities.Entry(rechnung).State = EntityState.Modified;
-                _entities.SaveChanges();
-                Refresh();
-
-                groupBoxRechnung.IsEnabled = false;
-                groupBoxRechnungen.IsEnabled = true;
-
-                tabKunden.IsEnabled = true;
-                tabAngebote.IsEnabled = true;
-
-                rechnungRechnungsnummer.Content = null;
-                rechnungKundennummer.Content = null;
-                //TODO
-
-                rechnungsListe.SelectedItem = null;
-                rechnungslisteBearbeiten.IsEnabled = false;
-                rechnungslisteLoeschen.IsEnabled = false;
-                neueRechnungWirdAngelegt = false;
             }
+            _entities.SaveChanges();
+            Refresh();
+
+            RechnungAbwaehlen();
+
+            groupBoxRechnung.IsEnabled = false;
+            groupBoxRechnungen.IsEnabled = true;
+
+            tabKunden.IsEnabled = true;
+            tabAngebote.IsEnabled = true;
+
+            rechnungsListe.SelectedItem = null;
+            rechnungslisteBearbeiten.IsEnabled = false;
+            rechnungslisteLoeschen.IsEnabled = false;
+            neueRechnungWirdAngelegt = false;
         }
 
         private void RechnungSpeichernPDF(object sender, RoutedEventArgs e)
         {
-            //TODO:
+            //TODO
+
+            // Create a new PDF document
+            PdfDocument document = new PdfDocument();
+
+            // Create an empty page
+            PdfPage page = document.AddPage();
+
+            // Get an XGraphics object for drawing
+            XGraphics gfx = XGraphics.FromPdfPage(page);
+
+            // Create a font
+            XFont font = new XFont("Verdana", 10, XFontStyle.Bold);
+
+            // Draw the text
+            gfx.DrawString(rechnungKundenname.Content.ToString(), font, XBrushes.Black, new XRect(0, 0, page.Width, page.Height), XStringFormat.TopLeft);
+            gfx.DrawString(rechnungKundenstraße.Content.ToString(), font, XBrushes.Black, new XRect(0, 10, page.Width, page.Height), XStringFormat.TopLeft);
+            gfx.DrawString(rechnungKundenort.Content.ToString(), font, XBrushes.Black, new XRect(0, 20, page.Width, page.Height), XStringFormat.TopLeft);
+            gfx.DrawString(rechnungKundenland.Content.ToString(), font, XBrushes.Black, new XRect(0, 30, page.Width, page.Height), XStringFormat.TopLeft);
+
+            // Save the document...
+            string filename = "HelloWorld.pdf";
+            document.Save(filename);
+            // ...and start a viewer.
+            Process.Start(filename);
         }
 
         private void RechnungDrucken(object sender, RoutedEventArgs e)
@@ -600,8 +617,7 @@ namespace Bachelorarbeit
                 tabKunden.IsEnabled = true;
                 tabAngebote.IsEnabled = true;
 
-                rechnungRechnungsnummer.Content = null;
-                //TODO:
+                RechnungAbwaehlen();
 
                 rechnungsListe.SelectedItem = null;
                 rechnungslisteBearbeiten.IsEnabled = false;
@@ -610,9 +626,10 @@ namespace Bachelorarbeit
             }
         }
 
-        private void RechnungAusgewaehlt(object sender, SelectedCellsChangedEventArgs e)
+        private void RechnungKundenDurchsuchen(object sender, RoutedEventArgs e)
         {
-
+            KundenAuswahl kundenAuswahl = new KundenAuswahl();
+            kundenAuswahl.ShowDialog();
         }
     }
 }

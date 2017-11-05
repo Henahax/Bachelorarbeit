@@ -1,0 +1,68 @@
+﻿<Window x:Class="Bachelorarbeit.KundenAuswahl"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Bachelorarbeit"
+        mc:Ignorable="d"
+        Title="Kundenauswahl" Height="480" Width="640">
+    <Grid>
+        <GroupBox Grid.Column="0" Header="Kunden" Margin="1">
+            <Grid DataContext="{StaticResource kundenViewSource}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <GroupBox Grid.Row="0" Header="🔍 Suche" Margin="1">
+                    <Grid>
+                        <TextBox x:Name="Suche" Margin="1" TextChanged="SucheEingeben"/>
+                        <TextBlock IsHitTestVisible="False" Text="z.B. name oder e-mail" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="4,0,0,0" Foreground="LightGray">
+                            <TextBlock.Style>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Text, ElementName=Suche}" Value="">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </Grid>
+                </GroupBox>
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                    <GroupBox Margin="1" Header="Kundenliste">
+                        <DataGrid x:Name="Liste" Margin="1" IsReadOnly="True" SelectionMode="Single" ItemsSource="{Binding}" SelectedCellsChanged="Ausgewaehlt" HeadersVisibility="Column" AutoGenerateColumns="False">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="KNr." Binding="{Binding kundennummer}" Width="Auto"/>
+                                <DataGridTextColumn Header="Nachname" Binding="{Binding nachname}" Width="*"/>
+                                <DataGridTextColumn Header="Vorname" Binding="{Binding vorname}" Width="*"/>
+                                <DataGridTextColumn Header="Firma" Binding="{Binding firma}" Width="*"/>
+                                <DataGridTextColumn Header="Ort" Binding="{Binding ort}" Width="*"/>
+                                <DataGridTextColumn Header="Straße" Binding="{Binding strasse}" Width="*"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </GroupBox>
+                </ScrollViewer>
+                <GroupBox Grid.Row="2" Header="Aktionen">
+                    <Grid Margin="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+
+                        </Grid.ColumnDefinitions>
+                        <Button x:Name="auswaehlen" Grid.Column="0" Content="Kunden auswählen" Margin="1" Click="Auswaehlen"/>
+                        <Button x:Name="abbrechen" Grid.Column="1" Content="Abbrechen" Margin="1" IsEnabled="False" Click="Abbrechen"/>
+                    </Grid>
+                </GroupBox>
+            </Grid>
+        </GroupBox>
+    </Grid>
+</Window>

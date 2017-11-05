@@ -24,7 +24,7 @@ namespace Bachelorarbeit
         public long kunde_id { get; set; }
         public long rechnungsnummer { get; set; }
         public string datum { get; set; }
-        public string mehrwertsteueranzeige { get; set; }
+        public long netto { get; set; }
         public Nullable<long> zahlbartage { get; set; }
         public Nullable<decimal> skontoprozent { get; set; }
         public Nullable<long> skontotage { get; set; }
