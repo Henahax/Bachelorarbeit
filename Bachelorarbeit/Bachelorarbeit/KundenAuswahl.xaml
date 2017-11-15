@@ -5,9 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Bachelorarbeit"
         mc:Ignorable="d"
-        Title="Kundenauswahl" Height="480" Width="640">
+        Title="KundenAuswahl" Height="480" Width="640" Loaded="Window_Loaded">
+    <Window.Resources>
+        <CollectionViewSource x:Key="kundenViewSource" d:DesignSource="{d:DesignInstance {x:Type local:kunden}, CreateList=True}"/>
+    </Window.Resources>
     <Grid>
-        <GroupBox Grid.Column="0" Header="Kunden" Margin="1">
+        <GroupBox x:Name="groupBoxKunden" Grid.Column="0" Header="Kunden" Margin="1">
             <Grid DataContext="{StaticResource kundenViewSource}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -19,24 +22,12 @@
                 </Grid.ColumnDefinitions>
                 <GroupBox Grid.Row="0" Header="🔍 Suche" Margin="1">
                     <Grid>
-                        <TextBox x:Name="Suche" Margin="1" TextChanged="SucheEingeben"/>
-                        <TextBlock IsHitTestVisible="False" Text="z.B. name oder e-mail" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="4,0,0,0" Foreground="LightGray">
-                            <TextBlock.Style>
-                                <Style TargetType="{x:Type TextBlock}">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding Text, ElementName=Suche}" Value="">
-                                            <Setter Property="Visibility" Value="Visible"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
+                        <TextBox Margin="1"/>
                     </Grid>
                 </GroupBox>
                 <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
                     <GroupBox Margin="1" Header="Kundenliste">
-                        <DataGrid x:Name="Liste" Margin="1" IsReadOnly="True" SelectionMode="Single" ItemsSource="{Binding}" SelectedCellsChanged="Ausgewaehlt" HeadersVisibility="Column" AutoGenerateColumns="False">
+                        <DataGrid x:Name="kundenAuswahlListe" Margin="1" IsReadOnly="True" SelectionMode="Single"  HeadersVisibility="Column" AutoGenerateColumns="False" ItemsSource="{Binding}" DataContext="{DynamicResource kundenViewSource}" SelectedCellsChanged="Ausgewaehlt">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="KNr." Binding="{Binding kundennummer}" Width="Auto"/>
                                 <DataGridTextColumn Header="Nachname" Binding="{Binding nachname}" Width="*"/>
@@ -56,10 +47,9 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
-
                         </Grid.ColumnDefinitions>
-                        <Button x:Name="auswaehlen" Grid.Column="0" Content="Kunden auswählen" Margin="1" Click="Auswaehlen"/>
-                        <Button x:Name="abbrechen" Grid.Column="1" Content="Abbrechen" Margin="1" IsEnabled="False" Click="Abbrechen"/>
+                        <Button x:Name="kundenAuswahlAuswaehlen" Grid.Column="0" Content="Kunden&#xa;auswählen" Margin="1" Click="Auswaehlen" IsEnabled="False"/>
+                        <Button Grid.Column="1" Content="Abbrechen" Margin="1" IsCancel="True"/>
                     </Grid>
                 </GroupBox>
             </Grid>

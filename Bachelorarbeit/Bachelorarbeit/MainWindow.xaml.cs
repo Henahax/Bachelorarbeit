@@ -100,7 +100,9 @@ namespace Bachelorarbeit
         private void RechnungAbwaehlen()
         {
             rechnungRechnungsnummer.Content = null;
+            rechnungDatum.SelectedDate = null;
 
+            rechnungKundennummer.Content = null;
             rechnungKundenname.Content = null;
             rechnungKundenstraße.Content = null;
             rechnungKundenort.Content = null;
@@ -409,7 +411,17 @@ namespace Bachelorarbeit
 
         private void RechnungslisteAnlegen(object sender, RoutedEventArgs e)
         {
-            //TODO: Direkt Kundenauswahl Popup
+            KundenAuswahl kundenAuswahl = new KundenAuswahl();
+            kundenAuswahl.ShowDialog();
+            kunden kunde = kundenAuswahl.kunde;
+            if(kunde == null)
+            {
+                return;
+            }
+
+            rechnungsListe.SelectedItem = null;
+            rechnungslisteBearbeiten.IsEnabled = false;
+            rechnungslisteLoeschen.IsEnabled = false; 
 
             groupBoxRechnung.IsEnabled = true;
             groupBoxRechnungen.IsEnabled = false;
@@ -439,11 +451,29 @@ namespace Bachelorarbeit
             DateTime datum = DateTime.Parse(stringDatum);
             rechnungDatum.SelectedDate = datum;
 
+            rechnungKundennummer.Content = kunde.kundennummer;
+
+            if (kunde.anrede == "Firma")
+            {
+                rechnungKundenname.Content = kunde.firma;
+            }
+            else if (kunde.anrede == "Herr")
+            {
+                rechnungKundenname.Content = kunde.anrede + "n " + kunde.vorname + " " + kunde.nachname;
+            }
+            else if (kunde.anrede == "Frau")
+            {
+                rechnungKundenname.Content = kunde.anrede + " " + kunde.vorname + " " + kunde.nachname;
+            }
+
+            rechnungKundenstraße.Content = kunde.strasse;
+
+            rechnungKundenort.Content = kunde.postleitzahl + " " + kunde.ort;
+
+            rechnungKundenland.Content = kunde.land;
+
             rechnungPositionen.ItemsSource = rechnungPositionenListe;
 
-            rechnungsListe.SelectedItem = null;
-            rechnungslisteBearbeiten.IsEnabled = false;
-            rechnungslisteLoeschen.IsEnabled = false;
             neueRechnungWirdAngelegt = true;
         }
 
@@ -483,7 +513,7 @@ namespace Bachelorarbeit
         {
             rechnungen rechnung = (rechnungen)rechnungsListe.SelectedItem;
 
-            MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Sind sie sicher, dass sie diesen Kunden löschen wollen?", "Kunden Löschen Bestätigung", System.Windows.MessageBoxButton.YesNo);
+            MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Sind sie sicher, dass sie diese Rechnung löschen wollen?", "Rechnung Löschen Bestätigung", System.Windows.MessageBoxButton.YesNo);
             if (messageBoxResult == MessageBoxResult.Yes)
             {
 
@@ -517,7 +547,7 @@ namespace Bachelorarbeit
             if (neueRechnungWirdAngelegt == true)
             {
                 long rechnungsnummer;
-                Int64.TryParse(kundeKundennummer.Content.ToString(), out rechnungsnummer);
+                Int64.TryParse(rechnungRechnungsnummer.Content.ToString(), out rechnungsnummer);
 
                 rechnungen rechnung = new rechnungen();
 
@@ -626,10 +656,11 @@ namespace Bachelorarbeit
             }
         }
 
-        private void RechnungKundenDurchsuchen(object sender, RoutedEventArgs e)
+        private void RechnungKundenAuswaehlen(object sender, RoutedEventArgs e)
         {
             KundenAuswahl kundenAuswahl = new KundenAuswahl();
             kundenAuswahl.ShowDialog();
+            Console.WriteLine(kundenAuswahl.kunde.nachname);
         }
     }
 }
