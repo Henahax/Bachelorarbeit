@@ -619,7 +619,7 @@
                                                     </Grid.RowDefinitions>
                                                     <Button x:Name="rechnungZeileHinzufuegen" Grid.Column="0" Grid.Row="1" Margin="1" Click="RechnungZeileHinzufuegen" Content="Zeile hinzufügen"/>
                                                     <Button x:Name="rechnungZeileLoeschen" Grid.Column="1" Grid.Row="1" Margin="1" IsEnabled="False" Click="RechnungZeileLoeschen" Content="Zeile löschen"/>
-                                                    <DataGrid Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" x:Name="rechnungPositionen" CanUserResizeColumns="True" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" MinHeight="40" Margin="1">
+                                                    <DataGrid Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" x:Name="rechnungPositionen" CanUserResizeColumns="True" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" MinHeight="40" Margin="1" CellEditEnding="RechnungPositionenUpdate">
                                                         <DataGrid.Columns>
                                                             <DataGridCheckBoxColumn Header="Überschrift" Width="Auto" Binding="{Binding ueberschrift}" CanUserSort="False"/>
                                                             <DataGridTextColumn Header="Menge" Width="Auto" Binding="{Binding menge}" CanUserSort="False"/>
@@ -645,11 +645,11 @@
                                                         <RowDefinition Height="Auto"/>
                                                     </Grid.RowDefinitions>
                                                     <Label Grid.Column="0" Grid.Row="0">Summe netto</Label>
-                                                    <Label Grid.Column="1" Grid.Row="0" HorizontalContentAlignment="Right">81,00 €</Label>
+                                                    <Label x:Name="rechnungNettosumme" Grid.Column="1" Grid.Row="0" HorizontalContentAlignment="Right"/>
                                                     <Label Grid.Column="0" Grid.Row="1">Mehrwertsteuer</Label>
-                                                    <Label Grid.Column="1" Grid.Row="1" HorizontalContentAlignment="Right">19,00 €</Label>
+                                                    <Label x:Name="rechnungMehrwertsteuer" Grid.Column="1" Grid.Row="1" HorizontalContentAlignment="Right"/>
                                                     <Label Grid.Column="0" Grid.Row="2">Gesamtsumme</Label>
-                                                    <Label Grid.Column="1" Grid.Row="2" HorizontalContentAlignment="Right">100,00 €</Label>
+                                                    <Label x:Name="rechnungGesamtsumme" Grid.Column="1" Grid.Row="2" HorizontalContentAlignment="Right"/>
                                                 </Grid>
                                             </GroupBox>
                                             <GroupBox Grid.Row="5" Header="Zahlungsbedingungen" Margin="1">
@@ -704,7 +704,7 @@
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
-                                            <Button x:Name="rechnungSpeichern" Grid.Column="0" Margin="1" IsDefault="True" Click="RechnungSpeichern">Speichern</Button>
+                                            <Button x:Name="rechnungSpeichern" Grid.Column="0" Margin="1" Click="RechnungSpeichern">Speichern</Button>
                                             <Button x:Name="rechnungSpeichernPDF" Grid.Column="1" Margin="1" Content="Als PDF&#xa;speichern" Click="RechnungSpeichernPDF"/>
                                             <Button x:Name="rechnungDrucken" Grid.Column="2" Margin="1" Click="RechnungDrucken">Drucken</Button>
                                             <Button x:Name="rechnungAbbrechen" Grid.Column="3" Margin="1" IsCancel="True" Click="RechnungAbbrechen">Abbrechen</Button>

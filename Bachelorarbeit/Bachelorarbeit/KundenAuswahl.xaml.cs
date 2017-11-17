@@ -22,6 +22,7 @@ namespace Bachelorarbeit
     {
         mainEntities _entities;
         CollectionViewSource _kundenViewSource;
+        String kundenFilter = "";
         public kunden kunde;
 
         public KundenAuswahl()
@@ -66,6 +67,24 @@ namespace Bachelorarbeit
             }
         }
 
-        //TODO: Dialog return Object
+        private void KundenFilter(object sender, FilterEventArgs e)
+        {
+            kunden kunde = e.Item as kunden;
+            if (kunde.titel.ToLower().Contains(kundenFilter.ToLower()) || kunde.vorname.ToLower().Contains(kundenFilter.ToLower()) || kunde.nachname.ToLower().Contains(kundenFilter.ToLower()) || kunde.firma.ToLower().Contains(kundenFilter.ToLower()) || kunde.strasse.ToLower().Contains(kundenFilter.ToLower()) || kunde.postleitzahl.ToLower().Contains(kundenFilter.ToLower()) || kunde.ort.ToLower().Contains(kundenFilter.ToLower()) || kunde.land.ToLower().Contains(kundenFilter.ToLower()) || kunde.telefon.ToLower().Contains(kundenFilter.ToLower()) || kunde.telefax.ToLower().Contains(kundenFilter.ToLower()) || kunde.mobiltelefon.ToLower().Contains(kundenFilter.ToLower()) || kunde.email.ToLower().Contains(kundenFilter.ToLower()) || kunde.webseite.ToLower().Contains(kundenFilter.ToLower()) || kunde.notizen.ToLower().Contains(kundenFilter.ToLower()))
+            {
+                e.Accepted = true;
+            }
+            else
+            {
+                e.Accepted = false;
+            }
+        }
+
+        private void KundenSucheEingeben(object sender, TextChangedEventArgs e)
+        {
+            kundenFilter = suche.Text;
+            Refresh();
+            kundenAuswahlListe.SelectedItem = null;
+        }
     }
 }

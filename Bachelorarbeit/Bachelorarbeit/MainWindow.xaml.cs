@@ -356,6 +356,8 @@ namespace Bachelorarbeit
                     DateTime datum = DateTime.Parse(stringDatum);
                     rechnungDatum.SelectedDate = datum;
 
+                    rechnungKundennummer.Content = rechnung.kunden.kundennummer;
+
                     if (rechnung.kunden.anrede == "Firma")
                     {
                         rechnungKundenname.Content = rechnung.kunden.firma;
@@ -536,6 +538,7 @@ namespace Bachelorarbeit
             long kundennummer;
             Int64.TryParse(rechnungKundennummer.Content.ToString(), out kundennummer);
 
+
             //TODO: evtl unsauber (Evtl Objektauswahl)
             var query = from kunden in _entities.kunden where kunden.kundennummer == kundennummer select kunden;
             long kundenId = 0;
@@ -661,6 +664,33 @@ namespace Bachelorarbeit
             KundenAuswahl kundenAuswahl = new KundenAuswahl();
             kundenAuswahl.ShowDialog();
             Console.WriteLine(kundenAuswahl.kunde.nachname);
+        }
+
+        private void RechnungPositionenUpdate(object sender, DataGridCellEditEndingEventArgs e)
+        {
+            var zelle = rechnungPositionen.CurrentItem;
+            rechnungPositionen.CurrentItem = null;
+            rechnungPositionen.CurrentItem = zelle;
+
+            decimal? summe = 0;
+            foreach (rechnung_positionen position in rechnungPositionenListe)
+            {
+                if (position.menge != null && position.einzelpreis != null)
+                {
+                    summe = position.menge * position.einzelpreis + summe;
+                }
+
+                //TODO: Überschriften Menge und Betrag entfernen
+                if (position.ueberschrift == 1)
+                {
+                    position.menge = null;
+                    position.einzelpreis = null;
+                }
+
+                rechnungNettosumme.Content = string.Format("{0:C}", summe * ((decimal)81) / 100);
+                rechnungMehrwertsteuer.Content = string.Format("{0:C}", summe * ((decimal)19) / 100);
+                rechnungGesamtsumme.Content = string.Format("{0:C}", summe);
+            }
         }
     }
 }

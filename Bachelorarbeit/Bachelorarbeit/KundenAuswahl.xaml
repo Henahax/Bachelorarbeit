@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Bachelorarbeit"
         mc:Ignorable="d"
-        Title="KundenAuswahl" Height="480" Width="640" Loaded="Window_Loaded">
+        Title="Kunden Auswählen" Height="480" Width="640" Loaded="Window_Loaded">
     <Window.Resources>
-        <CollectionViewSource x:Key="kundenViewSource" d:DesignSource="{d:DesignInstance {x:Type local:kunden}, CreateList=True}"/>
+        <CollectionViewSource x:Key="kundenViewSource" d:DesignSource="{d:DesignInstance {x:Type local:kunden}, CreateList=True}" Filter="KundenFilter"/>
     </Window.Resources>
     <Grid>
         <GroupBox x:Name="groupBoxKunden" Grid.Column="0" Header="Kunden" Margin="1">
@@ -22,7 +22,19 @@
                 </Grid.ColumnDefinitions>
                 <GroupBox Grid.Row="0" Header="🔍 Suche" Margin="1">
                     <Grid>
-                        <TextBox Margin="1"/>
+                        <TextBox x:Name="suche" Margin="1" TextChanged="KundenSucheEingeben"/>
+                        <TextBlock IsHitTestVisible="False" Text="z.B. name oder e-mail" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="4,0,0,0" Foreground="LightGray">
+                            <TextBlock.Style>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Text, ElementName=suche}" Value="">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
                     </Grid>
                 </GroupBox>
                 <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
