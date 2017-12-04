@@ -23,5 +23,18 @@ namespace Bachelorarbeit
         {
             InitializeComponent();
         }
+
+        private void Speichern(object sender, RoutedEventArgs e)
+        {
+            if (firmenname.Text == null)
+            {
+                MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Firmenname muss ausgefüllt sein!");
+                return;
+            }
+            /*
+            _entities.kunden.Attach(kunde);
+            _entities.Entry(kunde).State = EntityState.Modified;
+            _entities.SaveChanges();*/
+        }
     }
 }

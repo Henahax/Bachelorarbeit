@@ -297,7 +297,6 @@ namespace Bachelorarbeit
 
         private void RechnungZeileLoeschen(object sender, RoutedEventArgs e)
         {
-
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -534,6 +533,7 @@ namespace Bachelorarbeit
         private void RechnungSpeichern(object sender, RoutedEventArgs e)
         {
             //TODO: Pflichfelder prüfen
+            //Zahlbardatum vor Rechnungsdatum
 
             long kundennummer;
             Int64.TryParse(rechnungKundennummer.Content.ToString(), out kundennummer);
@@ -636,7 +636,10 @@ namespace Bachelorarbeit
         {
             //TODO:
             PrintDialog druckdialog = new PrintDialog();
-            druckdialog.ShowDialog();
+            if (druckdialog.ShowDialog() == true)
+            {
+                druckdialog.PrintVisual(new Dokument(), "Titel");
+            }
         }
 
         private void RechnungAbbrechen(object sender, RoutedEventArgs e)
@@ -663,7 +666,6 @@ namespace Bachelorarbeit
         {
             KundenAuswahl kundenAuswahl = new KundenAuswahl();
             kundenAuswahl.ShowDialog();
-            Console.WriteLine(kundenAuswahl.kunde.nachname);
         }
 
         private void RechnungPositionenUpdate(object sender, DataGridCellEditEndingEventArgs e)
@@ -677,19 +679,154 @@ namespace Bachelorarbeit
             {
                 if (position.menge != null && position.einzelpreis != null)
                 {
-                    summe = position.menge * position.einzelpreis + summe;
-                }
+                    position.gesamtpreis = position.menge * position.einzelpreis;
 
+                    summe = position.gesamtpreis + summe;
+                }
                 //TODO: Überschriften Menge und Betrag entfernen
                 if (position.ueberschrift == 1)
                 {
                     position.menge = null;
                     position.einzelpreis = null;
                 }
+            }
+            rechnungNettosumme.Content = string.Format("{0:C}", summe * ((decimal)81) / 100);
+            rechnungMehrwertsteuer.Content = string.Format("{0:C}", summe * ((decimal)19) / 100);
+            rechnungGesamtsumme.Content = string.Format("{0:C}", summe);
 
-                rechnungNettosumme.Content = string.Format("{0:C}", summe * ((decimal)81) / 100);
-                rechnungMehrwertsteuer.Content = string.Format("{0:C}", summe * ((decimal)19) / 100);
-                rechnungGesamtsumme.Content = string.Format("{0:C}", summe);
+            if(rechnungSkontoProzent.Text != null)
+            {
+                decimal temp;
+                decimal? skonto = decimal.TryParse(rechnungSkontoProzent.Text, out temp) ? temp : default(decimal?);
+
+                rechnungSkontoBetrag.Content = string.Format("{0:C}", summe * skonto / 100);
+            }
+
+            //TODO: Item Source Refresh ohne Tabelle zu leeren (Nach eingabetaste geht refresh mit neuer Zeile hinzufügen)
+        }
+
+        private void RechnungZahlbarTageGeaendert(object sender, TextChangedEventArgs e)
+        {
+            DateTime? date = rechnungDatum.SelectedDate;
+
+            if (date == null)
+            {
+                return;
+            }
+
+            if(rechnungZahlbarTage.Text == null)
+            {
+                return;
+            }
+
+            double tage = double.Parse(rechnungZahlbarTage.Text, System.Globalization.CultureInfo.InvariantCulture);
+            date = date.Value.AddDays(tage);
+            rechnungZahlbarDatum.SelectedDate = date;
+        }
+
+        private void RechnungZahlbarDatumGeaendert(object sender, SelectionChangedEventArgs e)
+        {
+            DateTime? date = rechnungDatum.SelectedDate;
+
+            if (date == null)
+            {
+                return;
+            }
+
+            if(rechnungZahlbarDatum.SelectedDate == null)
+            {
+                return;
+            }
+
+            DateTime? date2 = rechnungZahlbarDatum.SelectedDate;
+            rechnungZahlbarTage.Text = (date2.Value - date.Value).Days.ToString();
+        }
+
+        private void RechnungDatumGeaendert(object sender, SelectionChangedEventArgs e)
+        {
+            DateTime? date = rechnungDatum.SelectedDate;
+
+            if (date == null)
+            {
+                rechnungZahlbarTage.Text = null;
+                rechnungZahlbarDatum.SelectedDate = null;
+                return;
+            }
+
+            if (rechnungZahlbarTage != null)
+            {
+                double tage = double.Parse(rechnungZahlbarTage.Text, System.Globalization.CultureInfo.InvariantCulture);
+                date = date.Value.AddDays(tage);
+                rechnungZahlbarDatum.SelectedDate = date;
+                return;
+            }
+
+            if (rechnungZahlbarDatum != null)
+            {
+                DateTime? date2 = rechnungZahlbarDatum.SelectedDate;
+                rechnungZahlbarTage.Text = (date2.Value - date.Value).Days.ToString();
+            }
+        }
+
+        private void RechnungSkontoTageGeaendert(object sender, TextChangedEventArgs e)
+        {
+            DateTime? date = rechnungDatum.SelectedDate;
+
+            if (date == null)
+            {
+                return;
+            }
+
+            if (rechnungSkontoTage.Text == null)
+            {
+                return;
+            }
+
+            double tage = double.Parse(rechnungSkontoTage.Text, System.Globalization.CultureInfo.InvariantCulture);
+            date = date.Value.AddDays(tage);
+            rechnungSkontoDatum.SelectedDate = date;
+        }
+
+        private void RechnungSkontoDatumGeaendert(object sender, SelectionChangedEventArgs e)
+        {
+            DateTime? date = rechnungDatum.SelectedDate;
+
+            if (date == null)
+            {
+                rechnungSkontoTage.Text = null;
+                rechnungSkontoDatum.SelectedDate = null;
+                return;
+            }
+
+            if (rechnungSkontoTage != null)
+            {
+                double tage = double.Parse(rechnungSkontoTage.Text, System.Globalization.CultureInfo.InvariantCulture);
+                date = date.Value.AddDays(tage);
+                rechnungSkontoDatum.SelectedDate = date;
+                return;
+            }
+
+            if (rechnungSkontoDatum != null)
+            {
+                DateTime? date2 = rechnungSkontoDatum.SelectedDate;
+                rechnungSkontoTage.Text = (date2.Value - date.Value).Days.ToString();
+            }
+        }
+
+        private void RechnungSkontoProzentGeaendert(object sender, TextChangedEventArgs e)
+        {
+            //TODO: Noch nicht zuverlässig (wahrscheinlich abhängig vom Datagrid)
+            if (rechnungSkontoProzent.Text != null)
+            {
+                if (rechnungGesamtsumme.Content != null)
+                {
+                    decimal temp;
+                    decimal? summe = decimal.TryParse(rechnungGesamtsumme.Content.ToString(), out temp) ? temp : default(decimal?);
+
+                    decimal temp2;
+                    decimal? skonto = decimal.TryParse(rechnungSkontoProzent.Text, out temp2) ? temp2 : default(decimal?);
+                    rechnungSkontoBetrag.Content = string.Format("{0:C}", summe * skonto / 100);
+                }
             }
         }
     }

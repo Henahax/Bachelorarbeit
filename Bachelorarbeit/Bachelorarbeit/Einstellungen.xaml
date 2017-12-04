@@ -28,29 +28,19 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
-                            <Label Grid.Column="0" Grid.Row="0" Margin="1">Wärungssymbol</Label>
-                            <TextBox Grid.Column="1" Grid.Row="0" Margin="1" VerticalAlignment="Center" HorizontalContentAlignment="Right">€</TextBox>
-                            <Label Grid.Column="0" Grid.Row="1" Margin="1" Content="Standardmehrwertsteuersatz"/>
-                            <TextBox Grid.Column="1" Grid.Row="1" Margin="1" VerticalAlignment="Center" HorizontalContentAlignment="Right">19</TextBox>
-                            <Label Grid.Column="2" Grid.Row="1" Margin="1">%</Label>
-                            <Label Grid.Column="0" Grid.Row="2" Margin="1">Standardsteuereinstellung für Dokumente</Label>
-                            <ComboBox Grid.Column="1" Grid.Row="2" Margin="1" VerticalAlignment="Center">
-                                <ComboBoxItem IsSelected="True">Brutto</ComboBoxItem>
-                                <ComboBoxItem>Netto</ComboBoxItem>
-                            </ComboBox>
-                            <Label Grid.Column="0" Grid.Row="3" Margin="1">Standardland für Kunden</Label>
-                            <TextBox Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="3" Margin="1" VerticalAlignment="Center">Deutschland</TextBox>
+                            <Label Grid.Column="0" Grid.Row="0" Margin="1" Content="Standardmehrwertsteuersatz"/>
+                            <TextBox Grid.Column="1" Grid.Row="0" Margin="1" VerticalAlignment="Center" HorizontalContentAlignment="Right">19</TextBox>
+                            <Label Grid.Column="2" Grid.Row="0" Margin="1">%</Label>
+                            <Label Grid.Column="0" Grid.Row="1" Margin="1">Standardland für Kunden</Label>
+                            <TextBox Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="3" Margin="1" VerticalAlignment="Center">Deutschland</TextBox>
 
-                            <Label Grid.Column="0" Grid.Row="4" Margin="1">Speicherort für PDF Rechnungen</Label>
-                            <TextBox Grid.Column="1" Grid.Row="4" Margin="1" VerticalAlignment="Center" Grid.ColumnSpan="2"></TextBox>
-                            <Button Grid.Column="3" Grid.Row="4" Margin="1" VerticalAlignment="Center">Durchsuchen</Button>
-                            <Label Grid.Column="0" Grid.Row="5" Margin="1">Speicherort für PDF Angebote</Label>
-                            <TextBox Grid.Column="1" Grid.Row="5" Margin="1" VerticalAlignment="Center" Grid.ColumnSpan="2"></TextBox>
-                            <Button Grid.Column="3" Grid.Row="5" Margin="1" VerticalAlignment="Center">Durchsuchen</Button>
-
+                            <Label Grid.Column="0" Grid.Row="2" Margin="1">Speicherort für PDF Rechnungen</Label>
+                            <TextBox Grid.Column="1" Grid.Row="2" Margin="1" VerticalAlignment="Center" Grid.ColumnSpan="2"></TextBox>
+                            <Button Grid.Column="3" Grid.Row="2" Margin="1" VerticalAlignment="Center">Durchsuchen</Button>
+                            <Label Grid.Column="0" Grid.Row="3" Margin="1">Speicherort für PDF Angebote</Label>
+                            <TextBox Grid.Column="1" Grid.Row="3" Margin="1" VerticalAlignment="Center" Grid.ColumnSpan="2"></TextBox>
+                            <Button Grid.Column="3" Grid.Row="3" Margin="1" VerticalAlignment="Center">Durchsuchen</Button>
                         </Grid>
                     </GroupBox>
                 </ScrollViewer>
@@ -79,31 +69,47 @@
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
                             <Label Grid.Column="0" Grid.Row="0" Margin="1">Firmenname</Label>
-                            <TextBox Grid.Column="1" Grid.Row="0" Margin="1" VerticalAlignment="Center"></TextBox>
+                            <TextBox x:Name="firmenname" Grid.Column="1" Grid.Row="0" Margin="1" VerticalAlignment="Center"></TextBox>
+                            <TextBlock Grid.Row="0" Grid.Column="1" IsHitTestVisible="False" Text="z.B. Musterfirma" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="4,1,1,1" Foreground="LightGray">
+                                <TextBlock.Style>
+                                    <Style TargetType="{x:Type TextBlock}">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Text, ElementName=firmenname}" Value="">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                            <Trigger Property="IsEnabled" Value="False">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+
                             <Label Grid.Column="0" Grid.Row="1" Margin="1">Inhaber</Label>
-                            <TextBox Grid.Column="1" Grid.Row="1" Margin="1" VerticalAlignment="Center"></TextBox>
+                            <TextBox x:Name="inhaber" Grid.Column="1" Grid.Row="1" Margin="1" VerticalAlignment="Center"/>
                             <Label Grid.Column="0" Grid.Row="2" Margin="1">Straße</Label>
-                            <TextBox Grid.Column="1" Grid.Row="2" Margin="1" VerticalAlignment="Center"></TextBox>
+                            <TextBox x:Name="strasse" Grid.Column="1" Grid.Row="2" Margin="1" VerticalAlignment="Center"></TextBox>
                             <Label Grid.Column="0" Grid.Row="3" Margin="1">Postleitzahl</Label>
-                            <TextBox Grid.Column="1" Grid.Row="3" Margin="1" VerticalAlignment="Center"></TextBox>
+                            <TextBox x:Name="postleitzahl" Grid.Column="1" Grid.Row="3" Margin="1" VerticalAlignment="Center"></TextBox>
                             <Label Grid.Column="0" Grid.Row="4" Margin="1">Ort</Label>
-                            <TextBox Grid.Column="1" Grid.Row="4" Margin="1" VerticalAlignment="Center"></TextBox>
+                            <TextBox x:Name="ort" Grid.Column="1" Grid.Row="4" Margin="1" VerticalAlignment="Center"></TextBox>
                             <Label Grid.Column="0" Grid.Row="5" Margin="1">Land</Label>
-                            <TextBox Grid.Column="1" Grid.Row="5" Margin="1" VerticalAlignment="Center"></TextBox>
+                            <TextBox x:Name="land" Grid.Column="1" Grid.Row="5" Margin="1" VerticalAlignment="Center"></TextBox>
                             <Label Grid.Column="0" Grid.Row="6" Margin="1">Telefon</Label>
-                            <TextBox Grid.Column="1" Grid.Row="6" Margin="1" VerticalAlignment="Center"></TextBox>
+                            <TextBox x:Name="telefon" Grid.Column="1" Grid.Row="6" Margin="1" VerticalAlignment="Center"></TextBox>
                             <Label Grid.Column="0" Grid.Row="7" Margin="1">Telefax</Label>
-                            <TextBox Grid.Column="1" Grid.Row="7" Margin="1" VerticalAlignment="Center"></TextBox>
+                            <TextBox x:Name="telefax" Grid.Column="1" Grid.Row="7" Margin="1" VerticalAlignment="Center"></TextBox>
                             <Label Grid.Column="0" Grid.Row="8" Margin="1">E-Mail</Label>
-                            <TextBox Grid.Column="1" Grid.Row="8" Margin="1" VerticalAlignment="Center"></TextBox>
+                            <TextBox x:Name="email" Grid.Column="1" Grid.Row="8" Margin="1" VerticalAlignment="Center"></TextBox>
                             <Label Grid.Column="0" Grid.Row="9" Margin="1">Webseite</Label>
-                            <TextBox Grid.Column="1" Grid.Row="9" Margin="1" VerticalAlignment="Center"></TextBox>
+                            <TextBox x:Name="webseite" Grid.Column="1" Grid.Row="9" Margin="1" VerticalAlignment="Center"></TextBox>
                             <Label Grid.Column="0" Grid.Row="10" Margin="1">USt-IdNr.</Label>
-                            <TextBox Grid.Column="1" Grid.Row="10" Margin="1" VerticalAlignment="Center"></TextBox>
+                            <TextBox x:Name="ustidnr" Grid.Column="1" Grid.Row="10" Margin="1" VerticalAlignment="Center"></TextBox>
                             <Label Grid.Column="0" Grid.Row="11" Margin="1">IBAN</Label>
-                            <TextBox Grid.Column="1" Grid.Row="11" Margin="1" VerticalAlignment="Center"></TextBox>
+                            <TextBox x:Name="iban" Grid.Column="1" Grid.Row="11" Margin="1" VerticalAlignment="Center"></TextBox>
                             <Label Grid.Column="0" Grid.Row="12" Margin="1">BIC</Label>
-                            <TextBox Grid.Column="1" Grid.Row="12" Margin="1" VerticalAlignment="Center"></TextBox>
+                            <TextBox x:Name="bic" Grid.Column="1" Grid.Row="12" Margin="1" VerticalAlignment="Center"></TextBox>
                         </Grid>
                     </GroupBox>
                 </ScrollViewer>
@@ -115,7 +121,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Button Grid.Column="0" IsDefault="True" MaxWidth="160" Margin="1">Speichern</Button>
+                <Button x:Name="speichern" Grid.Column="0" IsDefault="True" MaxWidth="160" Margin="1" Click="Speichern">Speichern</Button>
                 <Button Grid.Column="1" IsCancel="True" MaxWidth="160" Margin="1">Abbrechen</Button>
             </Grid>
         </GroupBox>

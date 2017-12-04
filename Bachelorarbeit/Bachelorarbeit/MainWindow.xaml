@@ -516,7 +516,6 @@
                                                 <DataGridTextColumn Header="Nachname" Binding="{Binding kunden.nachname}" Width="*"/>
                                                 <DataGridTextColumn Header="Vorname" Binding="{Binding kunden.vorname}" Width="*"/>
                                                 <DataGridTextColumn Header="Firma" Binding="{Binding kunden.firma}" Width="*"/>
-
                                                 <DataGridTextColumn Header="Betrag" Width="Auto"/>
                                                 <DataGridTextColumn Header="Status" Width="Auto"/>
                                             </DataGrid.Columns>
@@ -576,7 +575,7 @@
                                                     <Label Grid.Column="0" Grid.Row="0" Margin="1">Rechnungsnummer</Label>
                                                     <Label x:Name="rechnungRechnungsnummer" Grid.Column="1" Grid.Row="0" Margin="1" VerticalAlignment="Center"/>
                                                     <Label Grid.Column="0" Grid.Row="1" Margin="1">Datum</Label>
-                                                    <DatePicker x:Name="rechnungDatum" Grid.Column="1" Grid.Row="1" Margin="1" VerticalAlignment="Center"/>
+                                                    <DatePicker x:Name="rechnungDatum" Grid.Column="1" Grid.Row="1" Margin="1" VerticalAlignment="Center" SelectedDateChanged="RechnungDatumGeaendert"/>
                                                 </Grid>
                                             </GroupBox>
                                             <GroupBox x:Name="groupBoxRechnungKunde" Grid.Row="1" Header="Kunde" Margin="1">
@@ -622,12 +621,30 @@
                                                     <DataGrid Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" x:Name="rechnungPositionen" CanUserResizeColumns="True" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" MinHeight="40" Margin="1" CellEditEnding="RechnungPositionenUpdate">
                                                         <DataGrid.Columns>
                                                             <DataGridCheckBoxColumn Header="Überschrift" Width="Auto" Binding="{Binding ueberschrift}" CanUserSort="False"/>
-                                                            <DataGridTextColumn Header="Menge" Width="Auto" Binding="{Binding menge}" CanUserSort="False"/>
+                                                            <DataGridTextColumn Header="Menge" Width="Auto" Binding="{Binding menge}" CanUserSort="False">
+                                                                <DataGridTextColumn.ElementStyle>
+                                                                    <Style>
+                                                                        <Setter Property="TextBlock.TextAlignment" Value="Right"/>
+                                                                    </Style>
+                                                                </DataGridTextColumn.ElementStyle>
+                                                            </DataGridTextColumn>
                                                             <DataGridTextColumn Header="Einheit" Width="Auto" Binding="{Binding einheit}" CanUserSort="False"/>
                                                             <DataGridTextColumn Header="Name" Width="*" Binding="{Binding name}" CanUserSort="False"/>
                                                             <DataGridTextColumn Header="Beschreibung" Width="*" Binding="{Binding beschreibung}" CanUserSort="False"/>
-                                                            <DataGridTextColumn Header="Einzelpreis" Width="Auto" Binding="{Binding einzelpreis, StringFormat=c}" CanUserSort="False"/>
-                                                            <DataGridTextColumn Header="Gesamtpreis" Width="Auto" Binding="{Binding gesamtpreis, StringFormat=c}" IsReadOnly="True" CanUserSort="False"/>
+                                                            <DataGridTextColumn Header="Einzelpreis" Width="Auto" Binding="{Binding einzelpreis, StringFormat=c}" CanUserSort="False">
+                                                                <DataGridTextColumn.ElementStyle>
+                                                                    <Style>
+                                                                        <Setter Property="TextBlock.TextAlignment" Value="Right"/>
+                                                                    </Style>
+                                                                </DataGridTextColumn.ElementStyle>
+                                                            </DataGridTextColumn>
+                                                            <DataGridTextColumn Header="Gesamtpreis" Width="Auto" Binding="{Binding gesamtpreis, StringFormat=c}" IsReadOnly="True" CanUserSort="False">
+                                                                <DataGridTextColumn.ElementStyle>
+                                                                    <Style>
+                                                                        <Setter Property="TextBlock.TextAlignment" Value="Right"/>
+                                                                    </Style>
+                                                                </DataGridTextColumn.ElementStyle>
+                                                            </DataGridTextColumn>
                                                         </DataGrid.Columns>
                                                     </DataGrid>
                                                 </Grid>
@@ -653,7 +670,7 @@
                                                 </Grid>
                                             </GroupBox>
                                             <GroupBox Grid.Row="5" Header="Zahlungsbedingungen" Margin="1">
-                                                <Grid>
+                                                <Grid DataContext="{StaticResource rechnungenViewSource}">
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition Width="120"/>
                                                         <ColumnDefinition Width="Auto"/>
@@ -665,30 +682,33 @@
                                                         <RowDefinition Height="Auto"/>
                                                         <RowDefinition Height="Auto"/>
                                                         <RowDefinition Height="Auto"/>
+                                                        <RowDefinition Height="Auto"/>
                                                     </Grid.RowDefinitions>
                                                     <Label Grid.Column="0" Grid.Row="0">Zahlbar innerhalb</Label>
-                                                    <TextBox Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" HorizontalContentAlignment="Right" Margin="1"/>
+                                                    <TextBox x:Name="rechnungZahlbarTage" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" HorizontalContentAlignment="Right" Margin="1" TextChanged="RechnungZahlbarTageGeaendert" Text="{Binding zahlbartage, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
                                                     <Label Grid.Column="2" Grid.Row="0">Tagen</Label>
                                                     <Label Grid.Column="0" Grid.Row="1">bis zum</Label>
-                                                    <DatePicker Grid.Column="1" Grid.Row="1" Margin="1" VerticalAlignment="Center"/>
+                                                    <DatePicker x:Name="rechnungZahlbarDatum" Grid.Column="1" Grid.Row="1" Margin="1" VerticalAlignment="Center" SelectedDateChanged="RechnungZahlbarDatumGeaendert"/>
                                                     <Label Grid.Column="0" Grid.Row="2">Skonto</Label>
-                                                    <TextBox Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" HorizontalContentAlignment="Right" Margin="1"/>
+                                                    <TextBox x:Name="rechnungSkontoProzent" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" HorizontalContentAlignment="Right" Margin="1" Text="{Binding skontoprozent, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" TextChanged="RechnungSkontoProzentGeaendert"/>
                                                     <Label Grid.Column="2" Grid.Row="2">%</Label>
-                                                    <Label Grid.Column="0" Grid.Row="3">Skonto innerhalb</Label>
-                                                    <TextBox Grid.Column="1" Grid.Row="3" VerticalAlignment="Center" HorizontalContentAlignment="Right" Margin="1"/>
-                                                    <Label Grid.Column="2" Grid.Row="3">Tagen</Label>
-                                                    <Label Grid.Column="0" Grid.Row="4" Content="bis zum"/>
-                                                    <DatePicker Grid.Column="1" Grid.Row="4" Margin="1" VerticalAlignment="Center"/>
+                                                    <Label Grid.Column="0" Grid.Row="3">Skonto Betrag</Label>
+                                                    <Label x:Name="rechnungSkontoBetrag" Grid.Column="1" Grid.Row="3"/>
+                                                    <Label Grid.Column="0" Grid.Row="4">Skonto innerhalb</Label>
+                                                    <TextBox x:Name="rechnungSkontoTage" Grid.Column="1" Grid.Row="4" VerticalAlignment="Center" HorizontalContentAlignment="Right" Margin="1" Text="{Binding skontotage, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" TextChanged="RechnungSkontoTageGeaendert"/>
+                                                    <Label Grid.Column="2" Grid.Row="4">Tagen</Label>
+                                                    <Label Grid.Column="0" Grid.Row="5" Content="bis zum"/>
+                                                    <DatePicker x:Name="rechnungSkontoDatum" Grid.Column="1" Grid.Row="5" Margin="1" VerticalAlignment="Center" SelectedDateChanged="RechnungSkontoDatumGeaendert"/>
                                                 </Grid>
                                             </GroupBox>
                                             <GroupBox Grid.Row="6" Header="Sonstiges" Margin="1">
-                                                <Grid>
+                                                <Grid DataContext="{StaticResource rechnungenViewSource}">
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition Width="120"/>
                                                         <ColumnDefinition Width="*"/>
                                                     </Grid.ColumnDefinitions>
                                                     <Label Grid.Column="0">Bemerkung</Label>
-                                                    <RichTextBox Grid.Column="1" MinHeight="42" Margin="1"/>
+                                                    <TextBox Grid.Column="1" MinHeight="42" Margin="1" TextWrapping="Wrap"/>
                                                 </Grid>
                                             </GroupBox>
                                         </Grid>
