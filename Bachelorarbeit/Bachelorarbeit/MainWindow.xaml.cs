@@ -8,9 +8,19 @@ using System.Data;
 using System.Linq;
 
 using System.Collections.Generic;
+using System.Globalization;
+using System.Printing;
 using PdfSharp.Pdf;
 using PdfSharp.Drawing;
+using System.IO;
+using System.IO.Packaging;
+using System.Drawing.Printing;
 using System.Diagnostics;
+using System.Text;
+using System.Threading;
+using System.Windows.Xps.Packaging;
+using System.Windows.Markup;
+using System.Windows.Xps;
 
 namespace Bachelorarbeit
 {
@@ -23,6 +33,7 @@ namespace Bachelorarbeit
         CollectionViewSource _kundenViewSource;
         CollectionViewSource _rechnungenViewSource;
         String kundenFilter = "";
+        String rechnungenFilter = "";
         bool neuerKundeWirdAngelegt = false;
         bool neueRechnungWirdAngelegt = false;
         List<rechnung_positionen> rechnungPositionenListe = new List<rechnung_positionen>();
@@ -32,6 +43,7 @@ namespace Bachelorarbeit
             //TODO: Datenbank relativer Pfad
             //TODO: Suche Vorschauanzeige
 
+            //TODO: evtl pdfsharp 1.31 dlls einfügen https://nathanpjones.com/2013/03/output-to-pdf-in-wpf-for-free/
             //TODO: Bei Datenbankänderungen, Identify Spalte neu konfigurieren im Model
             InitializeComponent();
             _kundenViewSource = ((CollectionViewSource)(this.FindResource("kundenViewSource")));
@@ -111,7 +123,15 @@ namespace Bachelorarbeit
             //TODO:
             rechnungPositionenListe.Clear();
             rechnungPositionen.ItemsSource = null;
-            //TODO:
+
+            rechnungZahlbarTage.Text = null;
+            rechnungZahlbarDatum.SelectedDate = null;
+            rechnungSkontoProzent.Text = null;
+            rechnungSkontoBetrag.Content = null;
+            rechnungSkontoTage.Text = null;
+            rechnungSkontoDatum.SelectedDate = null;
+
+            rechnungBemerkung.Text = null;
         }
 
         private void EinstellungenOeffnen(object sender, RoutedEventArgs e)
@@ -125,6 +145,13 @@ namespace Bachelorarbeit
             kundenFilter = kundenSuche.Text;
             Refresh();
             kundenListe.SelectedItem = null;
+        }
+
+        private void rechnungenSucheEingeben(object sender, TextChangedEventArgs e)
+        {
+            rechnungenFilter = rechnungenSuche.Text;
+            Refresh();
+            rechnungenListe.SelectedItem = null;
         }
 
 
@@ -337,23 +364,27 @@ namespace Bachelorarbeit
 
         private void RechnungAusgewaehlt(object sender, SelectedCellsChangedEventArgs e)
         {
-            if (rechnungsListe.SelectedCells != null)
+            //TODO: Problem: Erster Eintrag in Liste funktioniert nicht
+            if (rechnungenListe.SelectedCells != null)
             {
                 try
                 {
                     rechnungslisteBearbeiten.IsEnabled = true;
                     rechnungslisteLoeschen.IsEnabled = true;
 
-                    rechnungen rechnung = (rechnungen)rechnungsListe.SelectedItem;
+                    rechnungen rechnung = (rechnungen)rechnungenListe.SelectedItem;
 
                     RechnungAbwaehlen();
 
-                    rechnungRechnungsnummer.Content = rechnung.rechnungsnummer;
+                    //TODO: Exception besser behandeln
+
+                    rechnungRechnungsnummer.Content = rechnung.rechnungsnummer.ToString();
 
                     rechnungDatum.SelectedDate = null;
                     String stringDatum = rechnung.datum;
                     DateTime datum = DateTime.Parse(stringDatum);
-                    rechnungDatum.SelectedDate = datum;
+
+                    rechnungDatum.SelectedDate = DateTime.Parse(stringDatum);
 
                     rechnungKundennummer.Content = rechnung.kunden.kundennummer;
 
@@ -386,6 +417,8 @@ namespace Bachelorarbeit
                     rechnungPositionen.ItemsSource = null;
                     rechnungPositionen.ItemsSource = rechnungPositionenListe;
 
+                    rechnungZahlbarTage.Text = rechnung.zahlbartage.ToString();
+
                     //TODO
                 }
                 catch (Exception) { }
@@ -410,6 +443,38 @@ namespace Bachelorarbeit
             }
         }
 
+        private void RechnungenFilter(object sender, FilterEventArgs e)
+        {
+            //TODO: Testen (Geht noch nicht)
+            rechnungen rechnung = e.Item as rechnungen;
+            if (rechnung.rechnung_positionen != null)
+            {
+                foreach (rechnung_positionen p in rechnung.rechnung_positionen)
+                {
+                    if (p.beschreibung != null || p.name != null)
+                    {
+                        if (p.beschreibung.ToLower().Contains(rechnungenFilter))
+                        {
+                            e.Accepted = true;
+                        }
+                        if (p.name.ToLower().Contains(rechnungenFilter))
+                        {
+                            e.Accepted = true;
+                        }
+                    } 
+                }
+            }
+            else if (rechnung.kunden.titel.ToLower().Contains(rechnungenFilter.ToLower()) || rechnung.kunden.vorname.ToLower().Contains(rechnungenFilter.ToLower()) || rechnung.kunden.nachname.ToLower().Contains(rechnungenFilter.ToLower()) || rechnung.kunden.firma.ToLower().Contains(rechnungenFilter.ToLower()) || rechnung.kunden.strasse.ToLower().Contains(rechnungenFilter.ToLower()) || rechnung.kunden.postleitzahl.ToLower().Contains(rechnungenFilter.ToLower()) || rechnung.kunden.ort.ToLower().Contains(rechnungenFilter.ToLower()) || rechnung.kunden.land.ToLower().Contains(rechnungenFilter.ToLower()) || rechnung.kunden.telefon.ToLower().Contains(rechnungenFilter.ToLower()) || rechnung.kunden.telefax.ToLower().Contains(rechnungenFilter.ToLower()) || rechnung.kunden.mobiltelefon.ToLower().Contains(rechnungenFilter.ToLower()) || rechnung.kunden.email.ToLower().Contains(rechnungenFilter.ToLower()) || rechnung.kunden.webseite.ToLower().Contains(rechnungenFilter.ToLower()) || rechnung.kunden.notizen.ToLower().Contains(rechnungenFilter.ToLower()))
+            {
+                e.Accepted = true;
+            }
+
+            else
+            {
+                e.Accepted = false;
+            }
+        }
+
         private void RechnungslisteAnlegen(object sender, RoutedEventArgs e)
         {
             KundenAuswahl kundenAuswahl = new KundenAuswahl();
@@ -420,7 +485,7 @@ namespace Bachelorarbeit
                 return;
             }
 
-            rechnungsListe.SelectedItem = null;
+            rechnungenListe.SelectedItem = null;
             rechnungslisteBearbeiten.IsEnabled = false;
             rechnungslisteLoeschen.IsEnabled = false; 
 
@@ -480,7 +545,7 @@ namespace Bachelorarbeit
 
         private void RechnungslisteBearbeiten(object sender, RoutedEventArgs e)
         {
-            rechnungen rechnung = (rechnungen)rechnungsListe.SelectedItem;
+            rechnungen rechnung = (rechnungen)rechnungenListe.SelectedItem;
 
             groupBoxRechnung.IsEnabled = true;
             groupBoxRechnungen.IsEnabled = false;
@@ -512,19 +577,18 @@ namespace Bachelorarbeit
 
         private void RechnungslisteLoeschen(object sender, RoutedEventArgs e)
         {
-            rechnungen rechnung = (rechnungen)rechnungsListe.SelectedItem;
+            rechnungen rechnung = (rechnungen)rechnungenListe.SelectedItem;
 
             MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Sind sie sicher, dass sie diese Rechnung löschen wollen?", "Rechnung Löschen Bestätigung", System.Windows.MessageBoxButton.YesNo);
             if (messageBoxResult == MessageBoxResult.Yes)
             {
-
                 _entities.rechnungen.Remove(rechnung);
                 _entities.SaveChanges();
                 Refresh();
 
                 RechnungAbwaehlen();
 
-                rechnungsListe.SelectedItem = null;
+                rechnungenListe.SelectedItem = null;
                 rechnungslisteBearbeiten.IsEnabled = false;
                 rechnungslisteLoeschen.IsEnabled = false;
             }
@@ -534,6 +598,8 @@ namespace Bachelorarbeit
         {
             //TODO: Pflichfelder prüfen
             //Zahlbardatum vor Rechnungsdatum
+
+            //Zahlbartage speichern geht noch nicht
 
             long kundennummer;
             Int64.TryParse(rechnungKundennummer.Content.ToString(), out kundennummer);
@@ -565,13 +631,21 @@ namespace Bachelorarbeit
                 {
                     rechnung.rechnung_positionen.Add(element);
                 }
-                //TODO:
+
+                long zahlbartage;
+                Int64.TryParse(rechnungZahlbarTage.Text, out zahlbartage);
+
+                rechnung.zahlbartage = zahlbartage;
+
+                //TODO: Skonto
+
+                rechnung.bemerkung = rechnungBemerkung.Text;
 
                 _entities.rechnungen.Add(rechnung);
             }
             else
             {
-                rechnungen rechnung = (rechnungen)rechnungsListe.SelectedItem;
+                rechnungen rechnung = (rechnungen)rechnungenListe.SelectedItem;
 
                 rechnung.kunde_id = kundenId;
 
@@ -580,8 +654,14 @@ namespace Bachelorarbeit
                 {
                     rechnung.rechnung_positionen.Add(element);
                 }
-                //TODO
 
+                long zahlbartage;
+                Int64.TryParse(rechnungZahlbarTage.Text, out zahlbartage);
+                rechnung.zahlbartage = zahlbartage;
+
+                //TODO: Skonto
+
+                rechnung.bemerkung = rechnungBemerkung.Text;
 
                 _entities.rechnungen.Attach(rechnung);
                 _entities.Entry(rechnung).State = EntityState.Modified;
@@ -597,7 +677,7 @@ namespace Bachelorarbeit
             tabKunden.IsEnabled = true;
             tabAngebote.IsEnabled = true;
 
-            rechnungsListe.SelectedItem = null;
+            rechnungenListe.SelectedItem = null;
             rechnungslisteBearbeiten.IsEnabled = false;
             rechnungslisteLoeschen.IsEnabled = false;
             neueRechnungWirdAngelegt = false;
@@ -605,40 +685,42 @@ namespace Bachelorarbeit
 
         private void RechnungSpeichernPDF(object sender, RoutedEventArgs e)
         {
-            //TODO
+            //TODO: Erst speichern
+            rechnungen rechnung = (rechnungen)rechnungenListe.SelectedItem;
+            
+            MemoryStream lMemoryStream = new MemoryStream();
+            Package package = Package.Open(lMemoryStream, FileMode.Create);
+            XpsDocument doc = new XpsDocument(package);
+            XpsDocumentWriter writer = XpsDocument.CreateXpsDocumentWriter(doc);
+            writer.Write(new Rechnung(rechnung));
+            doc.Close();
+            package.Close();
 
-            // Create a new PDF document
-            PdfDocument document = new PdfDocument();
+            var pdfXpsDoc = PdfSharp.Xps.XpsModel.XpsDocument.Open(lMemoryStream);
 
-            // Create an empty page
-            PdfPage page = document.AddPage();
+            string file;
+            if (rechnung.kunden.anrede == "Firma")
+            {
+                file = _entities.einstellungen.First().speicherortrechnungen + "\\" + rechnung.rechnungsnummer + " " + rechnung.kunden.firma + ".pdf";
+            }
+            else
+            {
+                file = _entities.einstellungen.First().speicherortrechnungen + "\\" + rechnung.rechnungsnummer + " " + rechnung.kunden.vorname + " " + rechnung.kunden.nachname + ".pdf";
+            }
+            PdfSharp.Xps.XpsConverter.Convert(pdfXpsDoc, file, 0);
 
-            // Get an XGraphics object for drawing
-            XGraphics gfx = XGraphics.FromPdfPage(page);
-
-            // Create a font
-            XFont font = new XFont("Verdana", 10, XFontStyle.Bold);
-
-            // Draw the text
-            gfx.DrawString(rechnungKundenname.Content.ToString(), font, XBrushes.Black, new XRect(0, 0, page.Width, page.Height), XStringFormat.TopLeft);
-            gfx.DrawString(rechnungKundenstraße.Content.ToString(), font, XBrushes.Black, new XRect(0, 10, page.Width, page.Height), XStringFormat.TopLeft);
-            gfx.DrawString(rechnungKundenort.Content.ToString(), font, XBrushes.Black, new XRect(0, 20, page.Width, page.Height), XStringFormat.TopLeft);
-            gfx.DrawString(rechnungKundenland.Content.ToString(), font, XBrushes.Black, new XRect(0, 30, page.Width, page.Height), XStringFormat.TopLeft);
-
-            // Save the document...
-            string filename = "HelloWorld.pdf";
-            document.Save(filename);
-            // ...and start a viewer.
-            Process.Start(filename);
+            //TODO: Abschneiden verhindern!
         }
 
         private void RechnungDrucken(object sender, RoutedEventArgs e)
         {
-            //TODO:
+            //TODO: Erst speichern + PDF
+            rechnungen rechnung = (rechnungen)rechnungenListe.SelectedItem;
+
             PrintDialog druckdialog = new PrintDialog();
             if (druckdialog.ShowDialog() == true)
             {
-                druckdialog.PrintVisual(new Dokument(), "Titel");
+                druckdialog.PrintVisual(new Rechnung(rechnung), "Rechnung");
             }
         }
 
@@ -655,7 +737,7 @@ namespace Bachelorarbeit
 
                 RechnungAbwaehlen();
 
-                rechnungsListe.SelectedItem = null;
+                rechnungenListe.SelectedItem = null;
                 rechnungslisteBearbeiten.IsEnabled = false;
                 rechnungslisteLoeschen.IsEnabled = false;
                 neueRechnungWirdAngelegt = false;
@@ -707,18 +789,12 @@ namespace Bachelorarbeit
 
         private void RechnungZahlbarTageGeaendert(object sender, TextChangedEventArgs e)
         {
+            if (rechnungDatum.SelectedDate == null || rechnungZahlbarTage.Text == null || rechnungZahlbarTage.Text == "")
+            {
+                return;
+            }
             DateTime? date = rechnungDatum.SelectedDate;
-
-            if (date == null)
-            {
-                return;
-            }
-
-            if(rechnungZahlbarTage.Text == null)
-            {
-                return;
-            }
-
+            //TODO: Buchstaben in Tage Feld
             double tage = double.Parse(rechnungZahlbarTage.Text, System.Globalization.CultureInfo.InvariantCulture);
             date = date.Value.AddDays(tage);
             rechnungZahlbarDatum.SelectedDate = date;
@@ -726,18 +802,12 @@ namespace Bachelorarbeit
 
         private void RechnungZahlbarDatumGeaendert(object sender, SelectionChangedEventArgs e)
         {
+            if (rechnungDatum.SelectedDate == null || rechnungZahlbarDatum.SelectedDate == null)
+            {
+                return;
+            }
+
             DateTime? date = rechnungDatum.SelectedDate;
-
-            if (date == null)
-            {
-                return;
-            }
-
-            if(rechnungZahlbarDatum.SelectedDate == null)
-            {
-                return;
-            }
-
             DateTime? date2 = rechnungZahlbarDatum.SelectedDate;
             rechnungZahlbarTage.Text = (date2.Value - date.Value).Days.ToString();
         }
@@ -753,9 +823,10 @@ namespace Bachelorarbeit
                 return;
             }
 
-            if (rechnungZahlbarTage != null)
+            if (rechnungZahlbarTage.Text != null || rechnungZahlbarTage.Text != "")
             {
-                double tage = double.Parse(rechnungZahlbarTage.Text, System.Globalization.CultureInfo.InvariantCulture);
+                double tage = 0;
+                Double.TryParse(rechnungZahlbarTage.Text, out tage);
                 date = date.Value.AddDays(tage);
                 rechnungZahlbarDatum.SelectedDate = date;
                 return;
@@ -781,7 +852,7 @@ namespace Bachelorarbeit
             {
                 return;
             }
-
+            //TODO: Testen: Spring bei auswahl von Rechnungen an (z.B. über Filter)
             double tage = double.Parse(rechnungSkontoTage.Text, System.Globalization.CultureInfo.InvariantCulture);
             date = date.Value.AddDays(tage);
             rechnungSkontoDatum.SelectedDate = date;

@@ -37,7 +37,7 @@
             <Setter Property="HorizontalAlignment" Value="Center"/>
         </Style>
         <CollectionViewSource x:Key="kundenViewSource" d:DesignSource="{d:DesignInstance {x:Type local:kunden}, CreateList=True}" Filter="KundenFilter"/>
-        <CollectionViewSource x:Key="rechnungenViewSource" d:DesignSource="{d:DesignInstance {x:Type local:rechnungen}, CreateList=True}"/>
+        <CollectionViewSource x:Key="rechnungenViewSource" d:DesignSource="{d:DesignInstance {x:Type local:rechnungen}, CreateList=True}" Filter="RechnungenFilter"/>
     </Window.Resources>
 
     <DockPanel>
@@ -492,7 +492,7 @@
                                 </Grid.ColumnDefinitions>
                                 <GroupBox Grid.Row="0" Header="🔍 Suche" Margin="1">
                                     <Grid>
-                                        <TextBox x:Name="rechnungenSuche" Margin="1"></TextBox>
+                                        <TextBox x:Name="rechnungenSuche" Margin="1" TextChanged="rechnungenSucheEingeben"></TextBox>
                                         <TextBlock IsHitTestVisible="False" Text="z.B. name oder produkt" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="4,0,0,0" Foreground="LightGray">
                                             <TextBlock.Style>
                                                 <Style TargetType="{x:Type TextBlock}">
@@ -509,7 +509,7 @@
                                 </GroupBox>
                                 <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
                                     <GroupBox Margin="1" Header="Rechnungsliste">
-                                        <DataGrid Name="rechnungsListe" Margin="1" IsReadOnly="True" SelectionMode="Single" ItemsSource="{Binding}" SelectedCellsChanged="RechnungAusgewaehlt" HeadersVisibility="Column" AutoGenerateColumns="False">
+                                        <DataGrid Name="rechnungenListe" Margin="1" IsReadOnly="True" SelectionMode="Single" ItemsSource="{Binding}" SelectedCellsChanged="RechnungAusgewaehlt" HeadersVisibility="Column" AutoGenerateColumns="False">
                                             <DataGrid.Columns>
                                                 <DataGridTextColumn Header="RNr." Binding="{Binding rechnungsnummer}" Width="Auto"/>
                                                 <DataGridTextColumn Header="Datum" Binding="{Binding datum}" Width="Auto"/>
@@ -708,7 +708,7 @@
                                                         <ColumnDefinition Width="*"/>
                                                     </Grid.ColumnDefinitions>
                                                     <Label Grid.Column="0">Bemerkung</Label>
-                                                    <TextBox Grid.Column="1" MinHeight="42" Margin="1" TextWrapping="Wrap"/>
+                                                    <TextBox x:Name="rechnungBemerkung" Grid.Column="1" MinHeight="42" Margin="1" TextWrapping="Wrap"/>
                                                 </Grid>
                                             </GroupBox>
                                         </Grid>
@@ -724,10 +724,10 @@
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
-                                            <Button x:Name="rechnungSpeichern" Grid.Column="0" Margin="1" Click="RechnungSpeichern">Speichern</Button>
-                                            <Button x:Name="rechnungSpeichernPDF" Grid.Column="1" Margin="1" Content="Als PDF&#xa;speichern" Click="RechnungSpeichernPDF"/>
-                                            <Button x:Name="rechnungDrucken" Grid.Column="2" Margin="1" Click="RechnungDrucken">Drucken</Button>
-                                            <Button x:Name="rechnungAbbrechen" Grid.Column="3" Margin="1" IsCancel="True" Click="RechnungAbbrechen">Abbrechen</Button>
+                                            <Button x:Name="rechnungSpeichern" Grid.Column="0" Margin="1" Click="RechnungSpeichern" Content="Speichern"/>
+                                            <Button x:Name="rechnungSpeichernPDF" Grid.Column="1" Margin="1" Content="Als PDF speichern" Click="RechnungSpeichernPDF"/>
+                                            <Button x:Name="rechnungDrucken" Grid.Column="2" Margin="1" Click="RechnungDrucken" Content="Als PDF speichern&#xa;und Drucken"/>
+                                            <Button x:Name="rechnungAbbrechen" Grid.Column="3" Margin="1" IsCancel="True" Click="RechnungAbbrechen" Content="Abbrechen"/>
                                         </Grid>
                                     </GroupBox>
                                 </Grid>

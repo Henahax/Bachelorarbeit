@@ -5,18 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Bachelorarbeit"
         mc:Ignorable="d"
-        Title="Einstellungen" Height="500" Width="640" MinWidth="640" MinHeight="500" MaxHeight="500" MaxWidth="640"
-        WindowStartupLocation="CenterScreen">
+        Title="Einstellungen" Height="540" Width="640" MinWidth="640" MinHeight="540" MaxHeight="540" MaxWidth="640"
+        WindowStartupLocation="CenterScreen" Loaded="Window_Loaded">
+    <Window.Resources>
+        <CollectionViewSource x:Key="einstellungenViewSource" d:DesignSource="{d:DesignInstance {x:Type local:einstellungen}, CreateList=True}"/>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <TabControl Grid.Row="0" TabStripPlacement="Left">
-            <TabItem Header="Allgemeines" Height="40">
+            <TabItem Header="Allgemein" Height="40">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <GroupBox Header="Allgemeine Einstellungen" Margin="1">
-                        <Grid>
+                        <Grid DataContext="{StaticResource einstellungenViewSource}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="Auto" MinWidth="40"/>
@@ -30,17 +33,17 @@
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
                             <Label Grid.Column="0" Grid.Row="0" Margin="1" Content="Standardmehrwertsteuersatz"/>
-                            <TextBox Grid.Column="1" Grid.Row="0" Margin="1" VerticalAlignment="Center" HorizontalContentAlignment="Right">19</TextBox>
+                            <TextBox x:Name="standardmehrwertsteuersatz" Grid.Column="1" Grid.Row="0" Margin="1" VerticalAlignment="Center" HorizontalContentAlignment="Right" Text="{Binding standardmehrwertsteuersatz, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
                             <Label Grid.Column="2" Grid.Row="0" Margin="1">%</Label>
                             <Label Grid.Column="0" Grid.Row="1" Margin="1">Standardland für Kunden</Label>
-                            <TextBox Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="3" Margin="1" VerticalAlignment="Center">Deutschland</TextBox>
+                            <TextBox x:Name="standardland" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="3" Margin="1" VerticalAlignment="Center" Text="{Binding standardland, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
 
                             <Label Grid.Column="0" Grid.Row="2" Margin="1">Speicherort für PDF Rechnungen</Label>
-                            <TextBox Grid.Column="1" Grid.Row="2" Margin="1" VerticalAlignment="Center" Grid.ColumnSpan="2"></TextBox>
-                            <Button Grid.Column="3" Grid.Row="2" Margin="1" VerticalAlignment="Center">Durchsuchen</Button>
+                            <TextBox x:Name="speicherortRechnungen" Grid.Column="1" Grid.Row="2" Margin="1" VerticalAlignment="Center" Grid.ColumnSpan="2" Text="{Binding speicherortrechnungen, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" IsEnabled="False"/>
+                            <Button x:Name="speicherortRechnungenDurchsuchen" Grid.Column="3" Grid.Row="2" Margin="1" VerticalAlignment="Center" Click="SpeicherortRechnungenDurchsuchen">Durchsuchen</Button>
                             <Label Grid.Column="0" Grid.Row="3" Margin="1">Speicherort für PDF Angebote</Label>
-                            <TextBox Grid.Column="1" Grid.Row="3" Margin="1" VerticalAlignment="Center" Grid.ColumnSpan="2"></TextBox>
-                            <Button Grid.Column="3" Grid.Row="3" Margin="1" VerticalAlignment="Center">Durchsuchen</Button>
+                            <TextBox x:Name="speicherortAngebote" Grid.Column="1" Grid.Row="3" Margin="1" VerticalAlignment="Center" Grid.ColumnSpan="2" Text="{Binding speicherortangebote, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" IsEnabled="False"/>
+                            <Button x:Name="speicherortAngeboteDurchsuchen" Grid.Column="3" Grid.Row="3" Margin="1" VerticalAlignment="Center" Click="SpeicherortAngeboteDurchsuchen">Durchsuchen</Button>
                         </Grid>
                     </GroupBox>
                 </ScrollViewer>
@@ -48,12 +51,14 @@
             <TabItem Header="Firmendaten" Height="40">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <GroupBox Header="Firmendaten Einstellungen" Margin="1">
-                        <Grid>
+                        <Grid DataContext="{StaticResource einstellungenViewSource}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
@@ -69,7 +74,7 @@
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
                             <Label Grid.Column="0" Grid.Row="0" Margin="1">Firmenname</Label>
-                            <TextBox x:Name="firmenname" Grid.Column="1" Grid.Row="0" Margin="1" VerticalAlignment="Center"></TextBox>
+                            <TextBox x:Name="firmenname" Grid.Column="1" Grid.Row="0" Margin="1" VerticalAlignment="Center" Text="{Binding firmenname, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"></TextBox>
                             <TextBlock Grid.Row="0" Grid.Column="1" IsHitTestVisible="False" Text="z.B. Musterfirma" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="4,1,1,1" Foreground="LightGray">
                                 <TextBlock.Style>
                                     <Style TargetType="{x:Type TextBlock}">
@@ -87,29 +92,33 @@
                             </TextBlock>
 
                             <Label Grid.Column="0" Grid.Row="1" Margin="1">Inhaber</Label>
-                            <TextBox x:Name="inhaber" Grid.Column="1" Grid.Row="1" Margin="1" VerticalAlignment="Center"/>
+                            <TextBox x:Name="inhaber" Grid.Column="1" Grid.Row="1" Margin="1" VerticalAlignment="Center" Text="{Binding inhaber, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
                             <Label Grid.Column="0" Grid.Row="2" Margin="1">Straße</Label>
-                            <TextBox x:Name="strasse" Grid.Column="1" Grid.Row="2" Margin="1" VerticalAlignment="Center"></TextBox>
+                            <TextBox x:Name="strasse" Grid.Column="1" Grid.Row="2" Margin="1" VerticalAlignment="Center" Text="{Binding strasse, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"></TextBox>
                             <Label Grid.Column="0" Grid.Row="3" Margin="1">Postleitzahl</Label>
-                            <TextBox x:Name="postleitzahl" Grid.Column="1" Grid.Row="3" Margin="1" VerticalAlignment="Center"></TextBox>
+                            <TextBox x:Name="postleitzahl" Grid.Column="1" Grid.Row="3" Margin="1" VerticalAlignment="Center" Text="{Binding postleitzahl, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"></TextBox>
                             <Label Grid.Column="0" Grid.Row="4" Margin="1">Ort</Label>
-                            <TextBox x:Name="ort" Grid.Column="1" Grid.Row="4" Margin="1" VerticalAlignment="Center"></TextBox>
+                            <TextBox x:Name="ort" Grid.Column="1" Grid.Row="4" Margin="1" VerticalAlignment="Center" Text="{Binding ort, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"></TextBox>
                             <Label Grid.Column="0" Grid.Row="5" Margin="1">Land</Label>
-                            <TextBox x:Name="land" Grid.Column="1" Grid.Row="5" Margin="1" VerticalAlignment="Center"></TextBox>
+                            <TextBox x:Name="land" Grid.Column="1" Grid.Row="5" Margin="1" VerticalAlignment="Center" Text="{Binding land, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"></TextBox>
                             <Label Grid.Column="0" Grid.Row="6" Margin="1">Telefon</Label>
-                            <TextBox x:Name="telefon" Grid.Column="1" Grid.Row="6" Margin="1" VerticalAlignment="Center"></TextBox>
+                            <TextBox x:Name="telefon" Grid.Column="1" Grid.Row="6" Margin="1" VerticalAlignment="Center" Text="{Binding telefon, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"></TextBox>
                             <Label Grid.Column="0" Grid.Row="7" Margin="1">Telefax</Label>
-                            <TextBox x:Name="telefax" Grid.Column="1" Grid.Row="7" Margin="1" VerticalAlignment="Center"></TextBox>
+                            <TextBox x:Name="telefax" Grid.Column="1" Grid.Row="7" Margin="1" VerticalAlignment="Center" Text="{Binding telefax, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"></TextBox>
                             <Label Grid.Column="0" Grid.Row="8" Margin="1">E-Mail</Label>
-                            <TextBox x:Name="email" Grid.Column="1" Grid.Row="8" Margin="1" VerticalAlignment="Center"></TextBox>
+                            <TextBox x:Name="email" Grid.Column="1" Grid.Row="8" Margin="1" VerticalAlignment="Center" Text="{Binding email, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"></TextBox>
                             <Label Grid.Column="0" Grid.Row="9" Margin="1">Webseite</Label>
-                            <TextBox x:Name="webseite" Grid.Column="1" Grid.Row="9" Margin="1" VerticalAlignment="Center"></TextBox>
+                            <TextBox x:Name="webseite" Grid.Column="1" Grid.Row="9" Margin="1" VerticalAlignment="Center" Text="{Binding webseite, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"></TextBox>
                             <Label Grid.Column="0" Grid.Row="10" Margin="1">USt-IdNr.</Label>
-                            <TextBox x:Name="ustidnr" Grid.Column="1" Grid.Row="10" Margin="1" VerticalAlignment="Center"></TextBox>
-                            <Label Grid.Column="0" Grid.Row="11" Margin="1">IBAN</Label>
-                            <TextBox x:Name="iban" Grid.Column="1" Grid.Row="11" Margin="1" VerticalAlignment="Center"></TextBox>
-                            <Label Grid.Column="0" Grid.Row="12" Margin="1">BIC</Label>
-                            <TextBox x:Name="bic" Grid.Column="1" Grid.Row="12" Margin="1" VerticalAlignment="Center"></TextBox>
+                            <TextBox x:Name="ustidnr" Grid.Column="1" Grid.Row="10" Margin="1" VerticalAlignment="Center" Text="{Binding ustidnr, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"></TextBox>
+                            <Label Grid.Column="0" Grid.Row="11" Margin="1">Kontoinhaber</Label>
+                            <TextBox x:Name="empfaenger" Grid.Column="1" Grid.Row="11" Margin="1" VerticalAlignment="Center" Text="{Binding empfaenger, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"></TextBox>
+                            <Label Grid.Column="0" Grid.Row="12" Margin="1">Bank</Label>
+                            <TextBox x:Name="bank" Grid.Column="1" Grid.Row="12" Margin="1" VerticalAlignment="Center" Text="{Binding bank, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"></TextBox>
+                            <Label Grid.Column="0" Grid.Row="13" Margin="1">IBAN</Label>
+                            <TextBox x:Name="iban" Grid.Column="1" Grid.Row="13" Margin="1" VerticalAlignment="Center" Text="{Binding iban, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"></TextBox>
+                            <Label Grid.Column="0" Grid.Row="14" Margin="1">BIC</Label>
+                            <TextBox x:Name="bic" Grid.Column="1" Grid.Row="14" Margin="1" VerticalAlignment="Center" Text="{Binding bic, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"></TextBox>
                         </Grid>
                     </GroupBox>
                 </ScrollViewer>
