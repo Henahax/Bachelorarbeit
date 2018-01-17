@@ -143,7 +143,7 @@
                                         <RowDefinition Height="*"/>
                                         <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
-                                    <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
+                                    <ScrollViewer x:Name="scrollKunde" Grid.Row="0" VerticalScrollBarVisibility="Auto">
                                         <Grid>
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="Auto"/>
@@ -550,7 +550,7 @@
                                         <RowDefinition Height="*"/>
                                         <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
-                                    <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
+                                    <ScrollViewer x:Name="scrollRechnung" Grid.Row="0" VerticalScrollBarVisibility="Auto">
                                         <Grid>
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="Auto"/>
@@ -601,7 +601,7 @@
                                                 </Grid>
                                             </GroupBox>
                                             <GroupBox Grid.Row="2" Header="Mehrwertsteuer" Margin="1">
-                                                <ComboBox Margin="1" VerticalAlignment="Center">
+                                                <ComboBox x:Name="rechnungMehrwertsteuerComboBox" Margin="1" VerticalAlignment="Center" SelectionChanged="MwStTest">
                                                     <ComboBoxItem IsSelected="True">Preise inklusive Mehrwertsteuer (brutto)</ComboBoxItem>
                                                     <ComboBoxItem>Preise ohne Mehrwertsteuer (netto)</ComboBoxItem>
                                                 </ComboBox>
@@ -618,7 +618,7 @@
                                                     </Grid.RowDefinitions>
                                                     <Button x:Name="rechnungZeileHinzufuegen" Grid.Column="0" Grid.Row="1" Margin="1" Click="RechnungZeileHinzufuegen" Content="Zeile hinzufügen"/>
                                                     <Button x:Name="rechnungZeileLoeschen" Grid.Column="1" Grid.Row="1" Margin="1" IsEnabled="False" Click="RechnungZeileLoeschen" Content="Zeile löschen"/>
-                                                    <DataGrid Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" x:Name="rechnungPositionen" CanUserResizeColumns="True" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" MinHeight="40" Margin="1" CellEditEnding="RechnungPositionenUpdate">
+                                                    <DataGrid Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" x:Name="rechnungPositionen" CanUserResizeColumns="True" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" MinHeight="40" Margin="1" CellEditEnding="RechnungPositionenZelleEditiert" AddingNewItem="RechnungPositionenZeileHinzugefuegt" BeginningEdit="RechnungPositionenZelleEditieren" SelectionChanged="RechnungPositionenZeileAusgewaehlt">
                                                         <DataGrid.Columns>
                                                             <DataGridCheckBoxColumn Header="Überschrift" Width="Auto" Binding="{Binding ueberschrift}" CanUserSort="False"/>
                                                             <DataGridTextColumn Header="Menge" Width="Auto" Binding="{Binding menge}" CanUserSort="False">
@@ -724,9 +724,9 @@
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
-                                            <Button x:Name="rechnungSpeichern" Grid.Column="0" Margin="1" Click="RechnungSpeichern" Content="Speichern"/>
-                                            <Button x:Name="rechnungSpeichernPDF" Grid.Column="1" Margin="1" Content="Als PDF speichern" Click="RechnungSpeichernPDF"/>
-                                            <Button x:Name="rechnungDrucken" Grid.Column="2" Margin="1" Click="RechnungDrucken" Content="Als PDF speichern&#xa;und Drucken"/>
+                                            <Button x:Name="rechnungSpeichern" Grid.Column="0" Margin="1" Click="RechnungSpeichernButton" Content="Speichern"/>
+                                            <Button x:Name="rechnungSpeichernPDF" Grid.Column="1" Margin="1" Content="Als PDF speichern" Click="RechnungPdfButton"/>
+                                            <Button x:Name="rechnungDrucken" Grid.Column="2" Margin="1" Click="RechnungDruckenButton" Content="Als PDF speichern&#xa;und Drucken"/>
                                             <Button x:Name="rechnungAbbrechen" Grid.Column="3" Margin="1" IsCancel="True" Click="RechnungAbbrechen" Content="Abbrechen"/>
                                         </Grid>
                                     </GroupBox>

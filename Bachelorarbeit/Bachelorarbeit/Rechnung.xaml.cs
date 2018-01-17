@@ -41,7 +41,6 @@ namespace Bachelorarbeit
             briefkopfFirmenname.Content = _entities.einstellungen.First().firmenname;
             briefkopfAnschrift.Content = _entities.einstellungen.First().strasse + " - " + _entities.einstellungen.First().postleitzahl + " " + _entities.einstellungen.First().ort + " - " + _entities.einstellungen.First().land;
 
-
             rechnungsdatum.Content = DateTime.Parse(rechnung.datum).ToString("dd.MM.yyy");
             rechnungsnummer.Content = rechnung.rechnungsnummer;
             kundennummer.Content = rechnung.kunden.kundennummer;

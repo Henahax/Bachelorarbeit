@@ -2,25 +2,19 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
 using System.Data.Entity;
 using System.Data;
 using System.Linq;
 
 using System.Collections.Generic;
-using System.Globalization;
-using System.Printing;
-using PdfSharp.Pdf;
-using PdfSharp.Drawing;
 using System.IO;
 using System.IO.Packaging;
-using System.Drawing.Printing;
-using System.Diagnostics;
-using System.Text;
-using System.Threading;
 using System.Windows.Xps.Packaging;
-using System.Windows.Markup;
 using System.Windows.Xps;
+using System.Windows.Documents;
+using System.Windows.Xps.Serialization;
+using System.Reflection;
+using System.Windows.Markup;
 
 namespace Bachelorarbeit
 {
@@ -50,6 +44,13 @@ namespace Bachelorarbeit
             _rechnungenViewSource = ((CollectionViewSource)(this.FindResource("rechnungenViewSource")));
             Refresh();
         }
+
+        //TODO: Arbeit
+        //Rechnung PDF A4 Format statt B4
+        //Skonto
+        //Datagrid Updates
+        //Rechnung abschneiden verhindern
+        //TODO Dokument Bild
 
         private void Refresh()
         {
@@ -104,6 +105,8 @@ namespace Bachelorarbeit
             kundeWebseite.Text = null;
             kundeNotizen.Text = null;
 
+            scrollKunde.ScrollToTop();
+
             kundenListe.SelectedItem = null;
             kundenlisteBearbeiten.IsEnabled = false;
             kundenlisteLoeschen.IsEnabled = false;
@@ -120,7 +123,9 @@ namespace Bachelorarbeit
             rechnungKundenort.Content = null;
             rechnungKundenland.Content = null;
 
-            //TODO:
+
+            rechnungMehrwertsteuerComboBox.SelectedIndex = 0;
+
             rechnungPositionenListe.Clear();
             rechnungPositionen.ItemsSource = null;
 
@@ -132,6 +137,8 @@ namespace Bachelorarbeit
             rechnungSkontoDatum.SelectedDate = null;
 
             rechnungBemerkung.Text = null;
+
+            scrollRechnung.ScrollToTop();
         }
 
         private void EinstellungenOeffnen(object sender, RoutedEventArgs e)
@@ -313,6 +320,7 @@ namespace Bachelorarbeit
             kundeKundennummer.Content = kundennummer;
 
             neuerKundeWirdAngelegt = true;
+            kundeLand.Text = _entities.einstellungen.First().standardland;
         }
 
         private void RechnungZeileHinzufuegen(object sender, RoutedEventArgs e)
@@ -322,19 +330,30 @@ namespace Bachelorarbeit
             rechnungPositionen.ItemsSource = rechnungPositionenListe;
         }
 
+        private void RechnungPositionenZeileAusgewaehlt(object sender, SelectionChangedEventArgs e)
+        {
+            if (rechnungPositionen.SelectedItem != null)
+            {
+                rechnungZeileLoeschen.IsEnabled = true;
+            }
+            else
+            {
+                rechnungZeileLoeschen.IsEnabled = false;
+            }
+        }
+
         private void RechnungZeileLoeschen(object sender, RoutedEventArgs e)
         {
+            rechnung_positionen positon = rechnungPositionen.SelectedItem as rechnung_positionen;
+            rechnungPositionenListe.Remove(positon);
+            rechnungPositionen.ItemsSource = null;
+            rechnungPositionen.ItemsSource = rechnungPositionenListe;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-
-            System.Windows.Data.CollectionViewSource kundenViewSource = ((System.Windows.Data.CollectionViewSource)(this.FindResource("kundenViewSource")));
-            // Load data by setting the CollectionViewSource.Source property:
-            // kundenViewSource.Source = [generic data source]
-            System.Windows.Data.CollectionViewSource rechnungenViewSource = ((System.Windows.Data.CollectionViewSource)(this.FindResource("rechnungenViewSource")));
-            // Load data by setting the CollectionViewSource.Source property:
-            // rechnungenViewSource.Source = [generic data source]
+            CollectionViewSource kundenViewSource = ((CollectionViewSource)(this.FindResource("kundenViewSource")));
+            CollectionViewSource rechnungenViewSource = ((CollectionViewSource)(this.FindResource("rechnungenViewSource")));
         }
 
         private void KundeAusgewaehlt(object sender, SelectedCellsChangedEventArgs e)
@@ -407,7 +426,7 @@ namespace Bachelorarbeit
 
                     rechnungKundenland.Content = rechnung.kunden.land;
 
-                    //TODO
+                    rechnungMehrwertsteuerComboBox.SelectedIndex = Convert.ToInt32(rechnung.netto);
 
                     rechnungPositionenListe.Clear();
                     foreach (rechnung_positionen element in rechnung.rechnung_positionen)
@@ -419,7 +438,7 @@ namespace Bachelorarbeit
 
                     rechnungZahlbarTage.Text = rechnung.zahlbartage.ToString();
 
-                    //TODO
+                    //TODO: Skonto usw.
                 }
                 catch (Exception) { }
             }
@@ -447,19 +466,26 @@ namespace Bachelorarbeit
         {
             //TODO: Testen (Geht noch nicht)
             rechnungen rechnung = e.Item as rechnungen;
+            
             if (rechnung.rechnung_positionen != null)
             {
                 foreach (rechnung_positionen p in rechnung.rechnung_positionen)
                 {
                     if (p.beschreibung != null || p.name != null)
                     {
-                        if (p.beschreibung.ToLower().Contains(rechnungenFilter))
+                        if (p.beschreibung != null)
                         {
-                            e.Accepted = true;
+                            if (p.beschreibung.ToLower().Contains(rechnungenFilter))
+                            {
+                                e.Accepted = true;
+                            }
                         }
-                        if (p.name.ToLower().Contains(rechnungenFilter))
+                        if (p.name != null)
                         {
-                            e.Accepted = true;
+                            if (p.name.ToLower().Contains(rechnungenFilter))
+                            {
+                                e.Accepted = true;
+                            }
                         }
                     } 
                 }
@@ -499,16 +525,15 @@ namespace Bachelorarbeit
 
             RechnungAbwaehlen();
 
-            long rechnungsnummer;
+            long rechnungsnummer = (DateTime.Now.Year - 2000) * 1000 + 1;
 
-            if (_entities.rechnungen.Any() == false)
-            {
-                rechnungsnummer = 1;
-            }
-            else
+            if(_entities.rechnungen.Any() == true)
             {
                 long hoechsteRechnungsnummer = _entities.rechnungen.Max(r => r.rechnungsnummer);
-                rechnungsnummer = ++hoechsteRechnungsnummer;
+                if(rechnungsnummer <= hoechsteRechnungsnummer)
+                {
+                    rechnungsnummer = ++hoechsteRechnungsnummer;
+                }
             }
 
             rechnungRechnungsnummer.Content = rechnungsnummer;
@@ -539,6 +564,8 @@ namespace Bachelorarbeit
             rechnungKundenland.Content = kunde.land;
 
             rechnungPositionen.ItemsSource = rechnungPositionenListe;
+
+            rechnungZahlbarTage.Text = "30";
 
             neueRechnungWirdAngelegt = true;
         }
@@ -594,7 +621,12 @@ namespace Bachelorarbeit
             }
         }
 
-        private void RechnungSpeichern(object sender, RoutedEventArgs e)
+        private void RechnungSpeichernButton(object sender, RoutedEventArgs e)
+        {
+            RechnungSpeichern();
+        }
+
+        private void RechnungSpeichern()
         {
             //TODO: Pflichfelder prüfen
             //Zahlbardatum vor Rechnungsdatum
@@ -626,6 +658,8 @@ namespace Bachelorarbeit
                 string stringDatum = datum.ToString("yyyy-MM-dd");
                 rechnung.datum = stringDatum;
 
+                rechnung.netto = rechnungMehrwertsteuerComboBox.SelectedIndex;
+
                 rechnung.kunde_id = kundenId;
                 foreach (rechnung_positionen element in rechnungPositionenListe)
                 {
@@ -648,6 +682,8 @@ namespace Bachelorarbeit
                 rechnungen rechnung = (rechnungen)rechnungenListe.SelectedItem;
 
                 rechnung.kunde_id = kundenId;
+
+                rechnung.netto = rechnungMehrwertsteuerComboBox.SelectedIndex;
 
                 rechnung.rechnung_positionen.Clear();
                 foreach (rechnung_positionen element in rechnungPositionenListe)
@@ -683,38 +719,54 @@ namespace Bachelorarbeit
             neueRechnungWirdAngelegt = false;
         }
 
-        private void RechnungSpeichernPDF(object sender, RoutedEventArgs e)
+        private void RechnungPdfButton(object sender, RoutedEventArgs e)
         {
-            //TODO: Erst speichern
+            RechnungPdf();
+        }
+
+        private void RechnungPdf()
+        {
+            //TODO: Fix Speichern
+            //RechnungSpeichern();
+
+            //TODO: Abschneiden verhindern: DinA4 statt US letter, Fehler bei generieren von xps, nicht pdf!
+
             rechnungen rechnung = (rechnungen)rechnungenListe.SelectedItem;
-            
+
             MemoryStream lMemoryStream = new MemoryStream();
             Package package = Package.Open(lMemoryStream, FileMode.Create);
+
             XpsDocument doc = new XpsDocument(package);
             XpsDocumentWriter writer = XpsDocument.CreateXpsDocumentWriter(doc);
+
             writer.Write(new Rechnung(rechnung));
             doc.Close();
             package.Close();
 
             var pdfXpsDoc = PdfSharp.Xps.XpsModel.XpsDocument.Open(lMemoryStream);
 
-            string file;
+            string dateiname;
             if (rechnung.kunden.anrede == "Firma")
             {
-                file = _entities.einstellungen.First().speicherortrechnungen + "\\" + rechnung.rechnungsnummer + " " + rechnung.kunden.firma + ".pdf";
+                dateiname = _entities.einstellungen.First().speicherortrechnungen + "\\" + rechnung.rechnungsnummer + " " + rechnung.kunden.firma + ".pdf";
             }
             else
             {
-                file = _entities.einstellungen.First().speicherortrechnungen + "\\" + rechnung.rechnungsnummer + " " + rechnung.kunden.vorname + " " + rechnung.kunden.nachname + ".pdf";
+                dateiname = _entities.einstellungen.First().speicherortrechnungen + "\\" + rechnung.rechnungsnummer + " " + rechnung.kunden.vorname + " " + rechnung.kunden.nachname + ".pdf";
             }
-            PdfSharp.Xps.XpsConverter.Convert(pdfXpsDoc, file, 0);
-
-            //TODO: Abschneiden verhindern!
+            PdfSharp.Xps.XpsConverter.Convert(pdfXpsDoc, dateiname, 0);
         }
 
-        private void RechnungDrucken(object sender, RoutedEventArgs e)
+        private void RechnungDruckenButton(object sender, RoutedEventArgs e)
         {
-            //TODO: Erst speichern + PDF
+            RechnungDrucken();
+        }
+
+        private void RechnungDrucken()
+        {
+            //TODO: Fix Speichern
+            //RechnungSpeichern();
+            RechnungPdf();
             rechnungen rechnung = (rechnungen)rechnungenListe.SelectedItem;
 
             PrintDialog druckdialog = new PrintDialog();
@@ -750,7 +802,25 @@ namespace Bachelorarbeit
             kundenAuswahl.ShowDialog();
         }
 
-        private void RechnungPositionenUpdate(object sender, DataGridCellEditEndingEventArgs e)
+        private void RechnungPositionenZelleEditiert(object sender, DataGridCellEditEndingEventArgs e)
+        {
+            Console.WriteLine("Positionen Update: Zelle editiert");
+            RechnungPositionenUpdate();
+        }
+
+        private void RechnungPositionenZeileHinzugefuegt(object sender, AddingNewItemEventArgs e)
+        {
+            Console.WriteLine("Positionen Update: Zeile hinzugefügt");
+            RechnungPositionenUpdate();
+        }
+
+        private void RechnungPositionenZelleEditieren(object sender, DataGridBeginningEditEventArgs e)
+        {
+            Console.WriteLine("Positionen Update: Zelle Editieren");
+            //RechnungPositionenUpdate();
+        }
+
+        private void RechnungPositionenUpdate()
         {
             var zelle = rechnungPositionen.CurrentItem;
             rechnungPositionen.CurrentItem = null;
@@ -772,11 +842,13 @@ namespace Bachelorarbeit
                     position.einzelpreis = null;
                 }
             }
+
+            //TODO: MWSt beachten, StandardMehrwertsteuersatz verwenden
             rechnungNettosumme.Content = string.Format("{0:C}", summe * ((decimal)81) / 100);
             rechnungMehrwertsteuer.Content = string.Format("{0:C}", summe * ((decimal)19) / 100);
             rechnungGesamtsumme.Content = string.Format("{0:C}", summe);
 
-            if(rechnungSkontoProzent.Text != null)
+            if (rechnungSkontoProzent.Text != null)
             {
                 decimal temp;
                 decimal? skonto = decimal.TryParse(rechnungSkontoProzent.Text, out temp) ? temp : default(decimal?);
@@ -897,6 +969,27 @@ namespace Bachelorarbeit
                     decimal temp2;
                     decimal? skonto = decimal.TryParse(rechnungSkontoProzent.Text, out temp2) ? temp2 : default(decimal?);
                     rechnungSkontoBetrag.Content = string.Format("{0:C}", summe * skonto / 100);
+                }
+            }
+        }
+
+        private void MwStTest(object sender, SelectionChangedEventArgs e)
+        {
+            if (rechnungMehrwertsteuerComboBox.IsEnabled == true)
+            {
+                //TODO: Refresh Datagrid
+                if (rechnungMehrwertsteuerComboBox.SelectedIndex == 0) {
+                    foreach (rechnung_positionen element in rechnungPositionenListe)
+                    {
+                        element.einzelpreis = element.einzelpreis*(1+_entities.einstellungen.First().standardmehrwertsteuersatz/100);
+                    }
+                }
+                if (rechnungMehrwertsteuerComboBox.SelectedIndex == 1)
+                {
+                    foreach (rechnung_positionen element in rechnungPositionenListe)
+                    {
+                        element.einzelpreis = element.einzelpreis * (1 - _entities.einstellungen.First().standardmehrwertsteuersatz / 100);
+                    }
                 }
             }
         }

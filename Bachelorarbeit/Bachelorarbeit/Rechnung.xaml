@@ -4,11 +4,10 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Bachelorarbeit"
-      mc:Ignorable="d" 
-      d:DesignHeight="300" d:DesignWidth="300"
-      Height="29.7cm" Width="21cm"
-      Background="White"
+      mc:Ignorable="d"
+      Background="white"
       Title="Dokument" Language="de-DE">
+    <!-- Height="29.7cm" Width="21cm"-->
 
     <Grid>
         <Grid Width="20" HorizontalAlignment="Left" Margin="20,0,0,0">
